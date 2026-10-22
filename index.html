@@ -11,9 +11,9 @@
 
     <!-- ১. অথেনটিকেশন সেকশন -->
     <div id="authSection" class="auth-container">
-        <!-- ল্যাঙ্গুয়েজ সুইচ (NA / EN / ES) -->
+        <!-- ল্যাঙ্গুয়েজ সুইচ (BN / EN / ES) -->
         <div class="lang-switch-box">
-            <button id="btnLangBN" class="lang-btn active" onclick="setLanguage('bn')">NA</button>
+            <button id="btnLangBN" class="lang-btn active" onclick="setLanguage('bn')">BN</button>
             <button id="btnLangEN" class="lang-btn" onclick="setLanguage('en')">EN</button>
             <button id="btnLangES" class="lang-btn" onclick="setLanguage('es')">ES</button>
         </div>
@@ -51,12 +51,6 @@
                     <option value="+974" data-currency="QAR">🇶🇦 Qatar (+974)</option>
                     <option value="+968" data-currency="OMR">🇴🇲 Oman (+968)</option>
                     <option value="+965" data-currency="KWD">🇰🇼 Kuwait (+965)</option>
-                    <option value="+81" data-currency="¥">🇯🇵 Japan (+81)</option>
-                    <option value="+86" data-currency="¥">🇨🇳 China (+86)</option>
-                    <option value="+82" data-currency="₩">🇰🇷 South Korea (+82)</option>
-                    <option value="+66" data-currency="฿">🇹🇭 Thailand (+66)</option>
-                    <option value="+90" data-currency="₺">🇹🇷 Turkey (+90)</option>
-                    <option value="+84" data-currency="₫">🇻🇳 Vietnam (+84)</option>
                 </select>
             </div>
 
@@ -70,7 +64,7 @@
             <button type="submit" class="btn btn-gold" data-bn="সাইন আপ করুন" data-en="Sign Up" data-es="Registrarse">সাইন আপ করুন</button>
         </form>
 
-        <!-- লগইন ফর্ম (ইমেইল লিখলে অটোমেটিক নোটিশ দেখাবে) -->
+        <!-- লগইন ফর্ম -->
         <form id="loginForm" onsubmit="handleLogin(event)" action="javascript:void(0);">
             <div id="emailWarningNote" class="info-note hidden" data-bn="* লগইন করতে শুধুমাত্র মোবাইল নম্বর ব্যবহার করুন (ইমেইল দিয়ে হবে না)" data-en="* Use Mobile Number to Login (Email not allowed)" data-es="* Use el número de móvil para iniciar sesión">* লগইন করতে শুধুমাত্র মোবাইল নম্বর ব্যবহার করুন (ইমেইল দিয়ে হবে না)</div>
             
@@ -100,15 +94,15 @@
                     <span class="brand-title">WORLD BANK</span>
                 </div>
                 <div class="header-right-actions">
-                    <!-- নতুন আপডেট: ডার্ক/লাইট থিম সুইচার বাটন -->
+                    <!-- ডার্ক/লাইট থিম সুইচার বাটন -->
                     <button type="button" class="icon-circle-btn" onclick="toggleTheme()" title="Theme Switch">🌗</button>
-                    <!-- নতুন আপডেট: ইন-অ্যাপ নোটিফিকেশন বেল ও আনরিড কাউন্ট ব্যাজ -->
+                    <!-- ইন-অ্যাপ নোটিফিকেশন বেল -->
                     <button type="button" class="icon-circle-btn" onclick="toggleNotificationsModal()" title="Notifications" style="position:relative;">
                         🔔
                         <span id="notifBadge" class="hidden" style="position:absolute; top:-2px; right:-2px; background:#ef4444; color:white; font-size:9px; border-radius:50%; padding:2px 5px; font-weight:bold;">0</span>
                     </button>
-                    <button onclick="toggleLangLoop()" class="lang-toggle-badge" id="dashLangBtn">NA</button>
-                    <!-- ভেক্টর মডার্ন লগআউট বাটন -->
+                    <button onclick="toggleLangLoop()" class="lang-toggle-badge" id="dashLangBtn">BN</button>
+                    <!-- লগআউট বাটন -->
                     <button class="icon-circle-btn logout-btn" onclick="logout()" title="Logout">
                         <svg class="svg-icon-style" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     </button>
@@ -131,20 +125,18 @@
             </div>
         </div>
 
-        <!-- সার্ভিস আইকন গ্রিড (অরিজিনাল ভেক্টর লোগো) -->
+        <!-- সার্ভিস আইকন গ্রিড -->
         <div class="main-app-body">
             
             <!-- সারি ১ -->
             <div class="grid-card">
                 <div class="grid-4-row">
-                    <!-- Add Money এইচডি ভেক্টর আইকন -->
                     <div class="app-service-item" onclick="openAddMoneyModal()">
                         <div class="app-icon-bg">
                             <svg class="srv-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                         </div>
                         <span data-bn="Add Money" data-en="Add Money" data-es="Agregar dinero">Add Money</span>
                     </div>
-                    <!-- Fund Transfer এইচডি অ্যারো ভেক্টর লোগো -->
                     <div class="app-service-item" onclick="openFundTransferModal()">
                         <div class="app-icon-bg">
                             <svg class="srv-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
@@ -155,10 +147,9 @@
                         <div class="app-icon-bg">📱</div>
                         <span data-bn="Mobile Top Up" data-en="Mobile Top Up" data-es="Recarga móvil">Mobile Top Up</span>
                     </div>
-                    <!-- নতুন আপডেট: লাইভ কারেন্সি কনভার্টার ওপেন করার শর্টকাট -->
                     <div class="app-service-item" onclick="toggleCurrencyCalcModal()">
                         <div class="app-icon-bg">🔀</div>
-                        <span data-bn="Currency Converter" data-en="Currency Calc" data-es="Conversor">Currency Calc</span>
+                        <span data-bn="Currency Calc" data-en="Currency Calc" data-es="Conversor">Currency Calc</span>
                     </div>
                 </div>
             </div>
@@ -168,22 +159,21 @@
                 <div class="grid-4-row">
                     <div class="app-service-item" onclick="openFundTransferModal()">
                         <div class="app-icon-bg">🏧</div>
-                        <span data-bn="Cash Withdraw" data-en="Cash Withdraw" data-es="Retiro de efectivo">Cash Withdraw</span>
+                        <span data-bn="Cash Withdraw" data-en="Cash Withdraw" data-es="Retiro">Cash Withdraw</span>
                     </div>
                     <div class="app-service-item" onclick="showCustomAlert('Bill Payment', 'Bill Payment Active')">
                         <div class="app-icon-bg">🧾</div>
-                        <span data-bn="Bill Payment" data-en="Bill Payment" data-es="Pago de facturas">Bill Payment</span>
+                        <span data-bn="Bill Payment" data-en="Bill Payment" data-es="Pago">Bill Payment</span>
                     </div>
                     <div class="app-service-item" onclick="openAddMoneyModal()">
                         <div class="app-icon-bg">🤲</div>
-                        <span data-bn="Request Money" data-en="Request Money" data-es="Pedir dinero">Request Money</span>
+                        <span data-bn="Request Money" data-en="Request Money" data-es="Pedir">Request Money</span>
                     </div>
-                    <!-- Receive Remittance মডার্ন গ্লোবাল আইকন -->
                     <div class="app-service-item" onclick="openCardBankModal()">
                         <div class="app-icon-bg">
                             <svg class="srv-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
                         </div>
-                        <span data-bn="Receive Remittance" data-en="Receive Remittance" data-es="Remesa">Receive Remittance</span>
+                        <span data-bn="Remittance" data-en="Remittance" data-es="Remesa">Remittance</span>
                     </div>
                 </div>
             </div>
@@ -193,7 +183,7 @@
                 <div class="grid-4-row">
                     <div class="app-service-item" onclick="openCardBankModal()">
                         <div class="app-icon-bg">🏛️</div>
-                        <span data-bn="Bank A/C" data-en="Bank A/C" data-es="Cuenta bancaria">Bank A/C</span>
+                        <span data-bn="Bank A/C" data-en="Bank A/C" data-es="Cuenta">Bank A/C</span>
                     </div>
                     <div class="app-service-item" onclick="openCardBankModal()">
                         <div class="app-icon-bg">💳</div>
@@ -205,7 +195,7 @@
                     </div>
                     <div class="app-service-item" onclick="toggleProfileModal()">
                         <div class="app-icon-bg">⚙️</div>
-                        <span data-bn="Profile Setting" data-en="Profile Setting" data-es="Configuración">Profile Setting</span>
+                        <span data-bn="Profile Setting" data-en="Profile Setting" data-es="Config">Profile Setting</span>
                     </div>
                 </div>
             </div>
@@ -213,7 +203,7 @@
             <!-- প্রোমো ব্যানার -->
             <div class="promo-banner-card">
                 <div class="promo-content">
-                    <h4 data-bn="যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান" data-en="Send money instantly to any Bank Account or Card" data-es="Envíe dinero al instante a cualquier cuenta bancaria">যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান</h4>
+                    <h4 data-bn="যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান" data-en="Send money instantly to any Bank Account or Card" data-es="Envíe dinero al instante">যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান</h4>
                     <p>World Bank Instant NPSB & Remittance Transfer</p>
                 </div>
             </div>
@@ -225,18 +215,16 @@
 
         </div>
 
-        <!-- বটম নেভিগেশন বার (Quick Pay ক্যামেরা স্ক্যানার সহ) -->
+        <!-- বটম নেভিগেশন বার -->
         <div class="bottom-nav-bar">
             <div class="nav-item" onclick="openInboxModal()">
                 <div class="nav-icon">📋</div>
                 <span data-bn="Statement" data-en="Statement" data-es="Declaración">Statement</span>
             </div>
-            <!-- নতুন আপডেট: অ্যাডভান্সড স্টেটমেন্ট ফিল্টার খোলার শর্টকাট -->
-            <div class="nav-item" onclick="toggleStatementFilterModal()">
-                <div class="nav-icon">📊</div>
-                <span data-bn="Filter" data-en="Filter" data-es="Filtro">Filter</span>
+            <div class="nav-item" onclick="showCustomAlert('Offers', 'No active offers today.')">
+                <div class="nav-icon">🛍️</div>
+                <span data-bn="Offers" data-en="Offers" data-es="Ofertas">Offers</span>
             </div>
-            <!-- Quick Pay ক্যামেরা স্ক্যানার -->
             <div class="nav-item quick-pay-center" onclick="openQuickPayScanner()">
                 <div class="quick-pay-circle">📷</div>
                 <span data-bn="Quick Pay" data-en="Quick Pay" data-es="Pago rápido">Quick Pay</span>
@@ -253,7 +241,7 @@
 
     </div>
 
-    <!-- ৪. ক্যামেরা স্ক্যানার মডাল (Quick Pay) -->
+    <!-- ক্যামেরা স্ক্যানার মডাল -->
     <div id="cameraModal" class="modal-overlay hidden">
         <div class="modal-content light-modal" style="text-align:center;">
             <div class="modal-header-clean">
@@ -264,71 +252,34 @@
                 <video id="qrVideoFeed" autoplay playsinline style="width:100%; height:200px; background:#000; border-radius:12px;"></video>
                 <div class="scanner-laser"></div>
             </div>
-            <p style="font-size:12px; color:#475569; margin-top:10px;">যেকোনো ব্যাংকিং QR কোড স্ক্যান করুন</p>
-            <button onclick="closeQuickPayScanner()" class="btn btn-cancel-btn" style="margin-top:10px;">স্ক্যানার বন্ধ করুন</button>
+            <p style="font-size:12px; color:#475569; margin-top:10px;" data-bn="যেকোনো ব্যাংকিং QR কোড স্ক্যান করুন" data-en="Scan any banking QR code" data-es="Escanear código QR">যেকোনো ব্যাংকিং QR কোড স্ক্যান করুন</p>
+            <button onclick="closeQuickPayScanner()" class="btn btn-cancel-btn" style="margin-top:10px;" data-bn="স্ক্যানার বন্ধ করুন" data-en="Close Scanner" data-es="Cerrar">স্ক্যানার বন্ধ করুন</button>
         </div>
     </div>
 
-    <!-- নতুন ফিচার মডাল ১: ইন-অ্যাপ নোটিফিকেশন মডাল -->
+    <!-- ইন-অ্যাপ নোটিফিকেশন মডাল -->
     <div id="notificationsModal" class="modal-overlay hidden">
         <div class="modal-content light-modal" style="max-width:400px;">
             <div class="modal-header-clean">
-                <h3>🔔 নোটিফিকেশন ও অ্যালার্ট</h3>
+                <h3 data-bn="🔔 নোটিফিকেশন ও অ্যালার্ট" data-en="🔔 Notifications & Alerts" data-es="🔔 Notificaciones">🔔 নোটিফিকেশন ও অ্যালার্ট</h3>
                 <button class="close-btn-dark" onclick="toggleNotificationsModal()">✕</button>
             </div>
-            <div id="notificationsList" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
-                <!-- নোটিফিকেশন এখানে ডাইনামিক লোড হবে -->
-            </div>
+            <div id="notificationsList" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
         </div>
     </div>
 
-    <!-- নতুন ফিচার মডাল ২: অ্যাডভান্সড স্টেটমেন্ট ফিল্টার মডাল -->
-    <div id="statementFilterModal" class="modal-overlay hidden">
-        <div class="modal-content light-modal" style="max-width:420px;">
-            <div class="modal-header-clean">
-                <h3>📊 অ্যাডভান্সড লেনদেন ফিল্টার</h3>
-                <button class="close-btn-dark" onclick="toggleStatementFilterModal()">✕</button>
-            </div>
-            <div style="display:flex; gap:8px; margin-bottom:10px;">
-                <select id="filterTypeSelect" onchange="applyAdvancedTxFilter()" style="margin-bottom:0;">
-                    <option value="ALL">সব ধরনের লেনদেন</option>
-                    <option value="Deposit">ডিপোজিট (Deposit)</option>
-                    <option value="Withdraw">উইথড্র (Withdraw)</option>
-                    <option value="TopUp">মোবাইল রিচার্জ</option>
-                    <option value="Remittance/Bank">ব্যাংক/কার্ড ট্রান্সফার</option>
-                </select>
-            </div>
-            <div class="inbox-table-container">
-                <table class="inbox-table">
-                    <thead>
-                        <tr>
-                            <th>তারিখ</th>
-                            <th>টাইপ</th>
-                            <th>মেথড</th>
-                            <th>পরিমাণ</th>
-                            <th>স্ট্যাটাস</th>
-                        </tr>
-                    </thead>
-                    <tbody id="filteredTxTableBody">
-                        <!-- ফিল্টার করা ডাটা এখানে আসবে -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- নতুন ফিচার মডাল ৩: লাইভ কারেন্সি কনভার্টার ক্যালকুলেটর -->
+    <!-- লাইভ কারেন্সি কনভার্টার ক্যালকুলেটর -->
     <div id="currencyCalcModal" class="modal-overlay hidden">
         <div class="modal-content light-modal" style="max-width:380px;">
             <div class="modal-header-clean">
-                <h3>🔀 লাইভ কারেন্সি কনভার্টার</h3>
+                <h3 data-bn="🔀 লাইভ কারেন্সি কনভার্টার" data-en="🔀 Live Currency Converter" data-es="🔀 Conversor">🔀 লাইভ কারেন্সি কনভার্টার</h3>
                 <button class="close-btn-dark" onclick="toggleCurrencyCalcModal()">✕</button>
             </div>
-            <label class="field-label">পরিমাণ লিখুন:</label>
+            <label class="field-label" data-bn="পরিমাণ লিখুন:" data-en="Enter Amount:" data-es="Ingrese monto:">পরিমাণ লিখুন:</label>
             <input type="number" id="calcAmountInput" value="100" oninput="calculateCurrencyExchange()">
             <div style="display:flex; gap:8px;">
                 <div style="flex:1;">
-                    <label class="field-label">হতে:</label>
+                    <label class="field-label" data-bn="হতে:" data-en="From:" data-es="De:">হতে:</label>
                     <select id="calcFromCurr" onchange="calculateCurrencyExchange()">
                         <option value="USD">USD ($)</option>
                         <option value="BDT" selected>BDT (৳)</option>
@@ -339,7 +290,7 @@
                     </select>
                 </div>
                 <div style="flex:1;">
-                    <label class="field-label">রূপান্তর:</label>
+                    <label class="field-label" data-bn="রূপান্তর:" data-en="To:" data-es="A:">রূপান্তর:</label>
                     <select id="calcToCurr" onchange="calculateCurrencyExchange()">
                         <option value="USD" selected>USD ($)</option>
                         <option value="BDT">BDT (৳)</option>
@@ -351,13 +302,13 @@
                 </div>
             </div>
             <div style="background:#f1f5f9; padding:12px; border-radius:8px; text-align:center; margin-top:10px;">
-                <span style="font-size:11px; color:#64748b; font-weight:bold;">আনুমানিক সমমান:</span>
+                <span style="font-size:11px; color:#64748b; font-weight:bold;" data-bn="আনুমানিক সমমান:" data-en="Estimated Equivalent:" data-es="Estimado:">আনুমানিক সমমান:</span>
                 <h3 id="calcResultDisp" style="color:#0b192c; margin-top:4px;">$ 0.85 USD</h3>
             </div>
         </div>
     </div>
 
-    <!-- ৫. পপ-আপ মডাল: ADD MONEY -->
+    <!-- ADD MONEY মডাল -->
     <div id="addMoneyModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
@@ -365,7 +316,7 @@
                 <button onclick="openAddMoneyModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="submitTransactionRequest(event, 'Deposit')">
-                <label class="input-label" data-bn="মেথড বা ব্যাংক সিলেক্ট করুন (লোগো সহ):" data-en="Select Method / Bank:" data-es="Seleccionar método:">মেথড বা ব্যাংক সিলেক্ট করুন (লোগো সহ):</label>
+                <label class="input-label" data-bn="মেথড বা ব্যাংক সিলেক্ট করুন:" data-en="Select Method / Bank:" data-es="Seleccionar método:">মেথড বা ব্যাংক সিলেক্ট করুন:</label>
                 <select class="methodSelect" id="addMoneyMethodSelect" required></select>
 
                 <label class="input-label" data-bn="সেন্ডার / একাউন্ট নম্বর:" data-en="Account / Mobile Number:" data-es="Número de cuenta:">সেন্ডার / একাউন্ট নম্বর:</label>
@@ -377,8 +328,8 @@
                 <label class="input-label" data-bn="ট্রানজেকশন আইডি (TrxID):" data-en="Transaction ID (TrxID):" data-es="ID de transacción:">ট্রানজেকশন আইডি (TrxID):</label>
                 <input type="text" class="trxInput" placeholder="TrxID দিন" required>
 
-                <label class="input-label sec-pass-label" data-bn="কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:" data-en="Enter Password to Confirm:" data-es="Ingrese contraseña para confirmar:">কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:</label>
-                <input type="password" class="secPassInput" placeholder="পাসওয়ার্ড দিন" required>
+                <label class="input-label sec-pass-label" data-bn="পাসওয়ার্ড দিন:" data-en="Enter Password:" data-es="Contraseña:">পাসওয়ার্ড দিন:</label>
+                <input type="password" class="secPassInput" placeholder="পাসওয়ার্ড" required>
 
                 <div class="btn-row-flex">
                     <button type="submit" class="btn btn-gold" data-bn="কনফার্ম এড মানি" data-en="Confirm Add Money" data-es="Confirmar">কনফার্ম এড মানি</button>
@@ -388,15 +339,15 @@
         </div>
     </div>
 
-    <!-- ৬. পপ-আপ মডাল: FUND TRANSFER -->
+    <!-- FUND TRANSFER মডাল -->
     <div id="fundTransferModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
-                <h3 data-bn="💸 Fund Transfer (উইথড্র)" data-en="💸 Fund Transfer (Withdraw)" data-es="💸 Transferencia de fondos">💸 Fund Transfer (উইথড্র)</h3>
+                <h3 data-bn="💸 Fund Transfer (উইথড্র)" data-en="💸 Fund Transfer (Withdraw)" data-es="💸 Transferencia">💸 Fund Transfer (উইথড্র)</h3>
                 <button onclick="openFundTransferModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="submitTransactionRequest(event, 'Withdraw')">
-                <label class="input-label" data-bn="কোথায় টাকা ট্রান্সফার করতে চান (লোগো সহ):" data-en="Select Destination Bank / Wallet:" data-es="Seleccionar destino:">কোথায় টাকা ট্রান্সফার করতে চান (লোগো সহ):</label>
+                <label class="input-label" data-bn="প্রাপক ব্যাংক / ওয়ালেট:" data-en="Destination Bank / Wallet:" data-es="Destino:">প্রাপক ব্যাংক / ওয়ালেট:</label>
                 <select class="methodSelect" id="fundTransferMethodSelect" required></select>
 
                 <label class="input-label" data-bn="প্রাপকের ফোন / একাউন্ট নম্বর:" data-en="Receiver Account / Mobile Number:" data-es="Cuenta del destinatario:">প্রাপকের ফোন / একাউন্ট নম্বর:</label>
@@ -408,8 +359,8 @@
                 <label class="input-label" data-bn="রেফারেন্স / TrxID:" data-en="Reference / TrxID:" data-es="Referencia:">রেফারেন্স / TrxID:</label>
                 <input type="text" class="trxInput" placeholder="TrxID দিন" required>
 
-                <label class="input-label sec-pass-label" data-bn="কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:" data-en="Enter Password to Confirm:" data-es="Ingrese contraseña para confirmar:">কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:</label>
-                <input type="password" class="secPassInput" placeholder="পাসওয়ার্ড দিন" required>
+                <label class="input-label sec-pass-label" data-bn="পাসওয়ার্ড দিন:" data-en="Enter Password:" data-es="Contraseña:">পাসওয়ার্ড দিন:</label>
+                <input type="password" class="secPassInput" placeholder="পাসওয়ার্ড" required>
 
                 <div class="btn-row-flex">
                     <button type="submit" class="btn btn-gold" data-bn="কনফার্ম ফান্ড ট্রান্সফার" data-en="Confirm Transfer" data-es="Confirmar">কনফার্ম ফান্ড ট্রান্সফার</button>
@@ -419,7 +370,7 @@
         </div>
     </div>
 
-    <!-- ৭. মোবাইল রিচার্জ মডাল -->
+    <!-- মোবাইল রিচার্জ মডাল -->
     <div id="topUpModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
@@ -427,7 +378,7 @@
                 <button onclick="openTopUpModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="handleTopUpSubmit(event)">
-                <label class="input-label" data-bn="অপারেটর সিলেক্ট করুন:" data-en="Select Operator:" data-es="Seleccionar operador:">অপারেটর সিলেক্ট করুন:</label>
+                <label class="input-label" data-bn="অপারেটর সিলেক্ট করুন:" data-en="Select Operator:" data-es="Operador:">অপারেটর সিলেক্ট করুন:</label>
                 <select id="topUpOperatorSelect" required>
                     <option value="">অপারেটর নির্বাচন করুন</option>
                     <option value="Grameenphone 🟢">Grameenphone (BD)</option>
@@ -435,38 +386,34 @@
                     <option value="Banglalink 🟠">Banglalink (BD)</option>
                     <option value="Singtel 🔴">Singtel (Singapore)</option>
                     <option value="StarHub 🟢">StarHub (Singapore)</option>
-                    <option value="M1 🟠">M1 (Singapore)</option>
-                    <option value="Celcom 🔵">Celcom (Malaysia)</option>
-                    <option value="Digi 🟡">Digi (Malaysia)</option>
-                    <option value="STC 💜">STC (Saudi Arabia)</option>
                 </select>
 
-                <label class="input-label" data-bn="মোবাইল নম্বর:" data-en="Mobile Number:" data-es="Número de móvil:">মোবাইল নম্বর:</label>
+                <label class="input-label" data-bn="মোবাইল নম্বর:" data-en="Mobile Number:" data-es="Número:">মোবাইল নম্বর:</label>
                 <input type="text" id="topUpPhoneInput" placeholder="মোবাইল নম্বর" required>
 
                 <label class="input-label" data-bn="পরিমাণ:" data-en="Amount:" data-es="Monto:">পরিমাণ:</label>
                 <input type="number" step="0.01" id="topUpAmountInput" placeholder="পরিমাণ" required>
 
-                <label class="input-label sec-pass-label" data-bn="কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:" data-en="Enter Password to Confirm:" data-es="Ingrese contraseña para confirmar:">কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:</label>
-                <input type="password" id="topUpSecPassInput" placeholder="পাসওয়ার্ড দিন" required>
+                <label class="input-label sec-pass-label" data-bn="পাসওয়ার্ড দিন:" data-en="Enter Password:" data-es="Contraseña:">পাসওয়ার্ড দিন:</label>
+                <input type="password" id="topUpSecPassInput" placeholder="পাসওয়ার্ড" required>
 
                 <div class="btn-row-flex">
-                    <button type="submit" class="btn btn-gold" data-bn="রিচার্জ পাঠান" data-en="Send Recharge" data-es="Enviar recarga">রিচার্জ পাঠান</button>
+                    <button type="submit" class="btn btn-gold" data-bn="রিচার্জ পাঠান" data-en="Send Recharge" data-es="Enviar">রিচার্জ পাঠান</button>
                     <button type="button" class="btn btn-cancel-btn" onclick="openTopUpModal()" data-bn="বাতিল করুন" data-en="Cancel" data-es="Cancelar">বাতিল করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- ৮. কার্ড/ব্যাংক ট্রান্সফার মডাল -->
+    <!-- কার্ড/ব্যাংক ট্রান্সফার মডাল -->
     <div id="cardBankModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
-                <h3 data-bn="💳 Card & Bank Transfer" data-en="💳 Card & Bank Transfer" data-es="💳 Transferencia bancaria/tarjeta">💳 Card & Bank Transfer</h3>
+                <h3 data-bn="💳 Card & Bank Transfer" data-en="💳 Card & Bank Transfer" data-es="💳 Transferencia">💳 Card & Bank Transfer</h3>
                 <button onclick="openCardBankModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="handleCardBankSubmit(event)">
-                <label class="input-label" data-bn="ট্রান্সফার টাইপ সিলেক্ট করুন:" data-en="Select Transfer Type:" data-es="Tipo de transferencia:">ট্রান্সফার টাইপ সিলেক্ট করুন:</label>
+                <label class="input-label" data-bn="ট্রান্সফার টাইপ:" data-en="Transfer Type:" data-es="Tipo:">ট্রান্সফার টাইপ:</label>
                 <select id="cardBankTypeSelect" required>
                     <option value="">সিলেক্ট করুন</option>
                     <option value="Debit Card to Bank">Debit Card → Bank</option>
@@ -474,7 +421,7 @@
                     <option value="Receive Remittance">Receive Remittance</option>
                 </select>
 
-                <label class="input-label" data-bn="কার্ড / একাউন্ট নম্বর:" data-en="Card / Account Number:" data-es="Número de tarjeta/cuenta:">কার্ড / একাউন্ট নম্বর:</label>
+                <label class="input-label" data-bn="কার্ড / একাউন্ট নম্বর:" data-en="Card / Account Number:" data-es="Número de tarjeta:">কার্ড / একাউন্ট নম্বর:</label>
                 <input type="text" id="cardBankAccInput" placeholder="একাউন্ট নম্বর" required>
 
                 <label class="input-label" data-bn="প্রাপকের একাউন্ট:" data-en="Receiver Account:" data-es="Cuenta receptora:">প্রাপকের একাউন্ট:</label>
@@ -483,8 +430,8 @@
                 <label class="input-label" data-bn="পরিমাণ:" data-en="Amount:" data-es="Monto:">পরিমাণ:</label>
                 <input type="number" step="0.01" id="cardBankAmountInput" placeholder="পরিমাণ" required>
 
-                <label class="input-label sec-pass-label" data-bn="কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:" data-en="Enter Password to Confirm:" data-es="Ingrese contraseña para confirmar:">কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:</label>
-                <input type="password" id="cardBankSecPassInput" placeholder="পাসওয়ার্ড দিন" required>
+                <label class="input-label sec-pass-label" data-bn="পাসওয়ার্ড দিন:" data-en="Enter Password:" data-es="Contraseña:">পাসওয়ার্ড দিন:</label>
+                <input type="password" id="cardBankSecPassInput" placeholder="পাসওয়ার্ড" required>
 
                 <div class="btn-row-flex">
                     <button type="submit" class="btn btn-gold" data-bn="পাঠান" data-en="Submit" data-es="Enviar">পাঠান</button>
@@ -494,23 +441,36 @@
         </div>
     </div>
 
-    <!-- ৯. স্টেটমেন্ট মডাল -->
+    <!-- স্টেটমেন্ট মডাল (ফিল্টার ও রসিদ ডাউনলোড সুবিধাসহ) -->
     <div id="inboxModal" class="modal-overlay hidden">
-        <div class="modal-content light-modal" style="max-width: 650px;">
+        <div class="modal-content light-modal" style="max-width: 700px;">
             <div class="modal-header-clean">
-                <h3 data-bn="📋 Statement & Transactions" data-en="📋 Statement & Transactions" data-es="📋 Declaración de transacciones">📋 Statement & Transactions</h3>
+                <h3 data-bn="📋 Statement & Transactions" data-en="📋 Statement & Transactions" data-es="📋 Declaración">📋 Statement & Transactions</h3>
                 <button onclick="openInboxModal()" class="close-btn-dark">✖</button>
             </div>
-            <div class="inbox-table-container" style="margin-top:15px;">
+            
+            <!-- স্টেটমেন্টের ভেতরেই ফিল্টার ড্রপডাউন -->
+            <div style="margin: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-size: 12px; font-weight: bold; color: #475569;" data-bn="লেনদেন ফিল্টার করুন:" data-en="Filter Transactions:" data-es="Filtrar:">লেনদেন ফিল্টার করুন:</label>
+                <select id="statementFilterSelect" onchange="renderUserInboxHistory()" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 12px; width: 200px; margin-bottom: 0;">
+                    <option value="ALL">সব ধরনের লেনদেন (All)</option>
+                    <option value="Deposit">ডিপোজিট (Deposit)</option>
+                    <option value="Withdraw">উইথড্র (Withdraw)</option>
+                    <option value="TopUp">মোবাইল রিচার্জ (TopUp)</option>
+                    <option value="Remittance/Bank">অন্যান্য ট্রান্সফার</option>
+                </select>
+            </div>
+
+            <div class="inbox-table-container">
                 <table class="inbox-table">
                     <thead>
                         <tr>
                             <th data-bn="তারিখ" data-en="Date" data-es="Fecha">তারিখ</th>
                             <th data-bn="টাইপ" data-en="Type" data-es="Tipo">টাইপ</th>
-                            <th data-bn="মেথড" data-en="Method" data-es="Método">মেথড</th>
+                            <th data-bn="মেথড ও নম্বর" data-en="Method & Number" data-es="Método">মেথড ও নম্বর</th>
                             <th data-bn="পরিমাণ" data-en="Amount" data-es="Monto">পরিমাণ</th>
                             <th data-bn="TrxID" data-en="TrxID" data-es="TrxID">TrxID</th>
-                            <th data-bn="স্ট্যাটাস" data-en="Status" data-es="Estado">স্ট্যাটাস</th>
+                            <th data-bn="রসিদ ও স্ট্যাটাস" data-en="Receipt & Status" data-es="Estado">রসিদ ও স্ট্যাটাস</th>
                         </tr>
                     </thead>
                     <tbody id="userInboxModalBody"></tbody>
@@ -519,7 +479,7 @@
         </div>
     </div>
 
-    <!-- ১০. নোটিফিকেশন অ্যালার্ট -->
+    <!-- কাস্টম অ্যালার্ট মডাল -->
     <div id="customAlertModal" class="modal-overlay hidden">
         <div class="modal-content light-modal" style="max-width: 350px; text-align: center;">
             <div style="font-size: 38px; margin-bottom: 8px;">🔔</div>
@@ -529,29 +489,27 @@
         </div>
     </div>
 
-    <!-- ১১. প্রোফাইল মডাল -->
+    <!-- প্রোফাইল মডাল -->
     <div id="profileModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
-                <h3 data-bn="👤 Profile Settings" data-en="👤 Profile Settings" data-es="👤 Configuración de perfil">👤 Profile Settings</h3>
+                <h3 data-bn="👤 Profile Settings" data-en="👤 Profile Settings" data-es="👤 Perfil">👤 Profile Settings</h3>
                 <button onclick="toggleProfileModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="updateUserProfile(event)" style="margin-top:10px;">
                 <div style="text-align: center; margin-bottom: 12px;">
-                    <div id="profileImagePreview" style="width: 80px; height: 80px; border-radius: 50%; background: #e2e8f0; margin: 0 auto 8px auto; display: flex; justify-content: center; align-items: center; font-size: 34px; overflow: hidden; border: 3px solid #d97706; background-size: cover; background-position: center;">
-                        👤
-                    </div>
+                    <div id="profileImagePreview" style="width: 80px; height: 80px; border-radius: 50%; background: #e2e8f0; margin: 0 auto 8px auto; display: flex; justify-content: center; align-items: center; font-size: 34px; overflow: hidden; border: 3px solid #d97706; background-size: cover; background-position: center;">👤</div>
                     <label for="profilePhotoInput" style="font-size: 11px; color: #b45309; font-weight: bold; cursor: pointer; display: inline-block; background: #fef3c7; padding: 4px 10px; border-radius: 12px; border: 1px solid #fde68a;" data-bn="📷 ছবি চেঞ্জ করুন" data-en="📷 Change Photo" data-es="📷 Cambiar foto">📷 ছবি চেঞ্জ করুন</label>
                     <input type="file" id="profilePhotoInput" accept="image/*" onchange="previewProfilePhoto(event)" style="display: none;">
                 </div>
 
-                <label class="input-label" data-bn="পূর্ণ নাম:" data-en="Full Name:" data-es="Nombre completo:">পূর্ণ নাম:</label>
+                <label class="input-label" data-bn="পূর্ণ নাম:" data-en="Full Name:" data-es="Nombre:">পূর্ণ নাম:</label>
                 <input type="text" id="profNameInput" required>
                 
-                <label class="input-label" data-bn="ফোন নম্বর:" data-en="Phone Number:" data-es="Número de teléfono:">ফোন নম্বর:</label>
+                <label class="input-label" data-bn="ফোন নম্বর:" data-en="Phone Number:" data-es="Teléfono:">ফোন নম্বর:</label>
                 <input type="text" id="profPhoneInput" required readonly style="background:#e2e8f0;">
                 
-                <label class="input-label" data-bn="নতুন পাসওয়ার্ড:" data-en="New Password:" data-es="Nueva contraseña:">নতুন পাসওয়ার্ড:</label>
+                <label class="input-label" data-bn="নতুন পাসওয়ার্ড:" data-en="New Password:" data-es="Contraseña:">নতুন পাসওয়ার্ড:</label>
                 <div class="password-wrapper">
                     <input type="password" id="profPassInput" required>
                     <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('profPassInput', this)">👁️</button>
@@ -565,15 +523,15 @@
         </div>
     </div>
 
-    <!-- ১২. পাসওয়ার্ড উদ্ধার মডাল -->
+    <!-- পাসওয়ার্ড উদ্ধার মডাল -->
     <div id="forgotModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
-                <h3 data-bn="🔑 Password Recovery" data-en="🔑 Password Recovery" data-es="🔑 Recuperación de contraseña">🔑 Password Recovery</h3>
+                <h3 data-bn="🔑 Password Recovery" data-en="🔑 Password Recovery" data-es="🔑 Recuperación">🔑 Password Recovery</h3>
                 <button onclick="toggleForgotModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="handleForgotPassword(event)" style="margin-top:10px;">
-                <p style="font-size:12px; color:#64748b; margin-bottom:10px;" data-bn="নিবন্ধিত ইমেইল ও মোবাইল নম্বর দিন:" data-en="Enter registered Email & Mobile Number:" data-es="Ingrese correo y teléfono registrados:">নিবন্ধিত ইমেইল ও মোবাইল নম্বর দিন:</p>
+                <p style="font-size:12px; color:#64748b; margin-bottom:10px;" data-bn="নিবন্ধিত ইমেইল ও মোবাইল নম্বর দিন:" data-en="Enter registered Email & Mobile Number:" data-es="Ingrese correo y teléfono:">নিবন্ধিত ইমেইল ও মোবাইল নম্বর দিন:</p>
                 <input type="email" id="forgotEmailInput" placeholder="নিবন্ধিত ইমেইল" required>
                 <input type="text" id="forgotPhoneInput" placeholder="নিবন্ধিত ফোন নম্বর" required>
                 <div class="btn-row-flex">
@@ -584,7 +542,7 @@
         </div>
     </div>
 
-    <!-- ১৩. সিক্রেট এডমিন প্যানেল -->
+    <!-- সিক্রেট এডমিন প্যানেল -->
     <div id="adminModal" class="modal-overlay hidden">
         <div class="modal-content">
             <div class="modal-header">
@@ -617,10 +575,10 @@
                             <option value="">ইউজার সিলেক্ট করুন</option>
                         </select>
                         <select id="admBalanceMethodSelect" required style="margin-bottom:8px;">
-                            <option value="WorldBank">World Bank (মেইন ব্যালেন্স)</option>
-                            <option value="bKash">bKash</option>
-                            <option value="Nagad">Nagad</option>
-                            <option value="Rocket">Rocket</option>
+                            <option value="WorldBank">🏛️ World Bank (মেইন ব্যালেন্স)</option>
+                            <option value="bKash">🔴 bKash Agent/Personal</option>
+                            <option value="Nagad">🟠 Nagad Mobile Wallet</option>
+                            <option value="Rocket">🟣 Rocket DBBL Wallet</option>
                         </select>
                         <input type="number" step="0.01" id="admBalanceAmount" placeholder="ব্যালেন্সের পরিমাণ" required style="margin-bottom:8px;">
                         <button type="submit" class="btn btn-gold" style="margin-top: 2px;">আপডেট ব্যালেন্স</button>
@@ -639,7 +597,7 @@
                 </div>
 
                 <div class="admin-settings">
-                    <h4>👥 ইউজার লিস্ট, পাসওয়ার্ড ও ব্যালেন্স</h4>
+                    <h4>👥 ইউজার লিস্ট ও ম্যানেজমেন্ট</h4>
                     <div class="admin-table-scroll">
                         <table class="dark-admin-table">
                             <thead>
