@@ -32,10 +32,10 @@ const countryCurrencyMap = {
 };
 
 const mandatoryBangladeshBanks = [
-    " bKash ",
-    " Nagad ",
-    " Rocket ",
-    " Upay ",
+    "🔴 bKash Account",
+    "🟠 Nagad Wallet",
+    "🟣 Rocket DBBL",
+    "🟢 Upay Mobile",
     "🏛️ Dutch Bangla Bank (DBBL)",
     "🏛️ Islami Bank Bangladesh (IBBL)",
     "🏛️ BRAC Bank PLC",
@@ -63,7 +63,7 @@ let tempProfilePhotoBase64 = null;
 let cameraStream = null;
 let isDarkMode = false;
 
-// --- নতুন ফিচার ১: ডার্ক / লাইট মোড সুইচার ---
+// ডার্ক / লাইট মোড সুইচার
 function toggleTheme() {
     isDarkMode = !isDarkMode;
     const dash = document.getElementById('dashboardSection');
@@ -78,7 +78,7 @@ function toggleTheme() {
     }
 }
 
-// --- নতুন ফিচার ২: লাইভ কারেন্সি কনভার্টার ---
+// লাইভ কারেন্সি কনভার্টার
 function toggleCurrencyCalcModal() {
     const modal = document.getElementById('currencyCalcModal');
     if (modal) {
@@ -105,7 +105,7 @@ function calculateCurrencyExchange() {
     resultDisp.innerText = `${to} ${converted.toFixed(2)}`;
 }
 
-// --- নতুন ফিচার ৩: ইন-অ্যাপ নোটিফিকেশন বেল সিস্টেম ---
+// ইন-অ্যাপ নোটিফিকেশন বেল সিস্টেম
 function toggleNotificationsModal() {
     const modal = document.getElementById('notificationsModal');
     if (modal) {
@@ -132,7 +132,7 @@ function renderNotificationsList() {
     }
 
     if (myTxs.length === 0) {
-        listEl.innerHTML = `<div style="text-align:center; color:#64748b; font-size:12px; padding:10px;">কোনো নোটিফিকেশন নেই।</div>`;
+        listEl.innerHTML = `<div style="text-align:center; color:#64748b; font-size:12px; padding:10px;" data-bn="কোনো নোটিফিকেশন নেই।" data-en="No notifications." data-es="Sin notificaciones.">কোনো নোটিফিকেশন নেই।</div>`;
         return;
     }
 
@@ -141,7 +141,7 @@ function renderNotificationsList() {
         const isApproved = t.status === 'Approved';
         const isRejected = t.status === 'Rejected';
         
-        let bgCol = '#fef3c7', borderCol = '#f59e0b', textCol = '#d97706', titleText = '⏳ রিকোয়েস্ট পেন্ডিং রয়েছে';
+        let bgCol = '#fef3c7', borderCol = '#f59e0b', textCol = '#d97706', titleText = '⏳ পেন্ডিং রিকোয়েস্ট';
         if (isApproved) { bgCol = '#d1fae5'; borderCol = '#10b981'; textCol = '#047857'; titleText = '✅ রিকোয়েস্ট অনুমোদিত!'; }
         if (isRejected) { bgCol = '#fee2e2'; borderCol = '#ef4444'; textCol = '#b91c1c'; titleText = '❌ রিকোয়েস্ট বাতিল করা হয়েছে'; }
 
@@ -149,58 +149,46 @@ function renderNotificationsList() {
         
         item.innerHTML = `
             <strong style="color:${textCol}">${titleText}</strong>
-            <p style="margin-top:2px; color:#334155;">আপনার ${t.type} (${t.currency || '৳'}${t.amount}) রিকোয়েস্ট।</p>
+            <p style="margin-top:2px; color:#334155;">আপনার ${t.type} (${t.currency || '৳'}${t.amount}) রিকোয়েস্ট। নম্বর: ${t.phone}</p>
             <span style="font-size:9px; color:#64748b;">${t.dateStr} ${t.timeStr}</span>
         `;
         listEl.appendChild(item);
     });
 }
 
-// --- নতুন ফিচার ৪: এডভান্সড স্টেটমেন্ট ফিল্টারিং ---
-function toggleStatementFilterModal() {
-    const modal = document.getElementById('statementFilterModal');
-    if (modal) {
-        modal.classList.toggle('hidden');
-        applyAdvancedTxFilter();
-    }
+// স্টেটমেন্ট এবং পিডিএফ রসিদ ডাউনলোড জেনারেটর
+function downloadTransactionReceipt(txId) {
+    const tx = allTransactions.find(t => t.id === txId);
+    if (!tx) return;
+
+    const receiptContent = `
+========================================
+           WORLD BANK RECEIPT           
+========================================
+Transaction ID : ${tx.trxId}
+Date & Time    : ${tx.dateStr} ${tx.timeStr}
+Type           : ${tx.type}
+Method         : ${tx.method}
+Account/Phone  : ${tx.phone}
+Amount         : ${tx.currency || '৳'} ${tx.amount}
+Status         : ${tx.status}
+========================================
+      Thank you for banking with us!    
+========================================
+    `;
+
+    const blob = new Blob([receiptContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Receipt_${tx.trxId}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
-function applyAdvancedTxFilter() {
-    const typeSelect = document.getElementById('filterTypeSelect');
-    const tbody = document.getElementById('filteredTxTableBody');
-    if (!tbody || !activeUser || !typeSelect) return;
-
-    const type = typeSelect.value;
-    tbody.innerHTML = '';
-    let filtered = allTransactions.filter(t => t.userEmail === activeUser.phone);
-
-    if (type !== 'ALL') {
-        filtered = filtered.filter(t => t.type === type);
-    }
-
-    if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; font-size:11px; padding:10px;">কোনো রেকর্ড পাওয়া যায়নি।</td></tr>`;
-        return;
-    }
-
-    filtered.forEach(t => {
-        let statusBadge = `<span class="status-pending">Pending</span>`;
-        if (t.status === 'Approved') statusBadge = `<span class="status-approved">Approved</span>`;
-        if (t.status === 'Rejected') statusBadge = `<span class="status-rejected">Rejected</span>`;
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${t.dateStr}</td>
-            <td><b>${t.type}</b></td>
-            <td>${t.method}</td>
-            <td style="color:#d97706; font-weight:bold;">${t.currency || '৳'} ${t.amount}</td>
-            <td>${statusBadge}</td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-// অন্যান্য সাধারণ সহায়ক ফাংশন
+// সাধারণ সহায়ক ফাংশন
 function checkLoginInputType(inputEl) {
     const val = inputEl.value.trim();
     const noteEl = document.getElementById('emailWarningNote');
@@ -641,6 +629,47 @@ async function openInboxModal() {
     renderUserInboxHistory();
 }
 
+// স্টেটমেন্ট রেন্ডার (ফিল্টার, নম্বর এবং রসিদ ডাউনলোডসহ)
+function renderUserInboxHistory() {
+    const tbody = document.getElementById('userInboxModalBody');
+    const filterSelect = document.getElementById('statementFilterSelect');
+    if (!tbody || !activeUser) return;
+    
+    tbody.innerHTML = '';
+    const filterType = filterSelect ? filterSelect.value : 'ALL';
+
+    let myTxs = allTransactions.filter(t => t.userEmail === activeUser.phone);
+    if (filterType !== 'ALL') {
+        myTxs = myTxs.filter(t => t.type === filterType);
+    }
+
+    if (myTxs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b; font-weight:bold;">কোনো রেকর্ড পাওয়া যায়নি।</td></tr>`;
+        return;
+    }
+
+    myTxs.forEach(t => {
+        let statusBadge = `<span class="status-pending">Pending ⏳</span>`;
+        if (t.status === 'Approved') statusBadge = `<span class="status-approved">Approved ✅</span>`;
+        if (t.status === 'Rejected') statusBadge = `<span class="status-rejected">Rejected ❌</span>`;
+        const curr = t.currency || getUserCurrency(activeUser);
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${t.dateStr}</td>
+            <td><b>${t.type}</b></td>
+            <td>${t.method}<br><small style="color:#0284c7;">নম্বর: ${t.phone}</small></td>
+            <td style="color:#d97706; font-weight:bold;">${curr} ${formatAmountLocale(t.amount)}</td>
+            <td><code>${t.trxId}</code></td>
+            <td>
+                ${statusBadge}<br>
+                <button onclick="downloadTransactionReceipt(${t.id})" style="margin-top:4px; background:#0284c7; color:white; border:none; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">📥 রসিদ</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
 async function updateUserProfile(e) {
     e.preventDefault();
     if (!activeUser) return;
@@ -685,7 +714,7 @@ async function handleTopUpSubmit(e) {
     allTransactions.unshift(txObj);
     localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
     saveTxToFirebase(txObj);
-    sendTelegramNotification(`📱 <b>Mobile Top Up!</b>\n👤 ইউজার: ${activeUser.name}\n💰 পরিমাণ: ${userCurr}${amount}`);
+    sendTelegramNotification(`📱 <b>Mobile Top Up!</b>\n👤 ইউজার: ${activeUser.name}\n📱 নম্বর: ${phone}\n💰 পরিমাণ: ${userCurr}${amount}`);
     showCustomAlert("সফল রিকোয়েস্ট", 'রিচার্জ প্রসেসিং-এ রয়েছে।');
     e.target.reset();
     openTopUpModal();
@@ -740,7 +769,7 @@ async function submitTransactionRequest(e, type) {
     const userCurr = getUserCurrency(activeUser);
 
     if (type === 'Withdraw' && amount > userLimit) {
-        showCustomAlert("লিমিট অতিক্রম", `আপনার উইথড্র লিমিट ${userCurr}${formatAmountLocale(userLimit)} এর বেশি নয়।`);
+        showCustomAlert("লিমিট অতিক্রম", `আপনার উইথড্র লিমিট ${userCurr}${formatAmountLocale(userLimit)} এর বেশি নয়।`);
         return;
     }
 
@@ -754,41 +783,11 @@ async function submitTransactionRequest(e, type) {
     allTransactions.unshift(txObj);
     localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
     saveTxToFirebase(txObj);
-    sendTelegramNotification(`⏳ <b>${type} রিকোয়েস্ট!</b>\n👤 ইউজার: ${activeUser.name}\n💰 পরিমাণ: ${userCurr}${amount}`);
+    sendTelegramNotification(`⏳ <b>${type} রিকোয়েস্ট!</b>\n👤 ইউজার: ${activeUser.name}\n📱 নম্বর: ${phone}\n💰 পরিমাণ: ${userCurr}${amount}`);
     showCustomAlert("সফল রিকোয়েস্ট", `আপনার ${type} রিকোয়েস্ট জমা হয়েছে।`);
     form.reset();
     if(type === 'Deposit') openAddMoneyModal();
     if(type === 'Withdraw') openFundTransferModal();
-}
-
-function renderUserInboxHistory() {
-    const tbody = document.getElementById('userInboxModalBody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    const myTxs = allTransactions.filter(t => t.userEmail === activeUser.phone);
-
-    if (myTxs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b; font-weight:bold;">কোনো রেকর্ড নেই।</td></tr>`;
-        return;
-    }
-
-    myTxs.forEach(t => {
-        let statusBadge = `<span class="status-pending">Pending ⏳</span>`;
-        if (t.status === 'Approved') statusBadge = `<span class="status-approved">Approved ✅</span>`;
-        if (t.status === 'Rejected') statusBadge = `<span class="status-rejected">Rejected ❌</span>`;
-        const curr = t.currency || getUserCurrency(activeUser);
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${t.dateStr}</td>
-            <td><b>${t.type}</b></td>
-            <td>${t.method}</td>
-            <td style="color:#d97706; font-weight:bold;">${curr} ${formatAmountLocale(t.amount)}</td>
-            <td><code>${t.trxId}</code></td>
-            <td>${statusBadge}</td>
-        `;
-        tbody.appendChild(tr);
-    });
 }
 
 function toggleAdminModal() { document.getElementById('adminModal').classList.toggle('hidden'); }
