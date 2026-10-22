@@ -182,7 +182,7 @@ function sanitizeEmailKey(keyStr) {
     return keyStr ? keyStr.replace(/[^a-zA-Z0-9]/g, "_") : "";
 }
 
-// ফায়ারবেস সিঙ্ক (দ্রুত ক্যাশ ডাটা ব্যবহারের সুবিধা সহ)
+// ফায়ারবেস সিঙ্ক
 async function syncFromFirebase() {
     try {
         const uRes = await fetch(`${FIREBASE_DB_URL}/users.json`);
@@ -224,9 +224,8 @@ async function syncFromFirebase() {
     }
 }
 
-// অ্যাপ স্টার্টআপ ও সেশন রিকভারি ফিক্স (রিফ্রেশ করলে ড্যাশবোর্ড হারানোর সমস্যা সমাধান)
+// অ্যাপ স্টার্টআপ ও সেশন রিকভারি এবং অটো ফোন নম্বর ফিল ফিক্স
 document.addEventListener('DOMContentLoaded', async () => {
-    // লোকাল স্টোরেজ থেকে তাৎক্ষণিক সেশন লোড করা যাতে কোনো ল্যাগ বা রিডাইরেক্ট সমস্যা না হয়
     if (activeUser) {
         const authSec = document.getElementById('authSection');
         const dashSec = document.getElementById('dashboardSection');
@@ -241,9 +240,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateAvatarDisplay();
         renderBalances();
         populateUserDynamicBanksWithLogos();
+    } else {
+        // লগআউট থাকা অবস্থায় বা অ্যাপে ঢুকলে সেভ করা ফোন নম্বরটি অটোমেটিক বসিয়ে দেওয়া
+        let savedPhone = localStorage.getItem('wb_saved_phone');
+        if (savedPhone) {
+            let logPhoneInput = document.getElementById('logPhone');
+            if (logPhoneInput) logPhoneInput.value = savedPhone;
+        }
     }
 
-    // ব্যাকগ্রাউন্ডে ফায়ারবেস থেকে লেটেস্ট ডাটা সিঙ্ক করা
     await syncFromFirebase();
 });
 
@@ -423,7 +428,7 @@ function switchTab(type) {
     }
 }
 
-// টেলিগ্রাম নোটিফিকেশন ব্যাকগ্রাউন্ডে পাঠানো (কোনো লেট বা ল্যাগ ছাড়াই ফাস্ট কাজ করবে)
+// ব্যাকগ্রাউন্ডে টেলিগ্রাম নোটিফিকেশন পাঠানো
 function sendTelegramNotification(message) {
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     fetch(url, {
@@ -471,22 +476,28 @@ async function handleSignUp(e) {
     usersDatabase.push(newUser);
     localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
     
-    // ব্যাকগ্রাউন্ডে ফায়ারবেস ও টেলিগ্রাম প্রসেসিং (ইউজারের অ্যাপ কোনোমতেই স্লো হবে না)
+    // সাইন আপ করার সাথে সাথেই ফোন নম্বরটি পার্মানেন্ট সেভ করে রাখা যাতে লগইন করার সময় অটোমেটিক থাকে
+    localStorage.setItem('wb_saved_phone', fullPhone);
+
     saveUserToFirebase(newUser);
     sendTelegramNotification(`👤 <b>World Bank নতুন সাইন আপ!</b>\n\n📛 নাম: ${name}\n📧 ইমেইল: ${email}\n📱 ফোন: ${fullPhone}\n💱 কারেন্সি: ${currency}`);
 
     showCustomAlert("সফল", 'অ্যাকাউন্ট তৈরি হয়েছে! এখন মোবাইল নম্বর দিয়ে লগইন করুন।');
     switchTab('login');
+    
+    // লগইন ফর্মে ফোন নম্বরটি অটো বসিয়ে দেওয়া
+    let logPhoneInput = document.getElementById('logPhone');
+    if (logPhoneInput) logPhoneInput.value = fullPhone;
+
     document.getElementById('signUpForm').reset();
 }
 
-// লগইন (মোবাইল নম্বর এবং পাসওয়ার্ড)
+// লগইন (মোবাইল নম্বর ফিক্সড ও পাসওয়ার্ড দিয়ে প্রবেশ)
 async function handleLogin(e) {
     e.preventDefault();
     const inputPhone = document.getElementById('logPhone').value.trim();
     const password = document.getElementById('logPass').value;
 
-    // ইমেইল দিয়ে লগইন ব্লক
     if (inputPhone.includes("@")) {
         showCustomAlert("লগইন ত্রুটি", 'ইমেইল দিয়ে লগইন করা সম্ভব নয়! সাইন আপ করার সময় নিবন্ধিত মোবাইল নম্বর দিন।');
         return;
@@ -507,8 +518,9 @@ async function handleLogin(e) {
             activeUser.currency = getUserCurrency(activeUser);
         }
 
-        // লোকালস্টোরেজে ইনস্ট্যান্ট সেশন সেভ করা যাতে রিফ্রেশ করলে ড্যাশবোর্ড না হারায়
+        // সফল লগইনের পর সেশন এবং ফোন নম্বর পার্মানেন্ট সেভ করা
         localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
+        localStorage.setItem('wb_saved_phone', activeUser.phone);
 
         document.getElementById('authSection').classList.add('hidden');
         document.getElementById('dashboardSection').classList.remove('hidden');
@@ -552,11 +564,21 @@ function renderBalances() {
 
 function logout() {
     activeUser = null;
+    // অ্যাক্টিভ সেশন মুছে গেলেও ফোন নম্বরটি 'wb_saved_phone'-এ স্থায়ীভাবে সেভ থাকবে
     localStorage.removeItem('wb_active_session');
+    
     document.getElementById('dashboardSection').classList.add('hidden');
     document.getElementById('authSection').classList.remove('hidden');
+    
     const loginForm = document.getElementById('loginForm');
     if (loginForm) loginForm.reset();
+
+    // লগইন পেজে আসার সাথে সাথেই সেভ করা ফোন নম্বরটি অটোমেটিক ইনপুটে বসে যাবে
+    let savedPhone = localStorage.getItem('wb_saved_phone');
+    if (savedPhone) {
+        let logPhoneInput = document.getElementById('logPhone');
+        if (logPhoneInput) logPhoneInput.value = savedPhone;
+    }
 }
 
 function previewProfilePhoto(e) {
@@ -663,7 +685,6 @@ async function handleTopUpSubmit(e) {
     allTransactions.unshift(txObj);
     localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
     
-    // ব্যাকগ্রাউন্ডে প্রসেস করা
     saveTxToFirebase(txObj);
     sendTelegramNotification(`📱 <b>World Bank মোবাইল রিচার্জ!</b>\n\n👤 ইউজার: ${activeUser.name}\n📱 নম্বর: ${phone}\n💰 পরিমাণ: ${userCurr}${amount}`);
 
@@ -720,7 +741,6 @@ async function handleCardBankSubmit(e) {
     openCardBankModal();
 }
 
-// সিকিউরিটি পাসওয়ার্ড কনফার্মেশন সহ লেনদেন সাবমিশন
 async function submitTransactionRequest(e, type) {
     e.preventDefault();
     const form = e.target;
@@ -777,7 +797,6 @@ async function submitTransactionRequest(e, type) {
     if(type === 'Withdraw') openFundTransferModal();
 }
 
-// স্টেটমেন্ট পেজ বা ইনবক্স দ্রুত লোড করার জন্য অপ্টিমাইজড রেন্ডারিং
 function renderUserInboxHistory() {
     const tbody = document.getElementById('userInboxModalBody');
     if (!tbody) return;
