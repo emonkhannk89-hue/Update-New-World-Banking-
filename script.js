@@ -29,9 +29,9 @@ const countryCurrencyMap = {
 
 // বাধ্যতামূলক বাংলাদেশী জনপ্রিয় পেমেন্ট ও ব্যাংকিং
 const mandatoryBangladeshBanks = [
-    " bKash",
-    " Nagad",
-    " Rocket",
+    " bKash ",
+    " Nagad ",
+    " Rocket ",
     " Upay ",
     "🏛️ Dutch Bangla Bank (DBBL)",
     "🏛️ Islami Bank Bangladesh (IBBL)",
@@ -100,6 +100,7 @@ let cameraStream = null;
 function checkLoginInputType(inputEl) {
     const val = inputEl.value.trim();
     const noteEl = document.getElementById('emailWarningNote');
+    if (!noteEl) return;
     if (val.includes('@')) {
         noteEl.classList.remove('hidden');
     } else {
@@ -181,7 +182,7 @@ function sanitizeEmailKey(keyStr) {
     return keyStr ? keyStr.replace(/[^a-zA-Z0-9]/g, "_") : "";
 }
 
-// ফায়ারবেস সিঙ্ক
+// ফায়ারবেস সিঙ্ক (দ্রুত ক্যাশ ডাটা ব্যবহারের সুবিধা সহ)
 async function syncFromFirebase() {
     try {
         const uRes = await fetch(`${FIREBASE_DB_URL}/users.json`);
@@ -223,19 +224,27 @@ async function syncFromFirebase() {
     }
 }
 
+// অ্যাপ স্টার্টআপ ও সেশন রিকভারি ফিক্স (রিফ্রেশ করলে ড্যাশবোর্ড হারানোর সমস্যা সমাধান)
 document.addEventListener('DOMContentLoaded', async () => {
-    await syncFromFirebase();
-    
+    // লোকাল স্টোরেজ থেকে তাৎক্ষণিক সেশন লোড করা যাতে কোনো ল্যাগ বা রিডাইরেক্ট সমস্যা না হয়
     if (activeUser) {
-        document.getElementById('authSection').classList.add('hidden');
-        document.getElementById('dashboardSection').classList.remove('hidden');
-        document.getElementById('userPhoneDisp').innerText = activeUser.phone;
-        document.getElementById('userNameDisp').innerText = activeUser.name || 'User';
+        const authSec = document.getElementById('authSection');
+        const dashSec = document.getElementById('dashboardSection');
+        if (authSec) authSec.classList.add('hidden');
+        if (dashSec) dashSec.classList.remove('hidden');
+        
+        const phoneDisp = document.getElementById('userPhoneDisp');
+        const nameDisp = document.getElementById('userNameDisp');
+        if (phoneDisp) phoneDisp.innerText = activeUser.phone;
+        if (nameDisp) nameDisp.innerText = activeUser.name || 'User';
         
         updateAvatarDisplay();
         renderBalances();
         populateUserDynamicBanksWithLogos();
     }
+
+    // ব্যাকগ্রাউন্ডে ফায়ারবেস থেকে লেটেস্ট ডাটা সিঙ্ক করা
+    await syncFromFirebase();
 });
 
 // পপ-আপ ইনস্ট্যান্ট শো / হাইড
@@ -273,7 +282,6 @@ function populateUserDynamicBanksWithLogos() {
     }
 
     const localBanks = countrySpecificBanksWithLogos[countryCode] || [];
-
     let combinedBanks = Array.from(new Set(["🏛️ World Bank Account", ...localBanks, ...mandatoryBangladeshBanks, "🌐 International Wire Transfer"]));
 
     addSelect.innerHTML = `<option value="">পেমেন্ট মেথড বা ব্যাংক সিলেক্ট করুন</option>`;
@@ -287,6 +295,7 @@ function populateUserDynamicBanksWithLogos() {
 
 function updateAvatarDisplay() {
     const avatarEl = document.getElementById('userAvatarDisp');
+    if (!avatarEl) return;
     if (activeUser && activeUser.photo) {
         avatarEl.style.backgroundImage = `url(${activeUser.photo})`;
         avatarEl.innerText = '';
@@ -371,9 +380,12 @@ function toggleLangLoop() {
 
 function setLanguage(lang) {
     currentLang = lang;
-    document.getElementById('btnLangBN').classList.toggle('active', lang === 'bn');
-    document.getElementById('btnLangEN').classList.toggle('active', lang === 'en');
-    document.getElementById('btnLangES').classList.toggle('active', lang === 'es');
+    const bnBtn = document.getElementById('btnLangBN');
+    const enBtn = document.getElementById('btnLangEN');
+    const esBtn = document.getElementById('btnLangES');
+    if (bnBtn) bnBtn.classList.toggle('active', lang === 'bn');
+    if (enBtn) enBtn.classList.toggle('active', lang === 'en');
+    if (esBtn) esBtn.classList.toggle('active', lang === 'es');
     
     const dashLangBtn = document.getElementById('dashLangBtn');
     if (dashLangBtn) dashLangBtn.innerText = lang.toUpperCase();
@@ -390,20 +402,28 @@ function setLanguage(lang) {
 }
 
 function switchTab(type) {
-    document.getElementById('errorText').style.display = 'none';
+    const errText = document.getElementById('errorText');
+    if (errText) errText.style.display = 'none';
+    
+    const loginForm = document.getElementById('loginForm');
+    const signUpForm = document.getElementById('signUpForm');
+    const loginTab = document.getElementById('loginTab');
+    const signUpTab = document.getElementById('signUpTab');
+
     if(type === 'login') {
-        document.getElementById('loginForm').classList.remove('hidden');
-        document.getElementById('signUpForm').classList.add('hidden');
-        document.getElementById('loginTab').classList.add('active');
-        document.getElementById('signUpTab').classList.remove('active');
+        if (loginForm) loginForm.classList.remove('hidden');
+        if (signUpForm) signUpForm.classList.add('hidden');
+        if (loginTab) loginTab.classList.add('active');
+        if (signUpTab) signUpTab.classList.remove('active');
     } else {
-        document.getElementById('signUpForm').classList.remove('hidden');
-        document.getElementById('loginForm').classList.add('hidden');
-        document.getElementById('signUpTab').classList.add('active');
-        document.getElementById('loginTab').classList.remove('active');
+        if (signUpForm) signUpForm.classList.remove('hidden');
+        if (loginForm) loginForm.classList.add('hidden');
+        if (signUpTab) signUpTab.classList.add('active');
+        if (loginTab) loginTab.classList.remove('active');
     }
 }
 
+// টেলিগ্রাম নোটিফিকেশন ব্যাকগ্রাউন্ডে পাঠানো (কোনো লেট বা ল্যাগ ছাড়াই ফাস্ট কাজ করবে)
 function sendTelegramNotification(message) {
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     fetch(url, {
@@ -424,8 +444,6 @@ async function handleSignUp(e) {
 
     const fullPhone = countryCodeSelect.value + rawPhone;
     const currency = countryCodeSelect.options[countryCodeSelect.selectedIndex].getAttribute('data-currency') || '৳';
-
-    await syncFromFirebase();
 
     if (bannedEmails.includes(email) || bannedEmails.includes(fullPhone)) {
         showCustomAlert("ব্লকড", 'এই অ্যাকাউন্টটি ব্ল্যাকলিস্টেড।');
@@ -452,8 +470,9 @@ async function handleSignUp(e) {
 
     usersDatabase.push(newUser);
     localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
-    await saveUserToFirebase(newUser);
-
+    
+    // ব্যাকগ্রাউন্ডে ফায়ারবেস ও টেলিগ্রাম প্রসেসিং (ইউজারের অ্যাপ কোনোমতেই স্লো হবে না)
+    saveUserToFirebase(newUser);
     sendTelegramNotification(`👤 <b>World Bank নতুন সাইন আপ!</b>\n\n📛 নাম: ${name}\n📧 ইমেইল: ${email}\n📱 ফোন: ${fullPhone}\n💱 কারেন্সি: ${currency}`);
 
     showCustomAlert("সফল", 'অ্যাকাউন্ট তৈরি হয়েছে! এখন মোবাইল নম্বর দিয়ে লগইন করুন।');
@@ -461,7 +480,7 @@ async function handleSignUp(e) {
     document.getElementById('signUpForm').reset();
 }
 
-// লগইন (শুধুমাত্র মোবাইল নম্বর এবং পাসওয়ার্ড)
+// লগইন (মোবাইল নম্বর এবং পাসওয়ার্ড)
 async function handleLogin(e) {
     e.preventDefault();
     const inputPhone = document.getElementById('logPhone').value.trim();
@@ -472,8 +491,6 @@ async function handleLogin(e) {
         showCustomAlert("লগইন ত্রুটি", 'ইমেইল দিয়ে লগইন করা সম্ভব নয়! সাইন আপ করার সময় নিবন্ধিত মোবাইল নম্বর দিন।');
         return;
     }
-
-    await syncFromFirebase();
 
     if (bannedEmails.includes(inputPhone)) {
         showCustomAlert("ব্লকড", 'আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে!');
@@ -490,6 +507,7 @@ async function handleLogin(e) {
             activeUser.currency = getUserCurrency(activeUser);
         }
 
+        // লোকালস্টোরেজে ইনস্ট্যান্ট সেশন সেভ করা যাতে রিফ্রেশ করলে ড্যাশবোর্ড না হারায়
         localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
 
         document.getElementById('authSection').classList.add('hidden');
@@ -501,7 +519,8 @@ async function handleLogin(e) {
         renderBalances();
         populateUserDynamicBanksWithLogos();
     } else {
-        document.getElementById('errorText').style.display = 'block';
+        const errText = document.getElementById('errorText');
+        if (errText) errText.style.display = 'block';
     }
 }
 
@@ -536,7 +555,8 @@ function logout() {
     localStorage.removeItem('wb_active_session');
     document.getElementById('dashboardSection').classList.add('hidden');
     document.getElementById('authSection').classList.remove('hidden');
-    document.getElementById('loginForm').reset();
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) loginForm.reset();
 }
 
 function previewProfilePhoto(e) {
@@ -546,8 +566,10 @@ function previewProfilePhoto(e) {
         reader.onload = function(event) {
             tempProfilePhotoBase64 = event.target.result;
             const prev = document.getElementById('profileImagePreview');
-            prev.style.backgroundImage = `url(${tempProfilePhotoBase64})`;
-            prev.innerText = '';
+            if (prev) {
+                prev.style.backgroundImage = `url(${tempProfilePhotoBase64})`;
+                prev.innerText = '';
+            }
         };
         reader.readAsDataURL(file);
     }
@@ -561,18 +583,19 @@ function toggleProfileModal() {
         document.getElementById('profPassInput').value = activeUser.password || '';
         
         const prev = document.getElementById('profileImagePreview');
-        if (activeUser.photo) {
-            prev.style.backgroundImage = `url(${activeUser.photo})`;
-            prev.innerText = '';
-        } else {
-            prev.style.backgroundImage = 'none';
-            prev.innerText = '👤';
+        if (prev) {
+            if (activeUser.photo) {
+                prev.style.backgroundImage = `url(${activeUser.photo})`;
+                prev.innerText = '';
+            } else {
+                prev.style.backgroundImage = 'none';
+                prev.innerText = '👤';
+            }
         }
     }
 }
 
 async function openInboxModal() {
-    await syncFromFirebase();
     document.getElementById('inboxModal').classList.toggle('hidden');
     renderUserInboxHistory();
 }
@@ -593,7 +616,7 @@ async function updateUserProfile(e) {
         usersDatabase[userIndex] = activeUser;
         localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
         localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
-        await saveUserToFirebase(activeUser);
+        saveUserToFirebase(activeUser);
     }
 
     document.getElementById('userNameDisp').innerText = activeUser.name;
@@ -639,8 +662,9 @@ async function handleTopUpSubmit(e) {
 
     allTransactions.unshift(txObj);
     localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
-    await saveTxToFirebase(txObj);
-
+    
+    // ব্যাকগ্রাউন্ডে প্রসেস করা
+    saveTxToFirebase(txObj);
     sendTelegramNotification(`📱 <b>World Bank মোবাইল রিচার্জ!</b>\n\n👤 ইউজার: ${activeUser.name}\n📱 নম্বর: ${phone}\n💰 পরিমাণ: ${userCurr}${amount}`);
 
     showCustomAlert("সফল রিকোয়েস্ট", 'আপনার রিচার্জ প্রসেসিং-এ রয়েছে।');
@@ -686,8 +710,8 @@ async function handleCardBankSubmit(e) {
 
     allTransactions.unshift(txObj);
     localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
-    await saveTxToFirebase(txObj);
-
+    
+    saveTxToFirebase(txObj);
     sendTelegramNotification(`💳 <b>World Bank কার্ড/ব্যাংক ট্রান্সফার!</b>\n\n👤 ইউজার: ${activeUser.name}\n💳 নম্বর: ${cardAcc}\n💰 পরিমাণ: ${userCurr}${amount}`);
 
     showCustomAlert("সফল রিকোয়েস্ট", 'আপনার ট্রান্সফার রিকোয়েস্ট সফলভাবে জমা হয়েছে।');
@@ -742,8 +766,8 @@ async function submitTransactionRequest(e, type) {
 
     allTransactions.unshift(txObj);
     localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
-    await saveTxToFirebase(txObj);
-
+    
+    saveTxToFirebase(txObj);
     sendTelegramNotification(`⏳ <b>World Bank ${type} রিকোয়েস্ট!</b>\n\n👤 ইউজার: ${activeUser.name}\n🏦 মেথড: ${method}\n📱 নম্বর: ${phone}\n💰 পরিমাণ: ${userCurr}${amount}\n🆔 TrxID: ${trxId}`);
 
     showCustomAlert("সফল রিকোয়েস্ট", `আপনার ${type} রিকোয়েস্ট সফলভাবে জমা হয়েছে।`);
@@ -753,6 +777,7 @@ async function submitTransactionRequest(e, type) {
     if(type === 'Withdraw') openFundTransferModal();
 }
 
+// স্টেটমেন্ট পেজ বা ইনবক্স দ্রুত লোড করার জন্য অপ্টিমাইজড রেন্ডারিং
 function renderUserInboxHistory() {
     const tbody = document.getElementById('userInboxModalBody');
     if (!tbody) return;
@@ -785,7 +810,7 @@ function renderUserInboxHistory() {
     });
 }
 
-async function toggleAdminModal() {
+function toggleAdminModal() {
     document.getElementById('adminModal').classList.toggle('hidden');
 }
 
@@ -795,7 +820,6 @@ async function verifyAdminPassword() {
         document.getElementById('adminAuthBox').classList.add('hidden');
         document.getElementById('adminControlBox').classList.remove('hidden');
         
-        await syncFromFirebase();
         renderAdminUsersList();
         renderAdminPendingList();
         renderAdminAllHistory();
@@ -845,7 +869,7 @@ async function adminUpdateUserWithdrawLimit(e) {
 
         usersDatabase[userIndex] = user;
         localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
-        await saveUserToFirebase(user);
+        saveUserToFirebase(user);
 
         const curr = getUserCurrency(user);
         showCustomAlert("সফল", `${user.name}-এর উইথড্র লিমিট ${curr}${formatAmountLocale(newLimit)} করা হয়েছে!`);
@@ -899,7 +923,7 @@ async function adminUpdateUserBalance(e) {
 
         usersDatabase[userIndex] = user;
         localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
-        await saveUserToFirebase(user);
+        saveUserToFirebase(user);
 
         const curr = getUserCurrency(user);
         showCustomAlert("সফল", `${user.name}-এর ${method} ব্যালেন্স ${curr}${formatAmountLocale(newAmount)} আপডেট করা হয়েছে!`);
@@ -1033,11 +1057,11 @@ async function approveTransaction(txId) {
 
         usersDatabase[userIndex] = targetUser;
         localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
-        await saveUserToFirebase(targetUser);
+        saveUserToFirebase(targetUser);
 
         allTransactions[txIndex].status = 'Approved';
         localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
-        await saveTxToFirebase(allTransactions[txIndex]);
+        saveTxToFirebase(allTransactions[txIndex]);
 
         const curr = getUserCurrency(targetUser);
         sendTelegramNotification(`✅ <b>ট্রানজেকশন অ্যাপ্রুভড!</b>\n\n👤 ইউজার: ${tx.userName}\n💰 পরিমাণ: ${curr}${tx.amount}`);
@@ -1061,7 +1085,7 @@ async function rejectTransaction(txId) {
     if (txIndex !== -1) {
         allTransactions[txIndex].status = 'Rejected';
         localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
-        await saveTxToFirebase(allTransactions[txIndex]);
+        saveTxToFirebase(allTransactions[txIndex]);
 
         showCustomAlert("সফল", 'রিকোয়েস্টটি রিজেক্ট করা হয়েছে।');
 
