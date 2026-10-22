@@ -100,8 +100,14 @@
                     <span class="brand-title">WORLD BANK</span>
                 </div>
                 <div class="header-right-actions">
+                    <!-- নতুন আপডেট: ডার্ক/লাইট থিম সুইচার বাটন -->
+                    <button type="button" class="icon-circle-btn" onclick="toggleTheme()" title="Theme Switch">🌗</button>
+                    <!-- নতুন আপডেট: ইন-অ্যাপ নোটিফিকেশন বেল ও আনরিড কাউন্ট ব্যাজ -->
+                    <button type="button" class="icon-circle-btn" onclick="toggleNotificationsModal()" title="Notifications" style="position:relative;">
+                        🔔
+                        <span id="notifBadge" class="hidden" style="position:absolute; top:-2px; right:-2px; background:#ef4444; color:white; font-size:9px; border-radius:50%; padding:2px 5px; font-weight:bold;">0</span>
+                    </button>
                     <button onclick="toggleLangLoop()" class="lang-toggle-badge" id="dashLangBtn">NA</button>
-                    <button class="icon-circle-btn" onclick="openInboxModal()" title="Notifications">🔔</button>
                     <!-- ভেক্টর মডার্ন লগআউট বাটন -->
                     <button class="icon-circle-btn logout-btn" onclick="logout()" title="Logout">
                         <svg class="svg-icon-style" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -149,9 +155,10 @@
                         <div class="app-icon-bg">📱</div>
                         <span data-bn="Mobile Top Up" data-en="Mobile Top Up" data-es="Recarga móvil">Mobile Top Up</span>
                     </div>
-                    <div class="app-service-item" onclick="showCustomAlert('Buy Ticket', 'Ticket Service Coming Soon!')">
-                        <div class="app-icon-bg">🎫</div>
-                        <span data-bn="Buy Ticket" data-en="Buy Ticket" data-es="Comprar billete">Buy Ticket</span>
+                    <!-- নতুন আপডেট: লাইভ কারেন্সি কনভার্টার ওপেন করার শর্টকাট -->
+                    <div class="app-service-item" onclick="toggleCurrencyCalcModal()">
+                        <div class="app-icon-bg">🔀</div>
+                        <span data-bn="Currency Converter" data-en="Currency Calc" data-es="Conversor">Currency Calc</span>
                     </div>
                 </div>
             </div>
@@ -224,9 +231,10 @@
                 <div class="nav-icon">📋</div>
                 <span data-bn="Statement" data-en="Statement" data-es="Declaración">Statement</span>
             </div>
-            <div class="nav-item" onclick="showCustomAlert('Offers', 'No active offers today.')">
-                <div class="nav-icon">🛍️</div>
-                <span data-bn="Offers" data-en="Offers" data-es="Ofertas">Offers</span>
+            <!-- নতুন আপডেট: অ্যাডভান্সড স্টেটমেন্ট ফিল্টার খোলার শর্টকাট -->
+            <div class="nav-item" onclick="toggleStatementFilterModal()">
+                <div class="nav-icon">📊</div>
+                <span data-bn="Filter" data-en="Filter" data-es="Filtro">Filter</span>
             </div>
             <!-- Quick Pay ক্যামেরা স্ক্যানার -->
             <div class="nav-item quick-pay-center" onclick="openQuickPayScanner()">
@@ -258,6 +266,94 @@
             </div>
             <p style="font-size:12px; color:#475569; margin-top:10px;">যেকোনো ব্যাংকিং QR কোড স্ক্যান করুন</p>
             <button onclick="closeQuickPayScanner()" class="btn btn-cancel-btn" style="margin-top:10px;">স্ক্যানার বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <!-- নতুন ফিচার মডাল ১: ইন-অ্যাপ নোটিফিকেশন মডাল -->
+    <div id="notificationsModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal" style="max-width:400px;">
+            <div class="modal-header-clean">
+                <h3>🔔 নোটিফিকেশন ও অ্যালার্ট</h3>
+                <button class="close-btn-dark" onclick="toggleNotificationsModal()">✕</button>
+            </div>
+            <div id="notificationsList" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+                <!-- নোটিফিকেশন এখানে ডাইনামিক লোড হবে -->
+            </div>
+        </div>
+    </div>
+
+    <!-- নতুন ফিচার মডাল ২: অ্যাডভান্সড স্টেটমেন্ট ফিল্টার মডাল -->
+    <div id="statementFilterModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal" style="max-width:420px;">
+            <div class="modal-header-clean">
+                <h3>📊 অ্যাডভান্সড লেনদেন ফিল্টার</h3>
+                <button class="close-btn-dark" onclick="toggleStatementFilterModal()">✕</button>
+            </div>
+            <div style="display:flex; gap:8px; margin-bottom:10px;">
+                <select id="filterTypeSelect" onchange="applyAdvancedTxFilter()" style="margin-bottom:0;">
+                    <option value="ALL">সব ধরনের লেনদেন</option>
+                    <option value="Deposit">ডিপোজিট (Deposit)</option>
+                    <option value="Withdraw">উইথড্র (Withdraw)</option>
+                    <option value="TopUp">মোবাইল রিচার্জ</option>
+                    <option value="Remittance/Bank">ব্যাংক/কার্ড ট্রান্সফার</option>
+                </select>
+            </div>
+            <div class="inbox-table-container">
+                <table class="inbox-table">
+                    <thead>
+                        <tr>
+                            <th>তারিখ</th>
+                            <th>টাইপ</th>
+                            <th>মেথড</th>
+                            <th>পরিমাণ</th>
+                            <th>স্ট্যাটাস</th>
+                        </tr>
+                    </thead>
+                    <tbody id="filteredTxTableBody">
+                        <!-- ফিল্টার করা ডাটা এখানে আসবে -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- নতুন ফিচার মডাল ৩: লাইভ কারেন্সি কনভার্টার ক্যালকুলেটর -->
+    <div id="currencyCalcModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal" style="max-width:380px;">
+            <div class="modal-header-clean">
+                <h3>🔀 লাইভ কারেন্সি কনভার্টার</h3>
+                <button class="close-btn-dark" onclick="toggleCurrencyCalcModal()">✕</button>
+            </div>
+            <label class="field-label">পরিমাণ লিখুন:</label>
+            <input type="number" id="calcAmountInput" value="100" oninput="calculateCurrencyExchange()">
+            <div style="display:flex; gap:8px;">
+                <div style="flex:1;">
+                    <label class="field-label">হতে:</label>
+                    <select id="calcFromCurr" onchange="calculateCurrencyExchange()">
+                        <option value="USD">USD ($)</option>
+                        <option value="BDT" selected>BDT (৳)</option>
+                        <option value="MYR">MYR</option>
+                        <option value="SAR">SAR</option>
+                        <option value="AED">AED</option>
+                        <option value="SGD">SGD ($)</option>
+                    </select>
+                </div>
+                <div style="flex:1;">
+                    <label class="field-label">রূপান্তর:</label>
+                    <select id="calcToCurr" onchange="calculateCurrencyExchange()">
+                        <option value="USD" selected>USD ($)</option>
+                        <option value="BDT">BDT (৳)</option>
+                        <option value="MYR">MYR</option>
+                        <option value="SAR">SAR</option>
+                        <option value="AED">AED</option>
+                        <option value="SGD">SGD ($)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="background:#f1f5f9; padding:12px; border-radius:8px; text-align:center; margin-top:10px;">
+                <span style="font-size:11px; color:#64748b; font-weight:bold;">আনুমানিক সমমান:</span>
+                <h3 id="calcResultDisp" style="color:#0b192c; margin-top:4px;">$ 0.85 USD</h3>
+            </div>
         </div>
     </div>
 
