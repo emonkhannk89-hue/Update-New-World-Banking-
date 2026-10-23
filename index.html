@@ -11,7 +11,7 @@
 
     <!-- ১. অথেনটিকেশন সেকশন -->
     <div id="authSection" class="auth-container">
-        <!-- ল্যাঙ্গুয়েজ সুইচ (BN / EN / ES) -->
+        <!-- ল্যাঙ্গুয়েজ সুইচ -->
         <div class="lang-switch-box">
             <button id="btnLangBN" class="lang-btn active" onclick="setLanguage('bn')">BN</button>
             <button id="btnLangEN" class="lang-btn" onclick="setLanguage('en')">EN</button>
@@ -305,7 +305,7 @@
         </div>
     </div>
 
-    <!-- ADD MONEY (ডিপোজিট) মডাল - পেমেন্ট নম্বর বক্সসহ -->
+    <!-- ADD MONEY (ডিপোজিট) মডাল - ডাইনামিক নম্বর দেখানোর বক্সসহ -->
     <div id="addMoneyModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
@@ -316,10 +316,10 @@
                 <label class="input-label" data-bn="মেথড বা ব্যাংক সিলেক্ট করুন:" data-en="Select Method / Bank:" data-es="Seleccionar método:">মেথড বা ব্যাংক সিলেক্ট করুন:</label>
                 <select class="methodSelect" id="addMoneyMethodSelect" onchange="showAdminDepositNumber(this)" required></select>
 
-                <!-- পেমেন্ট রিসিভ করার নম্বর ডিসপ্লে বক্স -->
+                <!-- এডমিন প্যানেলে সেট করা পেমেন্ট নম্বরটি এখানে অটোমেটিক ভেসে উঠবে -->
                 <div id="adminNumberBox" class="hidden" style="background: #fef3c7; border: 1px solid #f59e0b; padding: 10px; border-radius: 8px; margin: 10px 0; text-align: center;">
                     <span style="font-size: 11px; color: #b45309; font-weight: bold;" data-bn="নিচের নাম্বারে টাকা ক্যাশ-ইন / সেন্ড মানি করুন:" data-en="Send Money / Cash-in to this Number:">নিচের নাম্বারে টাকা ক্যাশ-ইন / সেন্ড মানি করুন:</span>
-                    <h4 id="dispAdminAccNum" style="color: #92400e; font-size: 15px; margin-top: 4px; font-weight: bold; font-family: monospace;">01800000000</h4>
+                    <h4 id="dispAdminAccNum" style="color: #92400e; font-size: 15px; margin-top: 4px; font-weight: bold; font-family: monospace;">-</h4>
                 </div>
 
                 <label class="input-label" data-bn="আপনার সেন্ডার নম্বর:" data-en="Your Sender Account/Mobile:" data-es="Número de cuenta:">আপনার সেন্ডার নম্বর:</label>
@@ -568,6 +568,27 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                     <button onclick="refreshAdminData()" class="btn-cancel-small" style="background:#059669; color:white; font-size:12px; padding:6px 12px; border-radius:6px; cursor:pointer;">🔄 রিফ্রেশ হিস্ট্রি</button>
                     <button onclick="toggleAdminModal()" class="btn-cancel-small" style="background:#ef4444; color:white; font-size:12px; padding:6px 12px; border-radius:6px; cursor:pointer;">Exit Admin</button>
+                </div>
+
+                <!-- নতুন যুক্ত করা এডমিন পেমেন্ট নম্বর কাস্টমাইজেশন সেকশন -->
+                <div class="admin-settings" style="border:1px solid #d97706; padding:12px; border-radius:8px; margin-bottom:15px; background:#1e293b;">
+                    <h4 style="color:#fbbf24;">📲 ডিপোজিট (Add Money) নম্বর ম্যানেজমেন্ট</h4>
+                    <p style="font-size:11px; color:#cbd5e1; margin-bottom:8px;">ইউজাররা ডিপোজিটে যে নম্বর দেখবে তা এখান থেকে সেট করুন:</p>
+                    <form onsubmit="adminSaveDepositNumber(event)">
+                        <select id="admDepMethodSelect" required style="margin-bottom:8px; background:#0f172a; color:white;">
+                            <option value="">মেথড সিলেক্ট করুন</option>
+                            <option value="🔴 bKash Account">🔴 bKash Account</option>
+                            <option value="🟠 Nagad Wallet">🟠 Nagad Wallet</option>
+                            <option value="🟣 Rocket DBBL">🟣 Rocket DBBL</option>
+                            <option value="🟢 Upay Mobile">🟢 Upay Mobile</option>
+                            <option value="🏛️ Dutch Bangla Bank (DBBL)">🏛️ Dutch Bangla Bank (DBBL)</option>
+                            <option value="🏛️ Islami Bank Bangladesh (IBBL)">🏛️ Islami Bank Bangladesh (IBBL)</option>
+                            <option value="🏛️ BRAC Bank PLC">🏛️ BRAC Bank PLC</option>
+                            <option value="🏛️ City Bank PLC">🏛️ City Bank PLC</option>
+                        </select>
+                        <input type="text" id="admDepNumberInput" placeholder="যেমন: 018XXXXXXXX (Cash-in / Personal)" required style="margin-bottom:8px; background:#0f172a; color:white;">
+                        <button type="submit" class="btn btn-gold" style="margin-top: 2px;">নম্বর সেভ করুন</button>
+                    </form>
                 </div>
 
                 <div class="admin-settings">
