@@ -94,15 +94,12 @@
                     <span class="brand-title">WORLD BANK</span>
                 </div>
                 <div class="header-right-actions">
-                    <!-- ডার্ক/লাইট থিম সুইচার বাটন -->
                     <button type="button" class="icon-circle-btn" onclick="toggleTheme()" title="Theme Switch">🌗</button>
-                    <!-- ইন-অ্যাপ নোটিফিকেশন বেল -->
                     <button type="button" class="icon-circle-btn" onclick="toggleNotificationsModal()" title="Notifications" style="position:relative;">
                         🔔
                         <span id="notifBadge" class="hidden" style="position:absolute; top:-2px; right:-2px; background:#ef4444; color:white; font-size:9px; border-radius:50%; padding:2px 5px; font-weight:bold;">0</span>
                     </button>
                     <button onclick="toggleLangLoop()" class="lang-toggle-badge" id="dashLangBtn">BN</button>
-                    <!-- লগআউট বাটন -->
                     <button class="icon-circle-btn logout-btn" onclick="logout()" title="Logout">
                         <svg class="svg-icon-style" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                     </button>
@@ -308,7 +305,7 @@
         </div>
     </div>
 
-    <!-- ADD MONEY মডাল -->
+    <!-- ADD MONEY (ডিপোজিট) মডাল - পেমেন্ট নম্বর বক্সসহ -->
     <div id="addMoneyModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
@@ -317,9 +314,15 @@
             </div>
             <form onsubmit="submitTransactionRequest(event, 'Deposit')">
                 <label class="input-label" data-bn="মেথড বা ব্যাংক সিলেক্ট করুন:" data-en="Select Method / Bank:" data-es="Seleccionar método:">মেথড বা ব্যাংক সিলেক্ট করুন:</label>
-                <select class="methodSelect" id="addMoneyMethodSelect" required></select>
+                <select class="methodSelect" id="addMoneyMethodSelect" onchange="showAdminDepositNumber(this)" required></select>
 
-                <label class="input-label" data-bn="সেন্ডার / একাউন্ট নম্বর:" data-en="Account / Mobile Number:" data-es="Número de cuenta:">সেন্ডার / একাউন্ট নম্বর:</label>
+                <!-- পেমেন্ট রিসিভ করার নম্বর ডিসপ্লে বক্স -->
+                <div id="adminNumberBox" class="hidden" style="background: #fef3c7; border: 1px solid #f59e0b; padding: 10px; border-radius: 8px; margin: 10px 0; text-align: center;">
+                    <span style="font-size: 11px; color: #b45309; font-weight: bold;" data-bn="নিচের নাম্বারে টাকা ক্যাশ-ইন / সেন্ড মানি করুন:" data-en="Send Money / Cash-in to this Number:">নিচের নাম্বারে টাকা ক্যাশ-ইন / সেন্ড মানি করুন:</span>
+                    <h4 id="dispAdminAccNum" style="color: #92400e; font-size: 15px; margin-top: 4px; font-weight: bold; font-family: monospace;">01800000000</h4>
+                </div>
+
+                <label class="input-label" data-bn="আপনার সেন্ডার নম্বর:" data-en="Your Sender Account/Mobile:" data-es="Número de cuenta:">আপনার সেন্ডার নম্বর:</label>
                 <input type="text" class="phoneInput" placeholder="নম্বর দিন" required>
 
                 <label class="input-label" data-bn="টাকার পরিমাণ:" data-en="Amount:" data-es="Monto:">টাকার পরিমাণ:</label>
@@ -339,7 +342,7 @@
         </div>
     </div>
 
-    <!-- FUND TRANSFER মডাল -->
+    <!-- FUND TRANSFER (উইথড্র) মডাল -->
     <div id="fundTransferModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
@@ -449,7 +452,6 @@
                 <button onclick="openInboxModal()" class="close-btn-dark">✖</button>
             </div>
             
-            <!-- স্টেটমেন্টের ভেতরেই ফিল্টার ড্রপডাউন -->
             <div style="margin: 10px 0; display: flex; justify-content: space-between; align-items: center;">
                 <label style="font-size: 12px; font-weight: bold; color: #475569;" data-bn="লেনদেন ফিল্টার করুন:" data-en="Filter Transactions:" data-es="Filtrar:">লেনদেন ফিল্টার করুন:</label>
                 <select id="statementFilterSelect" onchange="renderUserInboxHistory()" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 12px; width: 200px; margin-bottom: 0;">
