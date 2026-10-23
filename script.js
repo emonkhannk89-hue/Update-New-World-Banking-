@@ -14,9 +14,23 @@ let adminDepositNumbers = JSON.parse(localStorage.getItem('wb_deposit_numbers'))
 const exchangeRatesUSD = { "USD": 1.0, "BDT": 117.50, "MYR": 4.70, "SAR": 3.75, "AED": 3.67, "SGD": 1.35 };
 const countryCurrencyMap = { "+880": "৳", "+65": "$", "+60": "MYR", "+966": "SAR", "+971": "AED", "+1": "$", "+44": "£", "+91": "₹" };
 
+// নতুন ব্যাংকগুলোর সম্পূর্ণ তালিকা সহ বাংলাদেশের ব্যাংক ড্রপডাউন
 const mandatoryBangladeshBanks = [
-    "🔴 bKash Account", "🟠 Nagad Wallet", "🟣 Rocket DBBL", "🟢 Upay Mobile",
-    "🏛️ Dutch Bangla Bank (DBBL)", "🏛️ Islami Bank Bangladesh (IBBL)", "🏛️ BRAC Bank PLC", "🏛️ City Bank PLC"
+    "🔴 bKash Account", 
+    "🟠 Nagad Wallet", 
+    "🟣 Rocket DBBL", 
+    "🟢 Upay Mobile",
+    "🏛️ Dutch Bangla Bank (DBBL)", 
+    "🏛️ Islami Bank Bangladesh (IBBL)", 
+    "🏛️ BRAC Bank PLC", 
+    "🏛️ City Bank PLC",
+    "🏛️ Sonali Bank PLC",
+    "🏛️ Pubali Bank PLC",
+    "🏛️ IFIC Bank PLC",
+    "🏛️ IDLC Finance PLC",
+    "🏛️ Bangladesh Krishi Bank",
+    "🌾 Grameen Bank",
+    "🏛️ Eastern Bank PLC (EBL)"
 ];
 
 const countrySpecificBanksWithLogos = { "+880": mandatoryBangladeshBanks };
@@ -119,7 +133,7 @@ function toggleNotificationsModal() {
     }
 }
 
-// ইন-অ্যাপ নোটিফিকেশন সেকশন (ওয়ার্ল্ড ব্যাংক থেকে ব্যালেন্স জমার তথ্যসহ)
+// ইন-অ্যাপ নোটিফিকেশন সেকশন
 function renderNotificationsList() {
     const listEl = document.getElementById('notificationsList');
     const badgeEl = document.getElementById('notifBadge');
@@ -311,6 +325,8 @@ async function syncFromFirebase() {
                 if (refreshedUser) {
                     activeUser = refreshedUser;
                     localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
+                    document.getElementById('userNameDisp').innerText = activeUser.name || 'User Name';
+                    document.getElementById('userPhoneDisp').innerText = activeUser.phone || '';
                 }
             }
         }
@@ -336,8 +352,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (activeUser) {
         document.getElementById('authSection')?.classList.add('hidden');
         document.getElementById('dashboardSection')?.classList.remove('hidden');
-        document.getElementById('userPhoneDisp').innerText = activeUser.phone;
-        document.getElementById('userNameDisp').innerText = activeUser.name || 'User';
+        
+        // হেডার প্রোফাইলে ইউজারের নাম ও ফোন নম্বর সঠিকভাবে বসানো
+        document.getElementById('userNameDisp').innerText = activeUser.name || 'User Name';
+        document.getElementById('userPhoneDisp').innerText = activeUser.phone || '';
+        
         updateAvatarDisplay();
         renderBalances();
         populateUserDynamicBanksWithLogos();
@@ -464,7 +483,7 @@ function sendTelegramNotification(message) {
     }).catch(err => console.error("Telegram API Error:", err));
 }
 
-// নতুন ইউজার সাইন আপ করলে মেইন ব্যালেন্স ০.০০ এবং উইথড্র লিমিট ০.০০ দিয়ে অ্যাকাউন্ট খুলবে
+// সাইন আপ হ্যান্ডলার
 async function handleSignUp(e) {
     e.preventDefault();
     const name = document.getElementById('regName').value;
@@ -514,8 +533,10 @@ async function handleLogin(e) {
 
         document.getElementById('authSection').classList.add('hidden');
         document.getElementById('dashboardSection').classList.remove('hidden');
-        document.getElementById('userPhoneDisp').innerText = activeUser.phone;
-        document.getElementById('userNameDisp').innerText = activeUser.name || 'User';
+        
+        // লগইন সফল হলে ড্যাশবোর্ডে ইউজারের নাম এবং ফোন নম্বর অটো আপডেট
+        document.getElementById('userNameDisp').innerText = activeUser.name || 'User Name';
+        document.getElementById('userPhoneDisp').innerText = activeUser.phone || '';
 
         updateAvatarDisplay();
         renderBalances();
@@ -582,7 +603,7 @@ async function openInboxModal() {
     renderUserInboxHistory();
 }
 
-// ইউজারের স্টেটমেন্ট অপশন (ওয়ার্ল্ড ব্যাংকের ক্রেডিট জমার তথ্য সহ)
+// ইউজারের স্টেটমেন্ট
 function renderUserInboxHistory() {
     const tbody = document.getElementById('userInboxModalBody');
     const filterSelect = document.getElementById('statementFilterSelect');
@@ -651,7 +672,6 @@ async function handleCardBankSubmit(e) {
     showCustomAlert("Notice", "প্রসেসিং-এ রয়েছে।");
 }
 
-// উইথড্র এবং ব্যাংক ট্রান্সফার রিকোয়েস্ট উইথ লিমিট ও জিরো ব্যালেন্স চেক
 async function submitTransactionRequest(e, type) {
     e.preventDefault();
     const form = e.target;
@@ -739,7 +759,6 @@ async function adminDeleteUser(userIdentifier) {
     populateAdminUserSelect();
 }
 
-// এডমিন থেকে ইউজারের কাস্টম লিমিট আপডেট করা
 async function adminUpdateUserWithdrawLimit(e) {
     e.preventDefault();
     const userPhone = document.getElementById('admLimitUserSelect').value;
@@ -771,7 +790,6 @@ function populateAdminUserSelect() {
     });
 }
 
-// এডমিন ব্যালেন্স আপডেট করলে রিয়েল-টাইমে নোটিফিকেশন ও স্টেটমেন্টে তথ্য যুক্ত হওয়া
 async function adminUpdateUserBalance(e) {
     e.preventDefault();
     const userIdentifier = document.getElementById('admBalanceUserSelect').value;
@@ -786,7 +804,6 @@ async function adminUpdateUserBalance(e) {
         localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
         saveUserToFirebase(user);
 
-        // ইউজারের নোটিফিকেশন ও স্টেটমেন্টের জন্য ওয়ার্ল্ড ব্যাংকের জমা এন্ট্রি তৈরি
         const now = new Date();
         const txObj = {
             id: Date.now(), 
