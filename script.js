@@ -6,6 +6,18 @@ const CHAT_ID = "7560607133";
 // এডমিন সিকিউরিটি পাসওয়ার্ড
 const ADMIN_SECURITY_PASS = "worldbank1234@#";
 
+// এডমিনের টাকা গ্রহণ করার অফিশিয়াল নম্বরসমূহ (এখানে আপনার আসল নম্বর বসাতে পারেন)
+const adminDepositNumbers = {
+    "🔴 bKash Account": "01800000000 (bKash Agent)",
+    "🟠 Nagad Wallet": "01700000000 (Nagad Personal)",
+    "🟣 Rocket DBBL": "01900000000-1 (Rocket Personal)",
+    "🟢 Upay Mobile": "01600000000 (Upay Personal)",
+    "🏛️ Dutch Bangla Bank (DBBL)": "A/C: 123.456.7890 (World Bank DBBL)",
+    "🏛️ Islami Bank Bangladesh (IBBL)": "A/C: 2050XXXXXXXX (IBBL)",
+    "🏛️ BRAC Bank PLC": "A/C: 150XXXXXXXX (BRAC Bank)",
+    "🏛️ City Bank PLC": "A/C: 110XXXXXXXX (City Bank)"
+};
+
 // এক্সচেঞ্জ রেট (USD Base)
 const exchangeRatesUSD = {
     "USD": 1.0,
@@ -62,6 +74,25 @@ let currentLang = 'bn';
 let tempProfilePhotoBase64 = null;
 let cameraStream = null;
 let isDarkMode = false;
+
+// এডমিনের ডিপোজিট নম্বর ইউজারকে দেখানোর ফাংশন
+function showAdminDepositNumber(selectEl) {
+    const numBox = document.getElementById('adminNumberBox');
+    const numDisp = document.getElementById('dispAdminAccNum');
+    const selectedVal = selectEl.value;
+
+    if (!numBox || !numDisp) return;
+
+    if (selectedVal && adminDepositNumbers[selectedVal]) {
+        numDisp.innerText = adminDepositNumbers[selectedVal];
+        numBox.classList.remove('hidden');
+    } else if (selectedVal) {
+        numDisp.innerText = "01800000000 (World Bank Official)";
+        numBox.classList.remove('hidden');
+    } else {
+        numBox.classList.add('hidden');
+    }
+}
 
 // ডার্ক / লাইট মোড সুইচার
 function toggleTheme() {
@@ -194,9 +225,8 @@ function populateUserDynamicBanksWithLogos() {
     const transferSelect = document.getElementById('fundTransferMethodSelect');
     if (!addSelect || !transferSelect) return;
 
-    let countryCode = "+880"; // ডিফল্ট বাংলাদেশ
+    let countryCode = "+880";
     
-    // পুরাতন ও নতুন ইউজারের মোবাইল নম্বর থেকে কান্ট্রি কোড ডিটেক্ট করার শক্তিশালী লজিক
     if (activeUser && activeUser.phone) {
         for (let code in countrySpecificBanksWithLogos) {
             if (activeUser.phone.trim().startsWith(code)) {
@@ -355,7 +385,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     await syncFromFirebase();
 });
 
-function openAddMoneyModal() { document.getElementById('addMoneyModal').classList.toggle('hidden'); }
+function openAddMoneyModal() { 
+    document.getElementById('addMoneyModal').classList.toggle('hidden'); 
+    document.getElementById('adminNumberBox')?.classList.add('hidden');
+}
 function openFundTransferModal() { document.getElementById('fundTransferModal').classList.toggle('hidden'); }
 function openTopUpModal() { document.getElementById('topUpModal').classList.toggle('hidden'); }
 function openCardBankModal() { document.getElementById('cardBankModal').classList.toggle('hidden'); }
