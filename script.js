@@ -16,14 +16,14 @@ let adminDepositNumbers = JSON.parse(localStorage.getItem('wb_deposit_numbers'))
 };
 
 const exchangeRatesUSD = { "USD": 1.0, "BDT": 117.50, "MYR": 4.70, "SAR": 3.75, "AED": 3.67, "SGD": 1.35 };
-const countryCurrencyMap = { "+880": "৳", "+65": "$", "+60": "MYR", "+966": "SAR", "+971": "AED", "+1": "$", "+44": "£", "+91": "₹" };
+const countryCurrencyMap = { "+880": "৳", "+65": "$", "+60": "MYR", "+966": "SAR", "+971": "AED", "+1": "$", "+44": "£", "+91": "₹", "+968": "OMR", "+974": "QAR", "+965": "KWD" };
 
-// ১. বাংলাদেশ ব্যাংক ও ওয়ালেটসমূহ (+880)
+// ১. বাংলাদেশের সমস্ত ব্যাংক এবং মোবাইল ব্যাংকিং ওয়ালেটসমূহ (সব সময় বাধ্যতামূলক যুক্ত থাকবে)
 const mandatoryBangladeshBanks = [
-    "🔴 bKash Account", 
-    "🟠 Nagad Wallet", 
-    "🟣 Rocket DBBL", 
-    "🟢 Upay Mobile",
+    "🔴 bKash Account (BD)", 
+    "🟠 Nagad Wallet (BD)", 
+    "🟣 Rocket DBBL (BD)", 
+    "🟢 Upay Mobile (BD)",
     "🏛️ Dutch Bangla Bank (DBBL)", 
     "🏛️ Islami Bank Bangladesh (IBBL)", 
     "🏛️ BRAC Bank PLC", 
@@ -37,56 +37,24 @@ const mandatoryBangladeshBanks = [
     "🏛️ Eastern Bank PLC (EBL)"
 ];
 
-// ২. সিঙ্গাপুর ব্যাংক ও পেমেন্ট ওয়ালেটসমূহ (+65)
-const mandatorySingaporeBanks = [
-    "🔴 POSB Bank (Singapore)",
-    "🔵 DBS Bank (Singapore)",
-    "🔴 UOB Bank (Singapore)",
-    "🔴 OCBC Bank (Singapore)",
-    "🟢 PayNow Transfer",
-    "💎 Trust Bank (Singapore)",
-    "🏛️ Standard Chartered (Singapore)",
-    "🏛️ HSBC Bank (Singapore)",
-    "🏛️ Citibank (Singapore)",
-    "🏛️ Maybank (Singapore)",
-    "📲 GrabPay / Dash Wallet"
-];
+// ২. বিভিন্ন আন্তর্জাতিক দেশের জনপ্রিয় ব্যাংকসমূহ
+const mandatorySingaporeBanks = ["🔴 POSB Bank (Singapore)", "🔵 DBS Bank (Singapore)", "🔴 UOB Bank (Singapore)", "🔴 OCBC Bank (Singapore)", "🟢 PayNow Transfer", "💎 Trust Bank (Singapore)"];
+const mandatoryMalaysiaBanks = ["🏛️ Maybank (Malaysia)", "🏛️ CIMB Bank", "🏛️ Public Bank", "🏛️ RHB Bank", "📲 Touch 'n Go eWallet", "🟢 DuitNow Transfer"];
+const mandatorySaudiBanks = ["🏛️ Al Rajhi Bank", "🏛️ SNB AlAhli Bank", "🏛️ Riyad Bank", "📲 STC Pay Wallet", "🟢 Urpay Wallet"];
+const mandatoryUAEBanks = ["🏛️ Emirates NBD", "🏛️ Abu Dhabi Commercial Bank (ADCB)", "🏛️ First Abu Dhabi Bank (FAB)", "🏛️ Dubai Islamic Bank", "📲 PayBy Wallet"];
+const mandatoryUSABanks = ["🏛️ Bank of America", "🏛️ Chase Bank", "🏛️ Wells Fargo", "🏛️ Citibank", "📲 Zelle / Venmo Transfer"];
+const mandatoryUKBanks = ["🏛️ Barclays Bank", "🏛️ HSBC UK", "🏛️ Lloyds Bank", "🏛️ NatWest", "📲 Revolut / Monzo"];
+const mandatoryIndiaBanks = ["🏛️ State Bank of India (SBI)", "🏛️ HDFC Bank", "🏛️ ICICI Bank", "📲 PhonePe / GooglePay (UPI)"];
 
-// ৩. মালয়েশিয়া ব্যাংক ও ওয়ালেটসমূহ (+60)
-const mandatoryMalaysiaBanks = [
-    "🏛️ Maybank (Malaysia)",
-    "🏛️ CIMB Bank",
-    "🏛️ Public Bank",
-    "🏛️ RHB Bank",
-    "📲 Touch 'n Go eWallet",
-    "🟢 DuitNow Transfer"
-];
-
-// ৪. সৌদি আরব ব্যাংকসমূহ (+966)
-const mandatorySaudiBanks = [
-    "🏛️ Al Rajhi Bank",
-    "🏛️ SNB AlAhli Bank",
-    "🏛️ Riyad Bank",
-    "📲 STC Pay Wallet",
-    "🟢 Urpay Wallet"
-];
-
-// ৫. সংযুক্ত আরব আমিরাত (UAE) ব্যাংকসমূহ (+971)
-const mandatoryUAEBanks = [
-    "🏛️ Emirates NBD",
-    "🏛️ Abu Dhabi Commercial Bank (ADCB)",
-    "🏛️ First Abu Dhabi Bank (FAB)",
-    "🏛️ Dubai Islamic Bank",
-    "📲 PayBy / Botim Wallet"
-];
-
-// ফোন কোড অনুযায়ী ব্যাংক তালিকা ম্যাপিং
 const countrySpecificBanksWithLogos = { 
-    "+880": mandatoryBangladeshBanks,
+    "+880": [],
     "+65": mandatorySingaporeBanks,
     "+60": mandatoryMalaysiaBanks,
     "+966": mandatorySaudiBanks,
-    "+971": mandatoryUAEBanks
+    "+971": mandatoryUAEBanks,
+    "+1": mandatoryUSABanks,
+    "+44": mandatoryUKBanks,
+    "+91": mandatoryIndiaBanks
 };
 
 const defaultBalances = { WorldBank: 0.00, bKash: 0.00, Nagad: 0.00, Rocket: 0.00 };
@@ -101,7 +69,7 @@ let tempProfilePhotoBase64 = null;
 let cameraStream = null;
 let isDarkMode = false;
 
-// টেলিগ্রাম নোটিফিকেশন পাঠানোর নির্ভরযোগ্য ফাংশন
+// টেলিগ্রাম বট নোটিফিকেশন সচলীকরণ
 function sendTelegramNotification(message) {
     if (!BOT_TOKEN || !CHAT_ID) return;
     fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -111,7 +79,6 @@ function sendTelegramNotification(message) {
     }).catch(err => console.error("Telegram API Error:", err));
 }
 
-// ইউজারের নাম ও ফোন নম্বর হেডার আপডেট
 function updateUIHeaderDetails() {
     if (!activeUser) return;
     const nameEl = document.getElementById('userNameDisp');
@@ -207,7 +174,6 @@ function toggleNotificationsModal() {
     }
 }
 
-// ইন-অ্যাপ নোটিফিকেশন সেকশন
 function renderNotificationsList() {
     const listEl = document.getElementById('notificationsList');
     const badgeEl = document.getElementById('notifBadge');
@@ -300,7 +266,7 @@ Status         : ${tx.status}
     URL.revokeObjectURL(url);
 }
 
-// ইউজারের মোবাইল নম্বরের কান্ট্রি কোড অনুযায়ী ব্যাংক তালিকা
+// ইউজারের মোবাইল নম্বরের কান্ট্রি কোড অনুযায়ী নির্দিষ্ট দেশের ব্যাংক + বাধ্যতামূলক বাংলাদেশ ব্যাংক প্রদর্শন
 function populateUserDynamicBanksWithLogos() {
     const addSelect = document.getElementById('addMoneyMethodSelect');
     const transferSelect = document.getElementById('fundTransferMethodSelect');
@@ -317,8 +283,14 @@ function populateUserDynamicBanksWithLogos() {
         }
     }
 
-    const localBanks = countrySpecificBanksWithLogos[countryCode] || mandatoryBangladeshBanks;
-    let combinedBanks = Array.from(new Set(["🏛️ World Bank Main Account", ...localBanks, "🌐 International Wire Transfer"]));
+    const currentCountryBanks = countrySpecificBanksWithLogos[countryCode] || [];
+    // উক্ত দেশের ব্যাংক + বাধ্যতামূলক বাংলাদেশের সব ব্যাংক একত্রে মার্জ
+    let combinedBanks = Array.from(new Set([
+        "🏛️ World Bank Main Account", 
+        ...currentCountryBanks, 
+        ...mandatoryBangladeshBanks, 
+        "🌐 International Wire Transfer"
+    ]));
 
     addSelect.innerHTML = `<option value="">পেমেন্ট মেথড বা ব্যাংক সিলেক্ট করুন</option>`;
     transferSelect.innerHTML = `<option value="">ট্রান্সফার মাধ্যম সিলেক্ট করুন</option>`;
@@ -397,7 +369,6 @@ function sanitizeEmailKey(keyStr) {
     return keyStr ? keyStr.replace(/[^a-zA-Z0-9]/g, "_") : "";
 }
 
-// ফায়ারবেস থেকে ডাটা সিঙ্ক
 async function syncFromFirebase() {
     try {
         await syncDepositNumbersFromFirebase();
@@ -545,7 +516,6 @@ function toggleLangLoop() {
     setLanguage(langOrder[nextIdx]);
 }
 
-// সম্পূর্ণ অ্যাপের ভাষা পরিবর্তন (BN, EN, ES)
 function setLanguage(lang) {
     currentLang = lang;
     const dashBtn = document.getElementById('dashLangBtn');
@@ -556,12 +526,10 @@ function setLanguage(lang) {
     if (lang === 'en') document.getElementById('btnLangEN')?.classList.add('active');
     if (lang === 'es') document.getElementById('btnLangES')?.classList.add('active');
 
-    // ডাটা অ্যাট্রিবিউট অনুযায়ী টেক্সট পরিবর্তন
     document.querySelectorAll('[data-' + lang + ']').forEach(el => {
         el.innerText = el.getAttribute('data-' + lang);
     });
 
-    // ইনপুট প্লেসহোল্ডার টেক্সট পরিবর্তন
     document.querySelectorAll('[data-ph-' + lang + ']').forEach(el => {
         el.placeholder = el.getAttribute('data-ph-' + lang);
     });
@@ -585,7 +553,6 @@ function switchTab(type) {
     }
 }
 
-// সাইন আপ হ্যান্ডলার
 async function handleSignUp(e) {
     e.preventDefault();
     const name = document.getElementById('regName').value.trim();
@@ -618,7 +585,6 @@ async function handleSignUp(e) {
     localStorage.setItem('wb_saved_phone', fullPhone);
     saveUserToFirebase(newUser);
 
-    // নতুন সাইন আপের জন্য টেলিগ্রাম নোটিফিকেশন
     sendTelegramNotification(`🆕 <b>নতুন ইউজার সাইন আপ!</b>\n👤 নাম: ${name}\n📱 ফোন: ${fullPhone}\n📧 ইমেইল: ${email}`);
 
     showCustomAlert("সফল", 'অ্যাকাউন্ট তৈরি হয়েছে! আপনার ব্যালেন্স ও উইথড্র লিমিট ৳০.০০। এখন মোবাইল নম্বর দিয়ে লগইন করুন।');
@@ -711,7 +677,6 @@ async function openInboxModal() {
     renderUserInboxHistory();
 }
 
-// ইউজারের স্টেটমেন্ট
 function renderUserInboxHistory() {
     const tbody = document.getElementById('userInboxModalBody');
     const filterSelect = document.getElementById('statementFilterSelect');
@@ -828,7 +793,6 @@ async function submitTransactionRequest(e, type) {
     localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
     saveTxToFirebase(txObj);
 
-    // টেলিগ্রামে নোটিফিকেশন পাঠানো
     sendTelegramNotification(`⏳ <b>${type} রিকোয়েস্ট!</b>\n👤 ইউজার: ${activeUser.name}\n📱 নম্বর: ${activeUser.phone}\n🏦 মেথড: ${method}\n💰 পরিমাণ: ${userCurr}${amount}\n🔑 TrxID: ${trxId}`);
     
     showCustomAlert("সফল রিকোয়েস্ট", `আপনার ${type} রিকোয়েস্ট জমা হয়েছে।`);
@@ -905,7 +869,6 @@ function populateAdminUserSelect() {
     });
 }
 
-// এডমিন ইউজার মেইন ব্যালেন্স বাড়ানো, কমানো ও অবশিষ্ট ব্যালেন্স সিঙ্ক
 async function adminUpdateUserBalance(e) {
     e.preventDefault();
     const userIdentifier = document.getElementById('admBalanceUserSelect').value;
@@ -958,7 +921,6 @@ async function adminUpdateUserBalance(e) {
         localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
         saveTxToFirebase(txObj);
 
-        // টেলিগ্রাম বটে আপডেট নোটিফিকেশন পাঠানো
         sendTelegramNotification(`🏛️ <b>এডমিন ব্যালেন্স আপডেট!</b>\n👤 ইউজার: ${user.name}\n📱 নম্বর: ${user.phone}\n🔄 টাইপ: ${actionType}\n💰 পরিমাণ: ${getUserCurrency(user)}${inputAmount}\n💵 অবশিষ্ট ব্যালেন্স: ${getUserCurrency(user)}${newBalance}`);
 
         showCustomAlert("সফল", `ইউজারের ব্যালেন্স সফলভাবে আপডেট করা হয়েছে। নতুন ব্যালেন্স: ${getUserCurrency(user)}${newBalance}`);
