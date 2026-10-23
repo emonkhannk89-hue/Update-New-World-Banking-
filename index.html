@@ -305,18 +305,18 @@
         </div>
     </div>
 
-    <!-- ADD MONEY (ডিপোজিট) মডাল - ডাইনামিক নম্বর দেখানোর বক্সসহ -->
+    <!-- ADD MONEY (ডিপোজিট) মডাল -->
     <div id="addMoneyModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
                 <h3 data-bn="📥 Add Money (ডিপোজিট)" data-en="📥 Add Money (Deposit)" data-es="📥 Agregar dinero">📥 Add Money (ডিপোজিট)</h3>
-                <button onclick="openAddMoneyModal()" class="close-btn-dark">✖</button>
+                <button type="button" onclick="openAddMoneyModal()" class="close-btn-dark">✖</button>
             </div>
-            <form onsubmit="submitTransactionRequest(event, 'Deposit')">
+            <form id="addMoneyForm" onsubmit="submitTransactionRequest(event, 'Deposit')">
                 <label class="input-label" data-bn="মেথড বা ব্যাংক সিলেক্ট করুন:" data-en="Select Method / Bank:" data-es="Seleccionar método:">মেথড বা ব্যাংক সিলেক্ট করুন:</label>
                 <select class="methodSelect" id="addMoneyMethodSelect" onchange="showAdminDepositNumber(this)" required></select>
 
-                <!-- এডমিন প্যানেলে সেট করা পেমেন্ট নম্বরটি এখানে অটোমেটিক ভেসে উঠবে -->
+                <!-- পেমেন্ট রিসিভ করার নম্বর ডিসপ্লে বক্স -->
                 <div id="adminNumberBox" class="hidden" style="background: #fef3c7; border: 1px solid #f59e0b; padding: 10px; border-radius: 8px; margin: 10px 0; text-align: center;">
                     <span style="font-size: 11px; color: #b45309; font-weight: bold;" data-bn="নিচের নাম্বারে টাকা ক্যাশ-ইন / সেন্ড মানি করুন:" data-en="Send Money / Cash-in to this Number:">নিচের নাম্বারে টাকা ক্যাশ-ইন / সেন্ড মানি করুন:</span>
                     <h4 id="dispAdminAccNum" style="color: #92400e; font-size: 15px; margin-top: 4px; font-weight: bold; font-family: monospace;">-</h4>
@@ -347,7 +347,7 @@
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
                 <h3 data-bn="💸 Fund Transfer (উইথড্র)" data-en="💸 Fund Transfer (Withdraw)" data-es="💸 Transferencia">💸 Fund Transfer (উইথড্র)</h3>
-                <button onclick="openFundTransferModal()" class="close-btn-dark">✖</button>
+                <button type="button" onclick="openFundTransferModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="submitTransactionRequest(event, 'Withdraw')">
                 <label class="input-label" data-bn="প্রাপক ব্যাংক / ওয়ালেট:" data-en="Destination Bank / Wallet:" data-es="Destino:">প্রাপক ব্যাংক / ওয়ালেট:</label>
@@ -378,7 +378,7 @@
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
                 <h3 data-bn="📱 Mobile Top Up" data-en="📱 Mobile Top Up" data-es="📱 Recarga móvil">📱 Mobile Top Up</h3>
-                <button onclick="openTopUpModal()" class="close-btn-dark">✖</button>
+                <button type="button" onclick="openTopUpModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="handleTopUpSubmit(event)">
                 <label class="input-label" data-bn="অপারেটর সিলেক্ট করুন:" data-en="Select Operator:" data-es="Operador:">অপারেটর সিলেক্ট করুন:</label>
@@ -413,7 +413,7 @@
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
                 <h3 data-bn="💳 Card & Bank Transfer" data-en="💳 Card & Bank Transfer" data-es="💳 Transferencia">💳 Card & Bank Transfer</h3>
-                <button onclick="openCardBankModal()" class="close-btn-dark">✖</button>
+                <button type="button" onclick="openCardBankModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="handleCardBankSubmit(event)">
                 <label class="input-label" data-bn="ট্রান্সফার টাইপ:" data-en="Transfer Type:" data-es="Tipo:">ট্রান্সফার টাইপ:</label>
@@ -444,12 +444,12 @@
         </div>
     </div>
 
-    <!-- স্টেটমেন্ট মডাল (ফিল্টার ও রসিদ ডাউনলোড সুবিধাসহ) -->
+    <!-- স্টেটমেন্ট মডাল -->
     <div id="inboxModal" class="modal-overlay hidden">
         <div class="modal-content light-modal" style="max-width: 700px;">
             <div class="modal-header-clean">
                 <h3 data-bn="📋 Statement & Transactions" data-en="📋 Statement & Transactions" data-es="📋 Declaración">📋 Statement & Transactions</h3>
-                <button onclick="openInboxModal()" class="close-btn-dark">✖</button>
+                <button type="button" onclick="openInboxModal()" class="close-btn-dark">✖</button>
             </div>
             
             <div style="margin: 10px 0; display: flex; justify-content: space-between; align-items: center;">
@@ -487,7 +487,7 @@
             <div style="font-size: 38px; margin-bottom: 8px;">🔔</div>
             <h3 id="customAlertTitle" style="color: #0f172a; font-size: 17px; margin-bottom: 8px; font-weight: bold;">বার্তা</h3>
             <p id="customAlertText" style="color: #334155; font-size: 14px; line-height: 1.5; margin-bottom: 18px;"></p>
-            <button onclick="closeCustomAlert()" class="btn btn-gold" data-bn="ঠিক আছে" data-en="OK" data-es="Aceptar">ঠিক আছে</button>
+            <button type="button" onclick="closeCustomAlert()" class="btn btn-gold" data-bn="ঠিক আছে" data-en="OK" data-es="Aceptar">ঠিক আছে</button>
         </div>
     </div>
 
@@ -496,7 +496,7 @@
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
                 <h3 data-bn="👤 Profile Settings" data-en="👤 Profile Settings" data-es="👤 Perfil">👤 Profile Settings</h3>
-                <button onclick="toggleProfileModal()" class="close-btn-dark">✖</button>
+                <button type="button" onclick="toggleProfileModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="updateUserProfile(event)" style="margin-top:10px;">
                 <div style="text-align: center; margin-bottom: 12px;">
@@ -530,7 +530,7 @@
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
                 <h3 data-bn="🔑 Password Recovery" data-en="🔑 Password Recovery" data-es="🔑 Recuperación">🔑 Password Recovery</h3>
-                <button onclick="toggleForgotModal()" class="close-btn-dark">✖</button>
+                <button type="button" onclick="toggleForgotModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="handleForgotPassword(event)" style="margin-top:10px;">
                 <p style="font-size:12px; color:#64748b; margin-bottom:10px;" data-bn="নিবন্ধিত ইমেইল ও মোবাইল নম্বর দিন:" data-en="Enter registered Email & Mobile Number:" data-es="Ingrese correo y teléfono:">নিবন্ধিত ইমেইল ও মোবাইল নম্বর দিন:</p>
@@ -549,7 +549,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Central Control Admin</h2>
-                <button onclick="toggleAdminModal()" class="close-btn">✖</button>
+                <button type="button" onclick="toggleAdminModal()" class="close-btn">✖</button>
             </div>
 
             <div id="adminAuthBox">
@@ -559,18 +559,18 @@
                     <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('adminPassInput', this)">👁️</button>
                 </div>
                 <div class="btn-row-flex">
-                    <button onclick="verifyAdminPassword()" class="btn btn-gold">লগইন</button>
-                    <button onclick="toggleAdminModal()" class="btn btn-cancel-btn">ক্যানসেল</button>
+                    <button type="button" onclick="verifyAdminPassword()" class="btn btn-gold">লগইন</button>
+                    <button type="button" onclick="toggleAdminModal()" class="btn btn-cancel-btn">ক্যানসেল</button>
                 </div>
             </div>
 
             <div id="adminControlBox" class="hidden">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <button onclick="refreshAdminData()" class="btn-cancel-small" style="background:#059669; color:white; font-size:12px; padding:6px 12px; border-radius:6px; cursor:pointer;">🔄 রিফ্রেশ হিস্ট্রি</button>
-                    <button onclick="toggleAdminModal()" class="btn-cancel-small" style="background:#ef4444; color:white; font-size:12px; padding:6px 12px; border-radius:6px; cursor:pointer;">Exit Admin</button>
+                    <button type="button" onclick="refreshAdminData()" class="btn-cancel-small" style="background:#059669; color:white; font-size:12px; padding:6px 12px; border-radius:6px; cursor:pointer;">🔄 রিফ্রেশ হিস্ট্রি</button>
+                    <button type="button" onclick="toggleAdminModal()" class="btn-cancel-small" style="background:#ef4444; color:white; font-size:12px; padding:6px 12px; border-radius:6px; cursor:pointer;">Exit Admin</button>
                 </div>
 
-                <!-- নতুন যুক্ত করা এডমিন পেমেন্ট নম্বর কাস্টমাইজেশন সেকশন -->
+                <!-- এডমিন পেমেন্ট নম্বর কাস্টমাইজেশন সেকশন -->
                 <div class="admin-settings" style="border:1px solid #d97706; padding:12px; border-radius:8px; margin-bottom:15px; background:#1e293b;">
                     <h4 style="color:#fbbf24;">📲 ডিপোজিট (Add Money) নম্বর ম্যানেজমেন্ট</h4>
                     <p style="font-size:11px; color:#cbd5e1; margin-bottom:8px;">ইউজাররা ডিপোজিটে যে নম্বর দেখবে তা এখান থেকে সেট করুন:</p>
