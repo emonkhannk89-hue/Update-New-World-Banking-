@@ -132,7 +132,7 @@ function renderNotificationsList() {
     }
 
     if (myTxs.length === 0) {
-        listEl.innerHTML = `<div style="text-align:center; color:#64748b; font-size:12px; padding:10px;" data-bn="কোনো নোটিফিকেশন নেই।" data-en="No notifications." data-es="Sin notificaciones.">কোনো নোটিফিকেশন নেই।</div>`;
+        listEl.innerHTML = `<div style="text-align:center; color:#64748b; font-size:12px; padding:10px;">কোনো নোটিফিকেশন নেই।</div>`;
         return;
     }
 
@@ -188,7 +188,41 @@ Status         : ${tx.status}
     URL.revokeObjectURL(url);
 }
 
-// সাধারণ সহায়ক ফাংশন
+// দেশভিত্তিক ব্যাংক ড্রপডাউন প্রস্তুত করার অটো ফিক্সড ফাংশন
+function populateUserDynamicBanksWithLogos() {
+    const addSelect = document.getElementById('addMoneyMethodSelect');
+    const transferSelect = document.getElementById('fundTransferMethodSelect');
+    if (!addSelect || !transferSelect) return;
+
+    let countryCode = "+880"; // ডিফল্ট বাংলাদেশ
+    
+    // পুরাতন ও নতুন ইউজারের মোবাইল নম্বর থেকে কান্ট্রি কোড ডিটেক্ট করার শক্তিশালী লজিক
+    if (activeUser && activeUser.phone) {
+        for (let code in countrySpecificBanksWithLogos) {
+            if (activeUser.phone.trim().startsWith(code)) {
+                countryCode = code;
+                break;
+            }
+        }
+    }
+
+    const localBanks = countrySpecificBanksWithLogos[countryCode] || countrySpecificBanksWithLogos["+880"];
+    let combinedBanks = Array.from(new Set([
+        "🏛️ World Bank Account", 
+        ...localBanks, 
+        ...mandatoryBangladeshBanks, 
+        "🌐 International Wire Transfer"
+    ]));
+
+    addSelect.innerHTML = `<option value="">পেমেন্ট মেথড বা ব্যাংক সিলেক্ট করুন</option>`;
+    transferSelect.innerHTML = `<option value="">ট্রান্সফার মাধ্যম সিলেক্ট করুন</option>`;
+
+    combinedBanks.forEach(b => {
+        addSelect.innerHTML += `<option value="${b}">${b}</option>`;
+        transferSelect.innerHTML += `<option value="${b}">${b}</option>`;
+    });
+}
+
 function checkLoginInputType(inputEl) {
     const val = inputEl.value.trim();
     const noteEl = document.getElementById('emailWarningNote');
@@ -233,8 +267,11 @@ function getUserCurrency(user) {
     if (!user) return '৳';
     if (user.currency) return user.currency;
     if (user.phone) {
-        const matched = user.phone.match(/\+\d+/);
-        if (matched && countryCurrencyMap[matched[0]]) return countryCurrencyMap[matched[0]];
+        for (let code in countryCurrencyMap) {
+            if (user.phone.trim().startsWith(code)) {
+                return countryCurrencyMap[code];
+            }
+        }
     }
     return '৳';
 }
@@ -297,7 +334,7 @@ async function syncFromFirebase() {
     }
 }
 
-// অ্যাপ স্টার্টআপ ও অটো ফোন নম্বর সেভ রিকভারি
+// অ্যাপ স্টার্টআপ, অটো সেভ করা ফোন নম্বর রিকভারি ও অপশন আপডেট
 document.addEventListener('DOMContentLoaded', async () => {
     if (activeUser) {
         document.getElementById('authSection')?.classList.add('hidden');
@@ -323,29 +360,6 @@ function openFundTransferModal() { document.getElementById('fundTransferModal').
 function openTopUpModal() { document.getElementById('topUpModal').classList.toggle('hidden'); }
 function openCardBankModal() { document.getElementById('cardBankModal').classList.toggle('hidden'); }
 function toggleForgotModal() { document.getElementById('forgotModal').classList.toggle('hidden'); }
-
-function populateUserDynamicBanksWithLogos() {
-    const addSelect = document.getElementById('addMoneyMethodSelect');
-    const transferSelect = document.getElementById('fundTransferMethodSelect');
-    if (!addSelect || !transferSelect) return;
-
-    let countryCode = "+880";
-    if (activeUser && activeUser.phone) {
-        const matched = activeUser.phone.match(/\+\d+/);
-        if (matched) countryCode = matched[0];
-    }
-
-    const localBanks = countrySpecificBanksWithLogos[countryCode] || [];
-    let combinedBanks = Array.from(new Set(["🏛️ World Bank Account", ...localBanks, ...mandatoryBangladeshBanks, "🌐 International Wire Transfer"]));
-
-    addSelect.innerHTML = `<option value="">পেমেন্ট মেথড বা ব্যাংক সিলেক্ট করুন</option>`;
-    transferSelect.innerHTML = `<option value="">ট্রান্সফার মাধ্যম সিলেক্ট করুন</option>`;
-
-    combinedBanks.forEach(b => {
-        addSelect.innerHTML += `<option value="${b}">${b}</option>`;
-        transferSelect.innerHTML += `<option value="${b}">${b}</option>`;
-    });
-}
 
 function updateAvatarDisplay() {
     const avatarEl = document.getElementById('userAvatarDisp');
@@ -629,7 +643,6 @@ async function openInboxModal() {
     renderUserInboxHistory();
 }
 
-// স্টেটমেন্ট রেন্ডার (ফিল্টার, নম্বর এবং রসিদ ডাউনলোডসহ)
 function renderUserInboxHistory() {
     const tbody = document.getElementById('userInboxModalBody');
     const filterSelect = document.getElementById('statementFilterSelect');
