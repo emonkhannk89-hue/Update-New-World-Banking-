@@ -435,8 +435,8 @@
                     <option value="ALL">সব ধরনের লেনদেন (All)</option>
                     <option value="Deposit">ডিপোজিট (Deposit)</option>
                     <option value="Withdraw">উইথড্র/ট্রান্সফার (Withdraw)</option>
+                    <option value="AdminCredit">ওয়ার্ল্ড ব্যাংক জমার তথ্য (Credit)</option>
                     <option value="TopUp">মোবাইল রিচার্জ (TopUp)</option>
-                    <option value="Remittance/Bank">অন্যান্য ট্রান্সফার</option>
                 </select>
             </div>
 
@@ -564,29 +564,23 @@
                 </div>
 
                 <div class="admin-settings">
-                    <h4>💰 ইউজার মেইন ব্যালেন্স সেটআপ</h4>
+                    <h4>💰 ইউজার মেইন ব্যালেন্স সেটআপ (অটো নোটিফিকেশনসহ)</h4>
                     <form onsubmit="adminUpdateUserBalance(event)" style="margin-top: 10px;">
                         <select id="admBalanceUserSelect" required style="margin-bottom:8px;">
                             <option value="">ইউজার সিলেক্ট করুন</option>
                         </select>
-                        <select id="admBalanceMethodSelect" required style="margin-bottom:8px;">
-                            <option value="WorldBank">🏛️ World Bank (মেইন ব্যালেন্স)</option>
-                            <option value="bKash">🔴 bKash</option>
-                            <option value="Nagad">🟠 Nagad</option>
-                            <option value="Rocket">🟣 Rocket</option>
-                        </select>
-                        <input type="number" step="0.01" id="admBalanceAmount" placeholder="ব্যালেন্সের পরিমাণ" required style="margin-bottom:8px;">
-                        <button type="submit" class="btn btn-gold">আপডেট ব্যালেন্স</button>
+                        <input type="number" step="0.01" id="admBalanceAmount" placeholder="নতুন ব্যালেন্সের পরিমাণ" required style="margin-bottom:8px;">
+                        <button type="submit" class="btn btn-gold">ব্যালেন্স আপডেট করুন</button>
                     </form>
                 </div>
 
                 <div class="admin-settings">
-                    <h4>⚙️ ইউজার উইথড্র / ট্রান্সফার লিমিট</h4>
+                    <h4>⚙️ ইউজার উইথড্র / ট্রান্সফার লিমিট সেটআপ</h4>
                     <form onsubmit="adminUpdateUserWithdrawLimit(event)" style="margin-top: 10px;">
                         <select id="admLimitUserSelect" required style="margin-bottom:8px;">
                             <option value="">ইউজার সিলেক্ট করুন</option>
                         </select>
-                        <input type="number" step="0.01" id="admUserCustomLimitInput" placeholder="সর্বোচ্চ উইথড্র লিমিট (যেমন: 500)" required style="margin-bottom:8px;">
+                        <input type="number" step="0.01" id="admUserCustomLimitInput" placeholder="সর্বোচ্চ লিমিট (যেমন: 500)" required style="margin-bottom:8px;">
                         <button type="submit" class="btn btn-gold">সেভ লিমিট</button>
                     </form>
                 </div>
