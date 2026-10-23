@@ -8,13 +8,17 @@ let adminDepositNumbers = JSON.parse(localStorage.getItem('wb_deposit_numbers'))
     "🟠 Nagad Wallet": "01700000000 (Nagad Personal)",
     "🟣 Rocket DBBL": "01900000000-1 (Rocket Personal)",
     "🟢 Upay Mobile": "01600000000 (Upay Personal)",
-    "🏛️ Dutch Bangla Bank (DBBL)": "A/C: 123.456.7890 (World Bank DBBL)"
+    "🏛️ Dutch Bangla Bank (DBBL)": "A/C: 123.456.7890 (World Bank DBBL)",
+    "🔴 POSB Bank (Singapore)": "POSB 123-45678-9",
+    "🔵 DBS Bank (Singapore)": "DBS 987-65432-1",
+    "🔴 UOB Bank (Singapore)": "UOB 456-78901-2",
+    "🟢 PayNow (Singapore)": "+65 80000000 (PayNow)"
 };
 
 const exchangeRatesUSD = { "USD": 1.0, "BDT": 117.50, "MYR": 4.70, "SAR": 3.75, "AED": 3.67, "SGD": 1.35 };
 const countryCurrencyMap = { "+880": "৳", "+65": "$", "+60": "MYR", "+966": "SAR", "+971": "AED", "+1": "$", "+44": "£", "+91": "₹" };
 
-// নতুন ব্যাংকগুলোর সম্পূর্ণ তালিকা সহ বাংলাদেশের ব্যাংক ড্রপডাউন
+// ১. বাংলাদেশ ব্যাংক ও ওয়ালেটসমূহ (+880)
 const mandatoryBangladeshBanks = [
     "🔴 bKash Account", 
     "🟠 Nagad Wallet", 
@@ -33,7 +37,58 @@ const mandatoryBangladeshBanks = [
     "🏛️ Eastern Bank PLC (EBL)"
 ];
 
-const countrySpecificBanksWithLogos = { "+880": mandatoryBangladeshBanks };
+// ২. সিঙ্গাপুর ব্যাংক ও পেমেন্ট ওয়ালেটসমূহ (+65)
+const mandatorySingaporeBanks = [
+    "🔴 POSB Bank (Singapore)",
+    "🔵 DBS Bank (Singapore)",
+    "🔴 UOB Bank (Singapore)",
+    "🔴 OCBC Bank (Singapore)",
+    "🟢 PayNow Transfer",
+    "💎 Trust Bank (Singapore)",
+    "🏛️ Standard Chartered (Singapore)",
+    "🏛️ HSBC Bank (Singapore)",
+    "🏛️ Citibank (Singapore)",
+    "🏛️ Maybank (Singapore)",
+    "📲 GrabPay / Dash Wallet"
+];
+
+// ৩. মালয়েশিয়া ব্যাংক ও ওয়ালেটসমূহ (+60)
+const mandatoryMalaysiaBanks = [
+    "🏛️ Maybank (Malaysia)",
+    "🏛️ CIMB Bank",
+    "🏛️ Public Bank",
+    "🏛️ RHB Bank",
+    "📲 Touch 'n Go eWallet",
+    "🟢 DuitNow Transfer"
+];
+
+// ৪. সৌদি আরব ব্যাংকসমূহ (+966)
+const mandatorySaudiBanks = [
+    "🏛️ Al Rajhi Bank",
+    "🏛️ SNB AlAhli Bank",
+    "🏛️ Riyad Bank",
+    "📲 STC Pay Wallet",
+    "🟢 Urpay Wallet"
+];
+
+// ৫. সংযুক্ত আরব আমিরাত (UAE) ব্যাংকসমূহ (+971)
+const mandatoryUAEBanks = [
+    "🏛️ Emirates NBD",
+    "🏛️ Abu Dhabi Commercial Bank (ADCB)",
+    "🏛️ First Abu Dhabi Bank (FAB)",
+    "🏛️ Dubai Islamic Bank",
+    "📲 PayBy / Botim Wallet"
+];
+
+// ফোন কোড অনুযায়ী আন্তর্জাতিক ব্যাংক ম্যাপিং
+const countrySpecificBanksWithLogos = { 
+    "+880": mandatoryBangladeshBanks,
+    "+65": mandatorySingaporeBanks,
+    "+60": mandatoryMalaysiaBanks,
+    "+966": mandatorySaudiBanks,
+    "+971": mandatoryUAEBanks
+};
+
 const defaultBalances = { WorldBank: 0.00, bKash: 0.00, Nagad: 0.00, Rocket: 0.00 };
 
 let usersDatabase = [];
@@ -46,6 +101,15 @@ let tempProfilePhotoBase64 = null;
 let cameraStream = null;
 let isDarkMode = false;
 
+// ইউজার ইন্টারফেস ও নাম রেন্ডারিং ঠিক রাখার ফাংশন
+function updateUIHeaderDetails() {
+    if (!activeUser) return;
+    const nameEl = document.getElementById('userNameDisp');
+    const phoneEl = document.getElementById('userPhoneDisp');
+    if (nameEl) nameEl.innerText = activeUser.name || 'User Name';
+    if (phoneEl) phoneEl.innerText = activeUser.phone || '';
+}
+
 function showAdminDepositNumber(selectEl) {
     const numBox = document.getElementById('adminNumberBox');
     const numDisp = document.getElementById('dispAdminAccNum');
@@ -55,7 +119,7 @@ function showAdminDepositNumber(selectEl) {
         numDisp.innerText = adminDepositNumbers[selectedVal];
         numBox.classList.remove('hidden');
     } else if (selectedVal) {
-        numDisp.innerText = "01800000000 (World Bank Official)";
+        numDisp.innerText = "Official World Bank Account / Contact Admin";
         numBox.classList.remove('hidden');
     } else {
         numBox.classList.add('hidden');
@@ -217,6 +281,7 @@ Status         : ${tx.status}
     URL.revokeObjectURL(url);
 }
 
+// ইউজারের মোবাইল নম্বরের কান্ট্রি কোড অনুযায়ী নির্দিষ্ট দেশের ব্যাংক ড্রপডাউন লোড করা
 function populateUserDynamicBanksWithLogos() {
     const addSelect = document.getElementById('addMoneyMethodSelect');
     const transferSelect = document.getElementById('fundTransferMethodSelect');
@@ -224,16 +289,18 @@ function populateUserDynamicBanksWithLogos() {
 
     let countryCode = "+880";
     if (activeUser && activeUser.phone) {
+        const p = activeUser.phone.trim();
         for (let code in countrySpecificBanksWithLogos) {
-            if (activeUser.phone.trim().startsWith(code)) {
+            if (p.startsWith(code)) {
                 countryCode = code;
                 break;
             }
         }
     }
 
+    // সংশ্লিষ্ট দেশের নিজস্ব ব্যাংক লিস্ট
     const localBanks = countrySpecificBanksWithLogos[countryCode] || mandatoryBangladeshBanks;
-    let combinedBanks = Array.from(new Set(["🏛️ World Bank Account", ...localBanks, "🌐 International Wire Transfer"]));
+    let combinedBanks = Array.from(new Set(["🏛️ World Bank Main Account", ...localBanks, "🌐 International Wire Transfer"]));
 
     addSelect.innerHTML = `<option value="">পেমেন্ট মেথড বা ব্যাংক সিলেক্ট করুন</option>`;
     transferSelect.innerHTML = `<option value="">ট্রান্সফার মাধ্যম সিলেক্ট করুন</option>`;
@@ -312,6 +379,7 @@ function sanitizeEmailKey(keyStr) {
     return keyStr ? keyStr.replace(/[^a-zA-Z0-9]/g, "_") : "";
 }
 
+// ফায়ারবেস থেকে ডাটা সিঙ্ক করার সময় ইউজারের নাম ও ফোন ব্যাংকিং মেথড ঠিক রাখা
 async function syncFromFirebase() {
     try {
         await syncDepositNumbersFromFirebase();
@@ -323,10 +391,10 @@ async function syncFromFirebase() {
             if (activeUser) {
                 const refreshedUser = usersDatabase.find(u => u.phone === activeUser.phone);
                 if (refreshedUser) {
-                    activeUser = refreshedUser;
+                    activeUser = { ...activeUser, ...refreshedUser };
                     localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
-                    document.getElementById('userNameDisp').innerText = activeUser.name || 'User Name';
-                    document.getElementById('userPhoneDisp').innerText = activeUser.phone || '';
+                    updateUIHeaderDetails();
+                    populateUserDynamicBanksWithLogos();
                 }
             }
         }
@@ -353,9 +421,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('authSection')?.classList.add('hidden');
         document.getElementById('dashboardSection')?.classList.remove('hidden');
         
-        // হেডার প্রোফাইলে ইউজারের নাম ও ফোন নম্বর সঠিকভাবে বসানো
-        document.getElementById('userNameDisp').innerText = activeUser.name || 'User Name';
-        document.getElementById('userPhoneDisp').innerText = activeUser.phone || '';
+        // হেডার প্রোফাইলে ইউজারের নাম ও ফোন নম্বর বসানো
+        updateUIHeaderDetails();
         
         updateAvatarDisplay();
         renderBalances();
@@ -377,10 +444,18 @@ function openAddMoneyModal() {
         modal.classList.toggle('hidden');
         document.getElementById('adminNumberBox')?.classList.add('hidden');
         document.getElementById('addMoneyForm')?.reset();
+        populateUserDynamicBanksWithLogos();
     }
 }
 
-function openFundTransferModal() { document.getElementById('fundTransferModal')?.classList.toggle('hidden'); }
+function openFundTransferModal() { 
+    const modal = document.getElementById('fundTransferModal');
+    if (modal) {
+        modal.classList.toggle('hidden');
+        populateUserDynamicBanksWithLogos();
+    }
+}
+
 function openTopUpModal() { 
     showCustomAlert("Mobile Top Up", "মোবাইল টপ আপ অপশনটি এখনো চালু হয়নি!");
 }
@@ -486,8 +561,8 @@ function sendTelegramNotification(message) {
 // সাইন আপ হ্যান্ডলার
 async function handleSignUp(e) {
     e.preventDefault();
-    const name = document.getElementById('regName').value;
-    const email = document.getElementById('regEmail').value;
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
     const countryCodeSelect = document.getElementById('regCountryCode');
     const rawPhone = document.getElementById('regPhone').value.trim();
     const password = document.getElementById('regPass').value;
@@ -500,8 +575,14 @@ async function handleSignUp(e) {
     }
 
     const newUser = {
-        name, email, phone: fullPhone, currency, password,
-        photo: null, totalBalance: 0.00, withdrawLimit: 0.00,
+        name: name, 
+        email: email, 
+        phone: fullPhone, 
+        currency: currency, 
+        password: password,
+        photo: null, 
+        totalBalance: 0.00, 
+        withdrawLimit: 0.00,
         balances: { ...defaultBalances }
     };
 
@@ -534,10 +615,8 @@ async function handleLogin(e) {
         document.getElementById('authSection').classList.add('hidden');
         document.getElementById('dashboardSection').classList.remove('hidden');
         
-        // লগইন সফল হলে ড্যাশবোর্ডে ইউজারের নাম এবং ফোন নম্বর অটো আপডেট
-        document.getElementById('userNameDisp').innerText = activeUser.name || 'User Name';
-        document.getElementById('userPhoneDisp').innerText = activeUser.phone || '';
-
+        // লগইন করার পর স্বয়ংক্রিয় নাম, নম্বর ও ব্যাংক লিস্ট লোড করা
+        updateUIHeaderDetails();
         updateAvatarDisplay();
         renderBalances();
         populateUserDynamicBanksWithLogos();
@@ -656,7 +735,7 @@ async function updateUserProfile(e) {
         localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
         saveUserToFirebase(activeUser);
     }
-    document.getElementById('userNameDisp').innerText = activeUser.name;
+    updateUIHeaderDetails();
     updateAvatarDisplay();
     showCustomAlert("সফল", 'প্রোফাইল আপডেট হয়েছে!');
     toggleProfileModal();
