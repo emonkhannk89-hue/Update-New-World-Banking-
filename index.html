@@ -38,15 +38,124 @@
             <div class="country-select-wrapper">
                 <label class="field-label" data-bn="দেশ সিলেক্ট করুন (সার্চ করুন):" data-en="Select Country (Search):" data-es="Seleccionar país (Buscar):">দেশ সিলেক্ট করুন (সার্চ করুন):</label>
                 <input type="text" id="countrySearchInput" placeholder="🔍 দেশের নাম বা কোড লিখুন..." data-ph-bn="🔍 দেশের নাম বা কোড লিখুন..." data-ph-en="🔍 Type country name or code..." data-ph-es="🔍 Escriba el nombre o código..." onkeyup="filterCountryList()" style="margin-bottom:5px;">
-                <select id="regCountryCode" required onchange="handleCountryChange(this)" size="4" class="searchable-country-select">
+                <select id="regCountryCode" required onchange="handleCountryChange(this)" size="5" class="searchable-country-select">
+                    <!-- পৃথিবীতে প্রায় সব দেশের নাম ও কান্ট্রি কোডের তালিকা -->
                     <option value="+880" data-currency="৳" data-lang="bn" selected>🇧🇩 Bangladesh (+880)</option>
                     <option value="+65" data-currency="$" data-lang="en">🇸🇬 Singapore (+65)</option>
                     <option value="+60" data-currency="MYR" data-lang="ms">🇲🇾 Malaysia (+60)</option>
                     <option value="+966" data-currency="SAR" data-lang="ar">🇸🇦 Saudi Arabia (+966)</option>
-                    <option value="+971" data-currency="AED">🇦🇪 UAE (+971)</option>
-                    <option value="+1" data-currency="$">🇺🇸 USA (+1)</option>
-                    <option value="+44" data-currency="£">🇬🇧 UK (+44)</option>
+                    <option value="+971" data-currency="AED">🇦🇪 United Arab Emirates (+971)</option>
+                    <option value="+1" data-currency="$">🇺🇸 United States (+1)</option>
+                    <option value="+44" data-currency="£">🇬🇧 United Kingdom (+44)</option>
                     <option value="+91" data-currency="₹">🇮🇳 India (+91)</option>
+                    <option value="+968" data-currency="OMR">🇴🇲 Oman (+968)</option>
+                    <option value="+974" data-currency="QAR">🇶🇦 Qatar (+974)</option>
+                    <option value="+965" data-currency="KWD">🇰🇼 Kuwait (+965)</option>
+                    <option value="+973" data-currency="BHD">🇧🇭 Bahrain (+973)</option>
+                    <option value="+39" data-currency="€">🇮🇹 Italy (+39)</option>
+                    <option value="+33" data-currency="€">🇫🇷 France (+33)</option>
+                    <option value="+49" data-currency="€">🇩🇪 Germany (+49)</option>
+                    <option value="+34" data-currency="€">🇪🇸 Spain (+34)</option>
+                    <option value="+351" data-currency="€">🇵🇹 Portugal (+351)</option>
+                    <option value="+31" data-currency="€">🇳🇱 Netherlands (+31)</option>
+                    <option value="+32" data-currency="€">🇧🇪 Belgium (+32)</option>
+                    <option value="+41" data-currency="CHF">🇨🇭 Switzerland (+41)</option>
+                    <option value="+43" data-currency="€">🇦🇹 Austria (+43)</option>
+                    <option value="+46" data-currency="SEK">🇸🇪 Sweden (+46)</option>
+                    <option value="+47" data-currency="NOK">🇳🇴 Norway (+47)</option>
+                    <option value="+45" data-currency="DKK">🇩🇰 Denmark (+45)</option>
+                    <option value="+358" data-currency="€">🇫🇮 Finland (+358)</option>
+                    <option value="+30" data-currency="€">🇬🇷 Greece (+30)</option>
+                    <option value="+353" data-currency="€">🇮🇪 Ireland (+353)</option>
+                    <option value="+48" data-currency="PLN">🇵🇱 Poland (+48)</option>
+                    <option value="+40" data-currency="RON">🇷🇴 Romania (+40)</option>
+                    <option value="+1" data-currency="CAD">🇨🇦 Canada (+1)</option>
+                    <option value="+61" data-currency="AUD">🇦🇺 Australia (+61)</option>
+                    <option value="+64" data-currency="NZD">🇳🇿 New Zealand (+64)</option>
+                    <option value="+81" data-currency="¥">🇯🇵 Japan (+81)</option>
+                    <option value="+82" data-currency="₩">🇰🇷 South Korea (+82)</option>
+                    <option value="+86" data-currency="¥">🇨🇳 China (+86)</option>
+                    <option value="+852" data-currency="HKD">🇭🇰 Hong Kong (+852)</option>
+                    <option value="+886" data-currency="NT$">🇹🇼 Taiwan (+886)</option>
+                    <option value="+66" data-currency="THB">🇹🇭 Thailand (+66)</option>
+                    <option value="+84" data-currency="VND">🇻🇳 Vietnam (+84)</option>
+                    <option value="+63" data-currency="PHP">🇵🇭 Philippines (+63)</option>
+                    <option value="+62" data-currency="IDR">🇮🇩 Indonesia (+62)</option>
+                    <option value="+92" data-currency="PKR">🇵🇰 Pakistan (+92)</option>
+                    <option value="+94" data-currency="LKR">🇱🇰 Sri Lanka (+94)</option>
+                    <option value="+977" data-currency="NPR">🇳🇵 Nepal (+977)</option>
+                    <option value="+960" data-currency="MVR">🇲🇻 Maldives (+960)</option>
+                    <option value="+20" data-currency="EGP">🇪🇬 Egypt (+20)</option>
+                    <option value="+27" data-currency="ZAR">🇿🇦 South Africa (+27)</option>
+                    <option value="+234" data-currency="NGN">🇳🇬 Nigeria (+234)</option>
+                    <option value="+254" data-currency="KES">🇰🇪 Kenya (+254)</option>
+                    <option value="+212" data-currency="MAD">🇲🇦 Morocco (+212)</option>
+                    <option value="+55" data-currency="R$">🇧🇷 Brazil (+55)</option>
+                    <option value="+54" data-currency="ARS">🇦🇷 Argentina (+54)</option>
+                    <option value="+52" data-currency="MXN">🇲🇽 Mexico (+52)</option>
+                    <option value="+56" data-currency="CLP">🇨🇱 Chile (+56)</option>
+                    <option value="+57" data-currency="COP">🇨🇴 Colombia (+57)</option>
+                    <option value="+7" data-currency="RUB">🇷🇺 Russia (+7)</option>
+                    <option value="+380" data-currency="UAH">🇺🇦 Ukraine (+380)</option>
+                    <option value="+90" data-currency="TRY">🇹🇷 Turkey (+90)</option>
+
+                    <!-- আফ্রিকান ও মধ্যপ্রাচ্যের অন্যান্য দেশ -->
+                    <option value="+213" data-currency="DZD">🇩🇿 Algeria (+213)</option>
+                    <option value="+244" data-currency="AOA">🇦🇴 Angola (+244)</option>
+                    <option value="+229" data-currency="XOF">🇧🇯 Benin (+229)</option>
+                    <option value="+267" data-currency="BWP">🇧🇼 Botswana (+267)</option>
+                    <option value="+226" data-currency="XOF">🇧🇫 Burkina Faso (+226)</option>
+                    <option value="+257" data-currency="BIF">🇧🇮 Burundi (+257)</option>
+                    <option value="+237" data-currency="XAF">🇨🇲 Cameroon (+237)</option>
+                    <option value="+238" data-currency="CVE">🇨🇻 Cape Verde (+238)</option>
+                    <option value="+236" data-currency="XAF">🇨🇫 Central African Republic (+236)</option>
+                    <option value="+235" data-currency="XAF">🇹🇩 Chad (+235)</option>
+                    <option value="+269" data-currency="KMF">🇰🇲 Comoros (+269)</option>
+                    <option value="+242" data-currency="XAF">🇨🇬 Congo (+242)</option>
+                    <option value="+243" data-currency="CDF">🇨🇩 DR Congo (+243)</option>
+                    <option value="+253" data-currency="DJF">🇩🇯 Djibouti (+253)</option>
+                    <option value="+240" data-currency="XAF">🇬🇶 Equatorial Guinea (+240)</option>
+                    <option value="+291" data-currency="ERN">🇪🇷 Eritrea (+291)</option>
+                    <option value="+251" data-currency="ETB">🇪🇹 Ethiopia (+251)</option>
+                    <option value="+241" data-currency="XAF">🇬🇦 Gabon (+241)</option>
+                    <option value="+220" data-currency="GMD">🇬🇲 Gambia (+220)</option>
+                    <option value="+233" data-currency="GHS">🇬🇭 Ghana (+233)</option>
+
+                    <!-- অন্যান্য এশিয়ান ও ইউরোপীয় দেশ -->
+                    <option value="+93" data-currency="AFN">🇦🇫 Afghanistan (+93)</option>
+                    <option value="+355" data-currency="ALL">🇦🇱 Albania (+355)</option>
+                    <option value="+376" data-currency="€">🇦🇩 Andorra (+376)</option>
+                    <option value="+374" data-currency="AMD">🇦🇲 Armenia (+374)</option>
+                    <option value="+994" data-currency="AZN">🇦🇿 Azerbaijan (+994)</option>
+                    <option value="+375" data-currency="BYN">🇧🇾 Belarus (+375)</option>
+                    <option value="+975" data-currency="BTN">🇧🇹 Bhutan (+975)</option>
+                    <option value="+387" data-currency="BAM">🇧🇦 Bosnia and Herzegovina (+387)</option>
+                    <option value="+359" data-currency="BGN">🇧🇬 Bulgaria (+359)</option>
+                    <option value="+855" data-currency="KHR">🇰🇭 Cambodia (+855)</option>
+                    <option value="+385" data-currency="EUR">🇭🇷 Croatia (+385)</option>
+                    <option value="+357" data-currency="€">🇨🇾 Cyprus (+357)</option>
+                    <option value="+420" data-currency="CZK">🇨🇿 Czech Republic (+420)</option>
+                    <option value="+372" data-currency="€">🇪🇪 Estonia (+372)</option>
+                    <option value="+995" data-currency="GEL">🇬🇪 Georgia (+995)</option>
+                    <option value="+354" data-currency="ISK">🇮🇸 Iceland (+354)</option>
+                    <option value="+964" data-currency="IQD">🇮🇶 Iraq (+964)</option>
+
+                    <!-- দক্ষিণ আমেরিকা ও ক্যারিবিয়ান -->
+                    <option value="+501" data-currency="BZD">🇧🇿 Belize (+501)</option>
+                    <option value="+591" data-currency="BOB">🇧🇴 Bolivia (+591)</option>
+                    <option value="+506" data-currency="CRC">🇨🇷 Costa Rica (+506)</option>
+                    <option value="+53" data-currency="CUP">🇨🇺 Cuba (+53)</option>
+                    <option value="+593" data-currency="$">🇪🇨 Ecuador (+593)</option>
+                    <option value="+503" data-currency="$">🇸🇻 El Salvador (+503)</option>
+                    <option value="+502" data-currency="GTQ">🇬🇹 Guatemala (+502)</option>
+                    <option value="+509" data-currency="HTG">🇭🇹 Haiti (+509)</option>
+                    <option value="+504" data-currency="HNL">🇭🇳 Honduras (+504)</option>
+                    <option value="+505" data-currency="NIO">🇳🇮 Nicaragua (+505)</option>
+                    <option value="+507" data-currency="PAB">🇵🇦 Panama (+507)</option>
+                    <option value="+595" data-currency="PYG">🇵🇾 Paraguay (+595)</option>
+                    <option value="+51" data-currency="PEN">🇵🇪 Peru (+51)</option>
+                    <option value="+598" data-currency="UYU">🇺🇾 Uruguay (+598)</option>
+                    <option value="+58" data-currency="VES">🇻🇪 Venezuela (+58)</option>
                 </select>
             </div>
 
