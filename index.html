@@ -32,12 +32,12 @@
 
         <!-- সাইন আপ ফর্ম -->
         <form id="signUpForm" class="hidden" onsubmit="handleSignUp(event)" action="javascript:void(0);">
-            <input type="text" id="regName" placeholder="আপনার পূর্ণ নাম" required>
-            <input type="email" id="regEmail" placeholder="ইমেইল অ্যাড্রেস" required>
+            <input type="text" id="regName" placeholder="আপনার পূর্ণ নাম" data-ph-bn="আপনার পূর্ণ নাম" data-ph-en="Your Full Name" data-ph-es="Su nombre completo" required>
+            <input type="email" id="regEmail" placeholder="ইমেইল অ্যাড্রেস" data-ph-bn="ইমেইল অ্যাড্রেস" data-ph-en="Email Address" data-ph-es="Correo electrónico" required>
             
             <div class="country-select-wrapper">
-                <label class="field-label">দেশ সিলেক্ট করুন (সার্চ করুন):</label>
-                <input type="text" id="countrySearchInput" placeholder="🔍 দেশের নাম বা কোড লিখুন..." onkeyup="filterCountryList()" style="margin-bottom:5px;">
+                <label class="field-label" data-bn="দেশ সিলেক্ট করুন (সার্চ করুন):" data-en="Select Country (Search):" data-es="Seleccionar país (Buscar):">দেশ সিলেক্ট করুন (সার্চ করুন):</label>
+                <input type="text" id="countrySearchInput" placeholder="🔍 দেশের নাম বা কোড লিখুন..." data-ph-bn="🔍 দেশের নাম বা কোড লিখুন..." data-ph-en="🔍 Type country name or code..." data-ph-es="🔍 Escriba el nombre o código..." onkeyup="filterCountryList()" style="margin-bottom:5px;">
                 <select id="regCountryCode" required onchange="handleCountryChange(this)" size="4" class="searchable-country-select">
                     <option value="+880" data-currency="৳" data-lang="bn" selected>🇧🇩 Bangladesh (+880)</option>
                     <option value="+65" data-currency="$" data-lang="en">🇸🇬 Singapore (+65)</option>
@@ -50,27 +50,27 @@
                 </select>
             </div>
 
-            <input type="text" id="regPhone" placeholder="মোবাইল নম্বর (কোড ছাড়া)" required>
+            <input type="text" id="regPhone" placeholder="মোবাইল নম্বর (কোড ছাড়া)" data-ph-bn="মোবাইল নম্বর (কোড ছাড়া)" data-ph-en="Mobile Number (Without Code)" data-ph-es="Número de teléfono" required>
             <div class="password-wrapper">
-                <input type="password" id="regPass" placeholder="পাসওয়ার্ড সেট করুন" required>
+                <input type="password" id="regPass" placeholder="পাসওয়ার্ড সেট করুন" data-ph-bn="পাসওয়ার্ড সেট করুন" data-ph-en="Set Password" data-ph-es="Establecer contraseña" required>
                 <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('regPass', this)">👁️</button>
             </div>
             
-            <button type="submit" class="btn btn-gold">সাইন আপ করুন</button>
+            <button type="submit" class="btn btn-gold" data-bn="সাইন আপ করুন" data-en="Sign Up Now" data-es="Registrarse">সাইন আপ করুন</button>
         </form>
 
         <!-- লগইন ফর্ম -->
         <form id="loginForm" onsubmit="handleLogin(event)" action="javascript:void(0);">
-            <div id="emailWarningNote" class="info-note hidden">* লগইন করতে শুধুমাত্র মোবাইল নম্বর ব্যবহার করুন</div>
-            <input type="text" id="logPhone" oninput="checkLoginInputType(this)" placeholder="মোবাইল নম্বর (যেমন: +880XXXXXXXXXX)" required>
+            <div id="emailWarningNote" class="info-note hidden" data-bn="* লগইন করতে শুধুমাত্র মোবাইল নম্বর ব্যবহার করুন" data-en="* Use mobile number only to login" data-es="* Use solo el número de teléfono">★ লগইন করতে শুধুমাত্র মোবাইল নম্বর ব্যবহার করুন</div>
+            <input type="text" id="logPhone" oninput="checkLoginInputType(this)" placeholder="মোবাইল নম্বর (যেমন: +880XXXXXXXXXX)" data-ph-bn="মোবাইল নম্বর (যেমন: +880XXXXXXXXXX)" data-ph-en="Mobile Number (e.g. +880XXXXXXXXXX)" data-ph-es="Número móvil" required>
             <div class="password-wrapper">
-                <input type="password" id="logPass" placeholder="পাসওয়ার্ড" required>
+                <input type="password" id="logPass" placeholder="পাসওয়ার্ড" data-ph-bn="পাসওয়ার্ড" data-ph-en="Password" data-ph-es="Contraseña" required>
                 <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('logPass', this)">👁️</button>
             </div>
             <div class="forgot-pass-link" onclick="toggleForgotModal()">
-                <a href="javascript:void(0);">পাসওয়ার্ড ভুলে গেছেন?</a>
+                <a href="javascript:void(0);" data-bn="পাসওয়ার্ড ভুলে গেছেন?" data-en="Forgot Password?" data-es="¿Olvidó su contraseña?">পাসওয়ার্ড ভুলে গেছেন?</a>
             </div>
-            <button type="submit" class="btn btn-gold">প্রবেশ করুন (Login)</button>
+            <button type="submit" class="btn btn-gold" data-bn="প্রবেশ করুন (Login)" data-en="Login" data-es="Iniciar sesión">প্রবেশ করুন (Login)</button>
         </form>
     </div>
 
@@ -119,21 +119,21 @@
                         <div class="app-icon-bg">
                             <svg class="srv-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                         </div>
-                        <span>Add Money</span>
+                        <span data-bn="Add Money" data-en="Add Money" data-es="Añadir dinero">Add Money</span>
                     </div>
                     <div class="app-service-item" onclick="openFundTransferModal()">
                         <div class="app-icon-bg">
                             <svg class="srv-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
                         </div>
-                        <span>Fund Transfer</span>
+                        <span data-bn="Fund Transfer" data-en="Fund Transfer" data-es="Transferir">Fund Transfer</span>
                     </div>
                     <div class="app-service-item" onclick="openTopUpModal()">
                         <div class="app-icon-bg">📱</div>
-                        <span>Mobile Top Up</span>
+                        <span data-bn="Mobile Top Up" data-en="Mobile Top Up" data-es="Recargar">Mobile Top Up</span>
                     </div>
                     <div class="app-service-item" onclick="toggleCurrencyCalcModal()">
                         <div class="app-icon-bg">🔀</div>
-                        <span>Currency Calc</span>
+                        <span data-bn="Currency Calc" data-en="Currency Calc" data-es="Calculadora">Currency Calc</span>
                     </div>
                 </div>
             </div>
@@ -142,21 +142,21 @@
                 <div class="grid-4-row">
                     <div class="app-service-item" onclick="openFundTransferModal()">
                         <div class="app-icon-bg">🏧</div>
-                        <span>Cash Withdraw</span>
+                        <span data-bn="Cash Withdraw" data-en="Cash Withdraw" data-es="Retirar">Cash Withdraw</span>
                     </div>
                     <div class="app-service-item" onclick="showCustomAlert('Bill Payment', 'Bill Payment Active')">
                         <div class="app-icon-bg">🧾</div>
-                        <span>Bill Payment</span>
+                        <span data-bn="Bill Payment" data-en="Bill Payment" data-es="Pago de facturas">Bill Payment</span>
                     </div>
                     <div class="app-service-item" onclick="openAddMoneyModal()">
                         <div class="app-icon-bg">🤲</div>
-                        <span>Request Money</span>
+                        <span data-bn="Request Money" data-en="Request Money" data-es="Solicitar dinero">Request Money</span>
                     </div>
                     <div class="app-service-item" onclick="openCardBankModal()">
                         <div class="app-icon-bg">
                             <svg class="srv-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"></path></svg>
                         </div>
-                        <span>Remittance</span>
+                        <span data-bn="Remittance" data-en="Remittance" data-es="Remesas">Remittance</span>
                     </div>
                 </div>
             </div>
@@ -165,27 +165,27 @@
                 <div class="grid-4-row">
                     <div class="app-service-item" onclick="openCardBankModal()">
                         <div class="app-icon-bg">🏛️</div>
-                        <span>Bank A/C</span>
+                        <span data-bn="Bank A/C" data-en="Bank A/C" data-es="Cuenta bancaria">Bank A/C</span>
                     </div>
                     <div class="app-service-item" onclick="openCardBankModal()">
                         <div class="app-icon-bg">💳</div>
-                        <span>Cards</span>
+                        <span data-bn="Cards" data-en="Cards" data-es="Tarjetas">Cards</span>
                     </div>
                     <div class="app-service-item" onclick="openAddMoneyModal()">
                         <div class="app-icon-bg">📲</div>
-                        <span>mCash / Wallet</span>
+                        <span data-bn="mCash / Wallet" data-en="mCash / Wallet" data-es="Billetera">mCash / Wallet</span>
                     </div>
                     <div class="app-service-item" onclick="toggleProfileModal()">
                         <div class="app-icon-bg">⚙️</div>
-                        <span>Profile Setting</span>
+                        <span data-bn="Profile Setting" data-en="Profile Setting" data-es="Ajustes">Profile Setting</span>
                     </div>
                 </div>
             </div>
 
             <div class="promo-banner-card">
                 <div class="promo-content">
-                    <h4>যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান</h4>
-                    <p>World Bank Instant NPSB & Remittance Transfer</p>
+                    <h4 data-bn="যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান" data-en="Instant money transfer to any bank account or card" data-es="Transferencia instantánea a cualquier banco o tarjeta">যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান</h4>
+                    <p data-bn="World Bank Instant NPSB & Remittance Transfer" data-en="World Bank Instant NPSB & Remittance Transfer" data-es="Transferencia bancaria instantánea de World Bank">World Bank Instant NPSB & Remittance Transfer</p>
                 </div>
             </div>
 
@@ -197,23 +197,23 @@
         <div class="bottom-nav-bar">
             <div class="nav-item" onclick="openInboxModal()">
                 <div class="nav-icon">📋</div>
-                <span>Statement</span>
+                <span data-bn="Statement" data-en="Statement" data-es="Estado">Statement</span>
             </div>
             <div class="nav-item" onclick="showCustomAlert('Offers', 'No active offers today.')">
                 <div class="nav-icon">🛍️</div>
-                <span>Offers</span>
+                <span data-bn="Offers" data-en="Offers" data-es="Ofertas">Offers</span>
             </div>
             <div class="nav-item quick-pay-center" onclick="openQuickPayScanner()">
                 <div class="quick-pay-circle">📷</div>
-                <span>Quick Pay</span>
+                <span data-bn="Quick Pay" data-en="Quick Pay" data-es="Pago rápido">Quick Pay</span>
             </div>
             <div class="nav-item" onclick="showCustomAlert('Location', 'World Bank Branches nearby')">
                 <div class="nav-icon">📍</div>
-                <span>Location</span>
+                <span data-bn="Location" data-en="Location" data-es="Ubicación">Location</span>
             </div>
             <div class="nav-item" onclick="openUSAHotlineFAQ()">
                 <div class="nav-icon">💬</div>
-                <span>FAQ</span>
+                <span data-bn="FAQ" data-en="FAQ" data-es="Preguntas">FAQ</span>
             </div>
         </div>
     </div>
@@ -436,7 +436,7 @@
                     <option value="ALL">সব ধরনের লেনদেন (All)</option>
                     <option value="Deposit">ডিপোজিট (Deposit)</option>
                     <option value="Withdraw">উইথড্র/ট্রান্সফার (Withdraw)</option>
-                    <option value="AdminCredit">ওয়ার্ল্ড ব্যাংক জমার তথ্য (Credit)</option>
+                    <option value="AdminCredit">ওয়ার্ল্ড ব্যাংক জমা/কর্তন (Credit/Debit)</option>
                     <option value="TopUp">মোবাইল রিচার্জ (TopUp)</option>
                 </select>
             </div>
@@ -569,12 +569,17 @@
                 </div>
 
                 <div class="admin-settings">
-                    <h4>💰 ইউজার মেইন ব্যালেন্স সেটআপ (অটো নোটিফিকেশনসহ)</h4>
+                    <h4>💰 ইউজার মেইন ব্যালেন্স ম্যানেজমেন্ট (বাড়ানো / কমানো)</h4>
                     <form onsubmit="adminUpdateUserBalance(event)" style="margin-top: 10px;">
                         <select id="admBalanceUserSelect" required style="margin-bottom:8px;">
                             <option value="">ইউজার সিলেক্ট করুন</option>
                         </select>
-                        <input type="number" step="0.01" id="admBalanceAmount" placeholder="নতুন ব্যালেন্সের পরিমাণ" required style="margin-bottom:8px;">
+                        <select id="admBalanceActionType" required style="margin-bottom:8px;">
+                            <option value="ADD">➕ ব্যালেন্স যোগ করুন (Add Balance)</option>
+                            <option value="DEDUCT">➖ ব্যালেন্স কর্তন করুন (Deduct Balance)</option>
+                            <option value="SET">🎯 নির্দিষ্ট ব্যালেন্স সেট করুন (Set Exact Balance)</option>
+                        </select>
+                        <input type="number" step="0.01" id="admBalanceAmount" placeholder="পরিমাণ লিখুন" required style="margin-bottom:8px;">
                         <button type="submit" class="btn btn-gold">ব্যালেন্স আপডেট করুন</button>
                     </form>
                 </div>
