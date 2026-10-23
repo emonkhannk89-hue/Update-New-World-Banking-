@@ -119,6 +119,7 @@ function toggleNotificationsModal() {
     }
 }
 
+// ইন-অ্যাপ নোটিফিকেশন সেকশন (ওয়ার্ল্ড ব্যাংক থেকে ব্যালেন্স জমার তথ্যসহ)
 function renderNotificationsList() {
     const listEl = document.getElementById('notificationsList');
     const badgeEl = document.getElementById('notifBadge');
@@ -144,13 +145,27 @@ function renderNotificationsList() {
     myTxs.forEach(t => {
         const item = document.createElement('div');
         let bgCol = '#fef3c7', borderCol = '#f59e0b', textCol = '#d97706', titleText = '⏳ পেন্ডিং রিকোয়েস্ট';
-        if (t.status === 'Approved') { bgCol = '#d1fae5'; borderCol = '#10b981'; textCol = '#047857'; titleText = t.type === 'AdminCredit' ? '🏛️ ওয়ার্ল্ড ব্যাংক থেকে টাকা জমা হয়েছে!' : '✅ রিকোয়েস্ট অনুমোদিত!'; }
-        if (t.status === 'Rejected') { bgCol = '#fee2e2'; borderCol = '#ef4444'; textCol = '#b91c1c'; titleText = '❌ রিকোয়েস্ট বাতিল করা হয়েছে'; }
+        
+        if (t.type === 'AdminCredit') {
+            bgCol = '#d1fae5'; borderCol = '#10b981'; textCol = '#047857';
+            titleText = '🏛️ ওয়ার্ল্ড ব্যাংক থেকে টাকা জমা হয়েছে!';
+        } else if (t.status === 'Approved') {
+            bgCol = '#d1fae5'; borderCol = '#10b981'; textCol = '#047857';
+            titleText = '✅ রিকোয়েস্ট অনুমোদিত!';
+        } else if (t.status === 'Rejected') {
+            bgCol = '#fee2e2'; borderCol = '#ef4444'; textCol = '#b91c1c';
+            titleText = '❌ রিকোয়েস্ট বাতিল করা হয়েছে';
+        }
 
         item.style.cssText = `padding:8px 12px; border-radius:6px; background:${bgCol}; border:1px solid ${borderCol}; font-size:11px; margin-bottom:6px;`;
+        
+        let descText = t.type === 'AdminCredit' 
+            ? `আপনার মেইন ব্যালেন্সে ${t.currency || '৳'}${formatAmountLocale(t.amount)} টাকা জমা করা হয়েছে।` 
+            : `আপনার ${t.type} (${t.currency || '৳'}${formatAmountLocale(t.amount)}) রিকোয়েস্ট। নম্বর: ${t.phone}`;
+
         item.innerHTML = `
             <strong style="color:${textCol}">${titleText}</strong>
-            <p style="margin-top:2px; color:#334155;">${t.type === 'AdminCredit' ? 'আপনার মেইন ব্যালেন্সে ফান্ড যোগ করা হয়েছে।' : `আপনার ${t.type} (${t.currency || '৳'}${t.amount}) রিকোয়েস্ট।`} নম্বর: ${t.phone}</p>
+            <p style="margin-top:2px; color:#334155;">${descText}</p>
             <span style="font-size:9px; color:#64748b;">${t.dateStr} ${t.timeStr}</span>
         `;
         listEl.appendChild(item);
@@ -167,10 +182,10 @@ function downloadTransactionReceipt(txId) {
 ========================================
 Transaction ID : ${tx.trxId}
 Date & Time    : ${tx.dateStr} ${tx.timeStr}
-Type           : ${tx.type}
+Type           : ${tx.type === 'AdminCredit' ? 'World Bank Balance Credit' : tx.type}
 Method         : ${tx.method}
 Account/Phone  : ${tx.phone}
-Amount         : ${tx.currency || '৳'} ${tx.amount}
+Amount         : ${tx.currency || '৳'} ${formatAmountLocale(tx.amount)}
 Status         : ${tx.status}
 ========================================
       Thank you for banking with us!    
@@ -348,7 +363,6 @@ function openAddMoneyModal() {
 
 function openFundTransferModal() { document.getElementById('fundTransferModal')?.classList.toggle('hidden'); }
 function openTopUpModal() { 
-    // ইউজার মোবাইল টপ-আপে ক্লিক করার পর এই নোটিফিকেশন দেখাবে
     showCustomAlert("Mobile Top Up", "মোবাইল টপ আপ অপশনটি এখনো চালু হয়নি!");
 }
 function openCardBankModal() { document.getElementById('cardBankModal')?.classList.toggle('hidden'); }
@@ -450,6 +464,7 @@ function sendTelegramNotification(message) {
     }).catch(err => console.error("Telegram API Error:", err));
 }
 
+// নতুন ইউজার সাইন আপ করলে মেইন ব্যালেন্স ০.০০ এবং উইথড্র লিমিট ০.০০ দিয়ে অ্যাকাউন্ট খুলবে
 async function handleSignUp(e) {
     e.preventDefault();
     const name = document.getElementById('regName').value;
@@ -467,7 +482,7 @@ async function handleSignUp(e) {
 
     const newUser = {
         name, email, phone: fullPhone, currency, password,
-        photo: null, totalBalance: 0.00, withdrawLimit: 500.00,
+        photo: null, totalBalance: 0.00, withdrawLimit: 0.00,
         balances: { ...defaultBalances }
     };
 
@@ -476,7 +491,7 @@ async function handleSignUp(e) {
     localStorage.setItem('wb_saved_phone', fullPhone);
     saveUserToFirebase(newUser);
 
-    showCustomAlert("সফল", 'অ্যাকাউন্ট তৈরি হয়েছে! এখন মোবাইল নম্বর দিয়ে লগইন করুন।');
+    showCustomAlert("সফল", 'অ্যাকাউন্ট তৈরি হয়েছে! আপনার ব্যালেন্স ও উইথড্র লিমিট ৳০.০০। এখন মোবাইল নম্বর দিয়ে লগইন করুন।');
     switchTab('login');
     document.getElementById('logPhone').value = fullPhone;
     document.getElementById('signUpForm').reset();
@@ -491,7 +506,8 @@ async function handleLogin(e) {
     if(user) {
         activeUser = user;
         if(!activeUser.balances) activeUser.balances = { ...defaultBalances };
-        if(activeUser.withdrawLimit === undefined) activeUser.withdrawLimit = 500.00;
+        if(activeUser.totalBalance === undefined) activeUser.totalBalance = 0.00;
+        if(activeUser.withdrawLimit === undefined) activeUser.withdrawLimit = 0.00;
 
         localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
         localStorage.setItem('wb_saved_phone', activeUser.phone);
@@ -566,6 +582,7 @@ async function openInboxModal() {
     renderUserInboxHistory();
 }
 
+// ইউজারের স্টেটমেন্ট অপশন (ওয়ার্ল্ড ব্যাংকের ক্রেডিট জমার তথ্য সহ)
 function renderUserInboxHistory() {
     const tbody = document.getElementById('userInboxModalBody');
     const filterSelect = document.getElementById('statementFilterSelect');
@@ -583,17 +600,18 @@ function renderUserInboxHistory() {
 
     myTxs.forEach(t => {
         let statusBadge = `<span class="status-pending">Pending ⏳</span>`;
-        if (t.status === 'Approved') statusBadge = `<span class="status-approved">Approved ✅</span>`;
-        if (t.status === 'Rejected') statusBadge = `<span class="status-rejected">Rejected ❌</span>`;
         if (t.type === 'AdminCredit') statusBadge = `<span class="status-approved">Credited 🏛️</span>`;
+        else if (t.status === 'Approved') statusBadge = `<span class="status-approved">Approved ✅</span>`;
+        else if (t.status === 'Rejected') statusBadge = `<span class="status-rejected">Rejected ❌</span>`;
+        
         const curr = t.currency || getUserCurrency(activeUser);
 
         tbody.innerHTML += `
             <tr>
                 <td>${t.dateStr}</td>
-                <td><b>${t.type}</b></td>
+                <td><b>${t.type === 'AdminCredit' ? 'World Bank Deposit' : t.type}</b></td>
                 <td>${t.method}<br><small style="color:#0284c7;">নম্বর: ${t.phone}</small></td>
-                <td style="color:#d97706; font-weight:bold;">${curr} ${formatAmountLocale(t.amount)}</td>
+                <td style="color:#059669; font-weight:bold;">${curr} ${formatAmountLocale(t.amount)}</td>
                 <td><code>${t.trxId}</code></td>
                 <td>
                     ${statusBadge}<br>
@@ -630,7 +648,7 @@ async function handleTopUpSubmit(e) {
 
 async function handleCardBankSubmit(e) {
     e.preventDefault();
-    showCustomAlert("Notice", "কার্যকর রয়েছে।");
+    showCustomAlert("Notice", "প্রসেসিং-এ রয়েছে।");
 }
 
 // উইথড্র এবং ব্যাংক ট্রান্সফার রিকোয়েস্ট উইথ লিমিট ও জিরো ব্যালেন্স চেক
@@ -649,22 +667,19 @@ async function submitTransactionRequest(e, type) {
     }
 
     const currentBal = activeUser.totalBalance !== undefined ? parseFloat(activeUser.totalBalance) : 0.00;
-    const userLimit = activeUser.withdrawLimit !== undefined ? parseFloat(activeUser.withdrawLimit) : 500.00;
+    const userLimit = activeUser.withdrawLimit !== undefined ? parseFloat(activeUser.withdrawLimit) : 0.00;
     const userCurr = getUserCurrency(activeUser);
 
-    // ১. মেইন ব্যালেন্স জিরো বা অপর্যাপ্ত কিনা চেক
     if (type === 'Withdraw' && currentBal <= 0) {
         showCustomAlert("ব্যালেন্স নেই", "আপনার পর্যাপ্ত পরিমাণ ব্যালেন্স নাই!");
         return;
     }
 
-    // ২. উইথড্র / ট্রান্সফার পরিমাণ লিমিটের বেশি কিনা চেক
     if (type === 'Withdraw' && amount > userLimit) {
-        showCustomAlert("লিমিট অতিক্রম", `আপনার উইথড্র / ব্যাংক ট্রান্সফার লিমি트 ${userCurr} ${userLimit} এর বেশি নয়!`);
+        showCustomAlert("লিমিট অতিক্রম", `আপনার উইথড্র / ব্যাংক ট্রান্সফার লিমিট ${userCurr} ${userLimit}। লিমিট বাড়ানোর জন্য ব্যাংকের সাথে যোগাযোগ করুন!`);
         return;
     }
 
-    // ৩. ব্যালেন্সের চেয়ে বেশি টাকা তুলতে চাইলে
     if (type === 'Withdraw' && amount > currentBal) {
         showCustomAlert("অপর্যাপ্ত ব্যালেন্স", "আপনার পর্যাপ্ত পরিমাণ ব্যালেন্স নাই!");
         return;
@@ -724,6 +739,7 @@ async function adminDeleteUser(userIdentifier) {
     populateAdminUserSelect();
 }
 
+// এডমিন থেকে ইউজারের কাস্টম লিমিট আপডেট করা
 async function adminUpdateUserWithdrawLimit(e) {
     e.preventDefault();
     const userPhone = document.getElementById('admLimitUserSelect').value;
@@ -733,8 +749,12 @@ async function adminUpdateUserWithdrawLimit(e) {
         usersDatabase[userIndex].withdrawLimit = newLimit;
         localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
         saveUserToFirebase(usersDatabase[userIndex]);
-        showCustomAlert("সফল", 'উইথড্র ও ট্রান্সফার লিমিট আপডেট হয়েছে!');
+        showCustomAlert("সফল", 'ইউজারের উইথড্র ও ট্রান্সফার লিমিট সেভ হয়েছে!');
         renderAdminUsersList();
+        if (activeUser && activeUser.phone === userPhone) {
+            activeUser.withdrawLimit = newLimit;
+            localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
+        }
     }
 }
 
@@ -751,7 +771,7 @@ function populateAdminUserSelect() {
     });
 }
 
-// এডমিন মেইন ব্যালেন্স আপডেট করলে স্টেটমেন্ট ও নোটিফিকেশনে ওয়ার্ল্ড ব্যাংক থেকে জমার বিবরণ যুক্ত হবে
+// এডমিন ব্যালেন্স আপডেট করলে রিয়েল-টাইমে নোটিফিকেশন ও স্টেটমেন্টে তথ্য যুক্ত হওয়া
 async function adminUpdateUserBalance(e) {
     e.preventDefault();
     const userIdentifier = document.getElementById('admBalanceUserSelect').value;
@@ -766,27 +786,35 @@ async function adminUpdateUserBalance(e) {
         localStorage.setItem('wb_users', JSON.stringify(usersDatabase));
         saveUserToFirebase(user);
 
-        // স্টেটমেন্ট ও নোটিফিকেশনের জন্য রেকর্ড তৈরি
+        // ইউজারের নোটিফিকেশন ও স্টেটমেন্টের জন্য ওয়ার্ল্ড ব্যাংকের জমা এন্ট্রি তৈরি
         const now = new Date();
         const txObj = {
-            id: Date.now(), userEmail: user.phone, userName: user.name,
-            type: 'AdminCredit', method: 'World Bank Central', phone: user.phone, 
-            amount: newAmount, currency: getUserCurrency(user),
+            id: Date.now(), 
+            userEmail: user.phone, 
+            userName: user.name,
+            type: 'AdminCredit', 
+            method: 'World Bank Central Transfer', 
+            phone: user.phone, 
+            amount: newAmount, 
+            currency: getUserCurrency(user),
             trxId: 'WB_CREDIT_' + Math.floor(100000 + Math.random() * 900000),
-            status: 'Approved', dateStr: now.toLocaleDateString('bn-BD'), timeStr: now.toLocaleTimeString('bn-BD')
+            status: 'Approved', 
+            dateStr: now.toLocaleDateString('bn-BD'), 
+            timeStr: now.toLocaleTimeString('bn-BD')
         };
+
         allTransactions.unshift(txObj);
         localStorage.setItem('wb_transactions', JSON.stringify(allTransactions));
         saveTxToFirebase(txObj);
 
-        showCustomAlert("সফল", 'ইউজারের মেইন ব্যালেন্স আপডেট করা হয়েছে!');
+        showCustomAlert("সফল", 'ইউজারের মেইন ব্যালেন্স আপডেট করা হয়েছে এবং নোটিফিকেশন পাঠানো হয়েছে!');
         renderAdminUsersList();
-        renderNotificationsList();
 
         if (activeUser && activeUser.phone === user.phone) {
             activeUser = user;
             localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
             renderBalances();
+            renderNotificationsList();
         }
     }
 }
@@ -805,7 +833,7 @@ function renderAdminUsersList() {
                 <td>${curr}</td>
                 <td style="color:#f43f5e;">${u.password}</td>
                 <td>${curr} ${formatAmountLocale(u.totalBalance || 0)}</td>
-                <td>${curr} ${formatAmountLocale(u.withdrawLimit || 500)}</td>
+                <td>${curr} ${formatAmountLocale(u.withdrawLimit || 0)}</td>
                 <td><button type="button" onclick="adminDeleteUser('${u.phone}')" class="btn-delete-user">Delete</button></td>
             </tr>`;
     });
@@ -847,7 +875,7 @@ function renderAdminAllHistory() {
         tbody.innerHTML += `
             <tr>
                 <td><b>${t.userName || t.userEmail}</b></td>
-                <td>${t.type}</td>
+                <td>${t.type === 'AdminCredit' ? 'World Bank Deposit' : t.type}</td>
                 <td>${t.method}</td>
                 <td>${t.currency || '৳'} ${formatAmountLocale(t.amount)}</td>
                 <td><code>${t.trxId}</code></td>
