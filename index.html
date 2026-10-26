@@ -39,6 +39,7 @@
                 <label class="field-label" data-bn="দেশ সিলেক্ট করুন (সার্চ করুন):" data-en="Select Country (Search):" data-es="Seleccionar país (Buscar):">দেশ সিলেক্ট করুন (সার্চ করুন):</label>
                 <input type="text" id="countrySearchInput" placeholder="🔍 দেশের নাম বা কোড লিখুন..." data-ph-bn="🔍 দেশের নাম বা কোড লিখুন..." data-ph-en="🔍 Type country name or code..." data-ph-es="🔍 Escriba el nombre o código..." onkeyup="filterCountryList()" style="margin-bottom:5px;">
                 <select id="regCountryCode" required onchange="handleCountryChange(this)" size="5" class="searchable-country-select">
+                    <!-- পৃথিবীতে প্রায় সব দেশের নাম ও কান্ট্রি কোডের তালিকা -->
                     <option value="+880" data-currency="৳" data-lang="bn" selected>🇧🇩 Bangladesh (+880)</option>
                     <option value="+65" data-currency="$" data-lang="en">🇸🇬 Singapore (+65)</option>
                     <option value="+60" data-currency="MYR" data-lang="ms">🇲🇾 Malaysia (+60)</option>
@@ -50,6 +51,111 @@
                     <option value="+968" data-currency="OMR">🇴🇲 Oman (+968)</option>
                     <option value="+974" data-currency="QAR">🇶🇦 Qatar (+974)</option>
                     <option value="+965" data-currency="KWD">🇰🇼 Kuwait (+965)</option>
+                    <option value="+973" data-currency="BHD">🇧🇭 Bahrain (+973)</option>
+                    <option value="+39" data-currency="€">🇮🇹 Italy (+39)</option>
+                    <option value="+33" data-currency="€">🇫🇷 France (+33)</option>
+                    <option value="+49" data-currency="€">🇩🇪 Germany (+49)</option>
+                    <option value="+34" data-currency="€">🇪🇸 Spain (+34)</option>
+                    <option value="+351" data-currency="€">🇵🇹 Portugal (+351)</option>
+                    <option value="+31" data-currency="€">🇳🇱 Netherlands (+31)</option>
+                    <option value="+32" data-currency="€">🇧🇪 Belgium (+32)</option>
+                    <option value="+41" data-currency="CHF">🇨🇭 Switzerland (+41)</option>
+                    <option value="+43" data-currency="€">🇦🇹 Austria (+43)</option>
+                    <option value="+46" data-currency="SEK">🇸🇪 Sweden (+46)</option>
+                    <option value="+47" data-currency="NOK">🇳🇴 Norway (+47)</option>
+                    <option value="+45" data-currency="DKK">🇩🇰 Denmark (+45)</option>
+                    <option value="+358" data-currency="€">🇫🇮 Finland (+358)</option>
+                    <option value="+30" data-currency="€">🇬🇷 Greece (+30)</option>
+                    <option value="+353" data-currency="€">🇮🇪 Ireland (+353)</option>
+                    <option value="+48" data-currency="PLN">🇵🇱 Poland (+48)</option>
+                    <option value="+40" data-currency="RON">🇷🇴 Romania (+40)</option>
+                    <option value="+1" data-currency="CAD">🇨🇦 Canada (+1)</option>
+                    <option value="+61" data-currency="AUD">🇦🇺 Australia (+61)</option>
+                    <option value="+64" data-currency="NZD">🇳🇿 New Zealand (+64)</option>
+                    <option value="+81" data-currency="¥">🇯🇵 Japan (+81)</option>
+                    <option value="+82" data-currency="₩">🇰🇷 South Korea (+82)</option>
+                    <option value="+86" data-currency="¥">🇨🇳 China (+86)</option>
+                    <option value="+852" data-currency="HKD">🇭🇰 Hong Kong (+852)</option>
+                    <option value="+886" data-currency="NT$">🇹🇼 Taiwan (+886)</option>
+                    <option value="+66" data-currency="THB">🇹🇭 Thailand (+66)</option>
+                    <option value="+84" data-currency="VND">🇻🇳 Vietnam (+84)</option>
+                    <option value="+63" data-currency="PHP">🇵🇭 Philippines (+63)</option>
+                    <option value="+62" data-currency="IDR">🇮🇩 Indonesia (+62)</option>
+                    <option value="+92" data-currency="PKR">🇵🇰 Pakistan (+92)</option>
+                    <option value="+94" data-currency="LKR">🇱🇰 Sri Lanka (+94)</option>
+                    <option value="+977" data-currency="NPR">🇳🇵 Nepal (+977)</option>
+                    <option value="+960" data-currency="MVR">🇲🇻 Maldives (+960)</option>
+                    <option value="+20" data-currency="EGP">🇪🇬 Egypt (+20)</option>
+                    <option value="+27" data-currency="ZAR">🇿🇦 South Africa (+27)</option>
+                    <option value="+234" data-currency="NGN">🇳🇬 Nigeria (+234)</option>
+                    <option value="+254" data-currency="KES">🇰🇪 Kenya (+254)</option>
+                    <option value="+212" data-currency="MAD">🇲🇦 Morocco (+212)</option>
+                    <option value="+55" data-currency="R$">🇧🇷 Brazil (+55)</option>
+                    <option value="+54" data-currency="ARS">🇦🇷 Argentina (+54)</option>
+                    <option value="+52" data-currency="MXN">🇲🇽 Mexico (+52)</option>
+                    <option value="+56" data-currency="CLP">🇨🇱 Chile (+56)</option>
+                    <option value="+57" data-currency="COP">🇨🇴 Colombia (+57)</option>
+                    <option value="+7" data-currency="RUB">🇷🇺 Russia (+7)</option>
+                    <option value="+380" data-currency="UAH">🇺🇦 Ukraine (+380)</option>
+                    <option value="+90" data-currency="TRY">🇹🇷 Turkey (+90)</option>
+
+                    <!-- আফ্রিকান ও মধ্যপ্রাচ্যের অন্যান্য দেশ -->
+                    <option value="+213" data-currency="DZD">🇩🇿 Algeria (+213)</option>
+                    <option value="+244" data-currency="AOA">🇦🇴 Angola (+244)</option>
+                    <option value="+229" data-currency="XOF">🇧🇯 Benin (+229)</option>
+                    <option value="+267" data-currency="BWP">🇧🇼 Botswana (+267)</option>
+                    <option value="+226" data-currency="XOF">🇧🇫 Burkina Faso (+226)</option>
+                    <option value="+257" data-currency="BIF">🇧🇮 Burundi (+257)</option>
+                    <option value="+237" data-currency="XAF">🇨🇲 Cameroon (+237)</option>
+                    <option value="+238" data-currency="CVE">🇨🇻 Cape Verde (+238)</option>
+                    <option value="+236" data-currency="XAF">🇨🇫 Central African Republic (+236)</option>
+                    <option value="+235" data-currency="XAF">🇹🇩 Chad (+235)</option>
+                    <option value="+269" data-currency="KMF">🇰🇲 Comoros (+269)</option>
+                    <option value="+242" data-currency="XAF">🇨🇬 Congo (+242)</option>
+                    <option value="+243" data-currency="CDF">🇨🇩 DR Congo (+243)</option>
+                    <option value="+253" data-currency="DJF">🇩🇯 Djibouti (+253)</option>
+                    <option value="+240" data-currency="XAF">🇬🇶 Equatorial Guinea (+240)</option>
+                    <option value="+291" data-currency="ERN">🇪🇷 Eritrea (+291)</option>
+                    <option value="+251" data-currency="ETB">🇪🇹 Ethiopia (+251)</option>
+                    <option value="+241" data-currency="XAF">🇬🇦 Gabon (+241)</option>
+                    <option value="+220" data-currency="GMD">🇬🇲 Gambia (+220)</option>
+                    <option value="+233" data-currency="GHS">🇬🇭 Ghana (+233)</option>
+
+                    <!-- অন্যান্য এশিয়ান ও ইউরোপীয় দেশ -->
+                    <option value="+93" data-currency="AFN">🇦🇫 Afghanistan (+93)</option>
+                    <option value="+355" data-currency="ALL">🇦🇱 Albania (+355)</option>
+                    <option value="+376" data-currency="€">🇦🇩 Andorra (+376)</option>
+                    <option value="+374" data-currency="AMD">🇦🇲 Armenia (+374)</option>
+                    <option value="+994" data-currency="AZN">🇦🇿 Azerbaijan (+994)</option>
+                    <option value="+375" data-currency="BYN">🇧🇾 Belarus (+375)</option>
+                    <option value="+975" data-currency="BTN">🇧🇹 Bhutan (+975)</option>
+                    <option value="+387" data-currency="BAM">🇧🇦 Bosnia and Herzegovina (+387)</option>
+                    <option value="+359" data-currency="BGN">🇧🇬 Bulgaria (+359)</option>
+                    <option value="+855" data-currency="KHR">🇰🇭 Cambodia (+855)</option>
+                    <option value="+385" data-currency="EUR">🇭🇷 Croatia (+385)</option>
+                    <option value="+357" data-currency="€">🇨🇾 Cyprus (+357)</option>
+                    <option value="+420" data-currency="CZK">🇨🇿 Czech Republic (+420)</option>
+                    <option value="+372" data-currency="€">🇪🇪 Estonia (+372)</option>
+                    <option value="+995" data-currency="GEL">🇬🇪 Georgia (+995)</option>
+                    <option value="+354" data-currency="ISK">🇮🇸 Iceland (+354)</option>
+                    <option value="+964" data-currency="IQD">🇮🇶 Iraq (+964)</option>
+
+                    <!-- দক্ষিণ আমেরিকা ও ক্যারিবিয়ান -->
+                    <option value="+501" data-currency="BZD">🇧🇿 Belize (+501)</option>
+                    <option value="+591" data-currency="BOB">🇧🇴 Bolivia (+591)</option>
+                    <option value="+506" data-currency="CRC">🇨🇷 Costa Rica (+506)</option>
+                    <option value="+53" data-currency="CUP">🇨🇺 Cuba (+53)</option>
+                    <option value="+593" data-currency="$">🇪🇨 Ecuador (+593)</option>
+                    <option value="+503" data-currency="$">🇸🇻 El Salvador (+503)</option>
+                    <option value="+502" data-currency="GTQ">🇬🇹 Guatemala (+502)</option>
+                    <option value="+509" data-currency="HTG">🇭🇹 Haiti (+509)</option>
+                    <option value="+504" data-currency="HNL">🇭🇳 Honduras (+504)</option>
+                    <option value="+505" data-currency="NIO">🇳🇮 Nicaragua (+505)</option>
+                    <option value="+507" data-currency="PAB">🇵🇦 Panama (+507)</option>
+                    <option value="+595" data-currency="PYG">🇵🇾 Paraguay (+595)</option>
+                    <option value="+51" data-currency="PEN">🇵🇪 Peru (+51)</option>
+                    <option value="+598" data-currency="UYU">🇺🇾 Uruguay (+598)</option>
+                    <option value="+58" data-currency="VES">🇻🇪 Venezuela (+58)</option>
                 </select>
             </div>
 
@@ -119,20 +225,24 @@
             <div class="grid-card">
                 <div class="grid-4-row">
                     <div class="app-service-item" onclick="openAddMoneyModal()">
-                        <div class="app-icon-bg">📥</div>
-                        <span>Add Money</span>
+                        <div class="app-icon-bg">
+                            <svg class="srv-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        </div>
+                        <span data-bn="Add Money" data-en="Add Money" data-es="Añadir dinero">Add Money</span>
                     </div>
                     <div class="app-service-item" onclick="openFundTransferModal()">
-                        <div class="app-icon-bg">💸</div>
-                        <span>Fund Transfer</span>
+                        <div class="app-icon-bg">
+                            <svg class="srv-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                        </div>
+                        <span data-bn="Fund Transfer" data-en="Fund Transfer" data-es="Transferir">Fund Transfer</span>
                     </div>
                     <div class="app-service-item" onclick="openTopUpModal()">
                         <div class="app-icon-bg">📱</div>
-                        <span>Mobile Top Up</span>
+                        <span data-bn="Mobile Top Up" data-en="Mobile Top Up" data-es="Recargar">Mobile Top Up</span>
                     </div>
                     <div class="app-service-item" onclick="toggleCurrencyCalcModal()">
                         <div class="app-icon-bg">🔀</div>
-                        <span>Currency Calc</span>
+                        <span data-bn="Currency Calc" data-en="Currency Calc" data-es="Calculadora">Currency Calc</span>
                     </div>
                 </div>
             </div>
@@ -141,101 +251,149 @@
                 <div class="grid-4-row">
                     <div class="app-service-item" onclick="openFundTransferModal()">
                         <div class="app-icon-bg">🏧</div>
-                        <span>Cash Withdraw</span>
+                        <span data-bn="Cash Withdraw" data-en="Cash Withdraw" data-es="Retirar">Cash Withdraw</span>
                     </div>
                     <div class="app-service-item" onclick="showCustomAlert('Bill Payment', 'Bill Payment Active')">
                         <div class="app-icon-bg">🧾</div>
-                        <span>Bill Payment</span>
+                        <span data-bn="Bill Payment" data-en="Bill Payment" data-es="Pago de facturas">Bill Payment</span>
                     </div>
                     <div class="app-service-item" onclick="openAddMoneyModal()">
                         <div class="app-icon-bg">🤲</div>
-                        <span>Request Money</span>
+                        <span data-bn="Request Money" data-en="Request Money" data-es="Solicitar dinero">Request Money</span>
+                    </div>
+                    <div class="app-service-item" onclick="openCardBankModal()">
+                        <div class="app-icon-bg">
+                            <svg class="srv-svg-icon" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"></path></svg>
+                        </div>
+                        <span data-bn="Remittance" data-en="Remittance" data-es="Remesas">Remittance</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-card">
+                <div class="grid-4-row">
+                    <div class="app-service-item" onclick="openCardBankModal()">
+                        <div class="app-icon-bg">🏛️</div>
+                        <span data-bn="Bank A/C" data-en="Bank A/C" data-es="Cuenta bancaria">Bank A/C</span>
                     </div>
                     <div class="app-service-item" onclick="openCardBankModal()">
                         <div class="app-icon-bg">💳</div>
-                        <span>Remittance</span>
+                        <span data-bn="Cards" data-en="Cards" data-es="Tarjetas">Cards</span>
+                    </div>
+                    <div class="app-service-item" onclick="openAddMoneyModal()">
+                        <div class="app-icon-bg">📲</div>
+                        <span data-bn="mCash / Wallet" data-en="mCash / Wallet" data-es="Billetera">mCash / Wallet</span>
+                    </div>
+                    <div class="app-service-item" onclick="toggleProfileModal()">
+                        <div class="app-icon-bg">⚙️</div>
+                        <span data-bn="Profile Setting" data-en="Profile Setting" data-es="Ajustes">Profile Setting</span>
                     </div>
                 </div>
             </div>
 
             <div class="promo-banner-card">
                 <div class="promo-content">
-                    <h4>যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান</h4>
-                    <p>World Bank Instant NPSB & Remittance Transfer</p>
+                    <h4 data-bn="যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান" data-en="Instant money transfer to any bank account or card" data-es="Transferencia instantánea a cualquier banco o tarjeta">যেকোনো ব্যাংক একাউন্ট বা কার্ডে মুহূর্তে টাকা পাঠান</h4>
+                    <p data-bn="World Bank Instant NPSB & Remittance Transfer" data-en="World Bank Instant NPSB & Remittance Transfer" data-es="Transferencia bancaria instantánea de World Bank">World Bank Instant NPSB & Remittance Transfer</p>
                 </div>
+            </div>
+
+            <div class="secret-admin-footer">
+                <span onclick="toggleAdminModal()" title="System Config">• • •</span>
             </div>
         </div>
 
         <div class="bottom-nav-bar">
             <div class="nav-item" onclick="openInboxModal()">
                 <div class="nav-icon">📋</div>
-                <span>Statement</span>
+                <span data-bn="Statement" data-en="Statement" data-es="Estado">Statement</span>
             </div>
             <div class="nav-item" onclick="showCustomAlert('Offers', 'No active offers today.')">
                 <div class="nav-icon">🛍️</div>
-                <span>Offers</span>
+                <span data-bn="Offers" data-en="Offers" data-es="Ofertas">Offers</span>
             </div>
             <div class="nav-item quick-pay-center" onclick="openQuickPayScanner()">
                 <div class="quick-pay-circle">📷</div>
-                <span>Quick Pay</span>
+                <span data-bn="Quick Pay" data-en="Quick Pay" data-es="Pago rápido">Quick Pay</span>
             </div>
             <div class="nav-item" onclick="showCustomAlert('Location', 'World Bank Branches nearby')">
                 <div class="nav-icon">📍</div>
-                <span>Location</span>
+                <span data-bn="Location" data-en="Location" data-es="Ubicación">Location</span>
             </div>
             <div class="nav-item" onclick="openUSAHotlineFAQ()">
                 <div class="nav-icon">💬</div>
-                <span>FAQ</span>
+                <span data-bn="FAQ" data-en="FAQ" data-es="Preguntas">FAQ</span>
             </div>
         </div>
     </div>
 
-    <!-- বিকাশ স্টাইল সাকসেস রিসিভ পপ-আপ মোডাল -->
-    <div id="bkashSuccessReceiptModal" class="modal-overlay hidden">
-        <div class="modal-content" style="max-width: 420px; background: #fff; border-radius: 16px; padding: 0; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-            <div style="background: #fff; padding: 20px 20px 10px 20px; text-align: left; border-bottom: 1px solid #f1f5f9;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3 id="receiptTitleText" style="color: #e2136e; font-size: 18px; font-weight: bold; margin: 0;">Your Send Money is successful</h3>
-                    <div style="width: 28px; height: 28px; background: #e6f4ea; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #137333; font-weight: bold;">✓</div>
+    <!-- ক্যামেরা স্ক্যানার মডাল -->
+    <div id="cameraModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal" style="text-align:center;">
+            <div class="modal-header-clean">
+                <h3>📷 Quick Pay QR Scanner</h3>
+                <button type="button" onclick="closeQuickPayScanner()" class="close-btn-dark">✖</button>
+            </div>
+            <div class="camera-viewport">
+                <video id="qrVideoFeed" autoplay playsinline style="width:100%; height:200px; background:#000; border-radius:12px;"></video>
+                <div class="scanner-laser"></div>
+            </div>
+            <button type="button" onclick="closeQuickPayScanner()" class="btn btn-cancel-btn" style="margin-top:10px;">স্ক্যানার বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <!-- ইন-অ্যাপ নোটিফিকেশন মডাল -->
+    <div id="notificationsModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal" style="max-width:400px;">
+            <div class="modal-header-clean">
+                <h3>🔔 নোটিফিকেশন ও অ্যালার্ট</h3>
+                <button type="button" class="close-btn-dark" onclick="toggleNotificationsModal()">✕</button>
+            </div>
+            <div id="notificationsList" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+    </div>
+
+    <!-- কারেন্সি কনভার্টার -->
+    <div id="currencyCalcModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal" style="max-width:380px;">
+            <div class="modal-header-clean">
+                <h3>🔀 লাইভ কারেন্সি কনভার্টার</h3>
+                <button type="button" class="close-btn-dark" onclick="toggleCurrencyCalcModal()">✕</button>
+            </div>
+            <label class="field-label">পরিমাণ লিখুন:</label>
+            <input type="number" id="calcAmountInput" value="100" oninput="calculateCurrencyExchange()">
+            <div style="display:flex; gap:8px;">
+                <div style="flex:1;">
+                    <label class="field-label">হতে:</label>
+                    <select id="calcFromCurr" onchange="calculateCurrencyExchange()">
+                        <option value="USD">USD ($)</option>
+                        <option value="BDT" selected>BDT (৳)</option>
+                        <option value="MYR">MYR</option>
+                        <option value="SAR">SAR</option>
+                        <option value="AED">AED</option>
+                        <option value="SGD">SGD ($)</option>
+                    </select>
+                </div>
+                <div style="flex:1;">
+                    <label class="field-label">রূপান্তর:</label>
+                    <select id="calcToCurr" onchange="calculateCurrencyExchange()">
+                        <option value="USD" selected>USD ($)</option>
+                        <option value="BDT">BDT (৳)</option>
+                        <option value="MYR">MYR</option>
+                        <option value="SAR">SAR</option>
+                        <option value="AED">AED</option>
+                        <option value="SGD">SGD ($)</option>
+                    </select>
                 </div>
             </div>
-            <div style="padding: 15px 20px; display: flex; align-items: center; border-bottom: 1px solid #f1f5f9;">
-                <div style="width: 45px; height: 45px; background: #fce8ef; color: #e2136e; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; margin-right: 15px;" id="receiptReceiverInitial">👤</div>
-                <div>
-                    <h4 id="receiptReceiverPhone" style="margin: 0; font-size: 15px; color: #111;">-</h4>
-                    <span id="receiptBankName" style="font-size: 12px; color: #64748b;">-</span>
-                </div>
-            </div>
-            <div style="padding: 15px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px;">
-                <div>
-                    <span style="color: #64748b; font-size: 11px; display: block;">Time</span>
-                    <strong id="receiptTime" style="color: #334155;">-</strong>
-                </div>
-                <div>
-                    <span style="color: #64748b; font-size: 11px; display: block;">Transaction ID</span>
-                    <strong id="receiptTrxId" style="color: #334155; font-family: monospace;">-</strong>
-                </div>
-            </div>
-            <div style="padding: 15px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px;">
-                <div>
-                    <span style="color: #64748b; font-size: 11px; display: block;">Total Amount</span>
-                    <strong id="receiptTotalAmount" style="color: #111; font-size: 15px;">-</strong>
-                    <span id="receiptBreakdown" style="font-size: 10px; color: #64748b; display: block;">-</span>
-                </div>
-                <div>
-                    <span style="color: #64748b; font-size: 11px; display: block;">New Balance</span>
-                    <strong id="receiptNewBalance" style="color: #111; font-size: 15px;">-</strong>
-                </div>
-            </div>
-            <div style="padding: 15px 20px; background: #fafafa;">
-                <button type="button" onclick="closeSuccessReceiptModal()" style="width: 100%; background: #e2136e; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                    Back to Home ➔
-                </button>
+            <div style="background:#f1f5f9; padding:12px; border-radius:8px; text-align:center; margin-top:10px;">
+                <span style="font-size:11px; color:#64748b; font-weight:bold;">আনুমানিক সমমান:</span>
+                <h3 id="calcResultDisp" style="color:#0b192c; margin-top:4px;">$ 0.85 USD</h3>
             </div>
         </div>
     </div>
 
-    <!-- অন্যান্য প্রয়োজনীয় মোডালসমূহ -->
+    <!-- ADD MONEY (ডিপোজিট) মডাল -->
     <div id="addMoneyModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
@@ -245,26 +403,33 @@
             <form id="addMoneyForm" onsubmit="submitTransactionRequest(event, 'Deposit')">
                 <label class="input-label">মেথড বা ব্যাংক সিলেক্ট করুন:</label>
                 <select class="methodSelect" id="addMoneyMethodSelect" onchange="showAdminDepositNumber(this)" required></select>
+
                 <div id="adminNumberBox" class="hidden" style="background: #fef3c7; border: 1px solid #f59e0b; padding: 10px; border-radius: 8px; margin: 10px 0; text-align: center;">
                     <span style="font-size: 11px; color: #b45309; font-weight: bold;">নিচের নাম্বারে টাকা ক্যাশ-ইন / সেন্ড মানি করুন:</span>
                     <h4 id="dispAdminAccNum" style="color: #92400e; font-size: 15px; margin-top: 4px; font-weight: bold; font-family: monospace;">-</h4>
                 </div>
+
                 <label class="input-label">আপনার সেন্ডার নম্বর:</label>
                 <input type="text" class="phoneInput" placeholder="নম্বর দিন" required>
+
                 <label class="input-label">টাকার পরিমাণ:</label>
                 <input type="number" step="0.01" class="amountInput" placeholder="পরিমাণ" required>
+
                 <label class="input-label">ট্রানজেকশন আইডি (TrxID):</label>
                 <input type="text" class="trxInput" placeholder="TrxID দিন" required>
-                <label class="input-label">পাসওয়ার্ড দিন:</label>
+
+                <label class="input-label sec-pass-label">পাসওয়ার্ড দিন:</label>
                 <input type="password" class="secPassInput" placeholder="পাসওয়ার্ড" required>
+
                 <div class="btn-row-flex">
                     <button type="submit" class="btn btn-gold">কনফার্ম এড মানি</button>
-                    <button type="button" class="btn btn-cancel-btn" onclick="openAddMoneyModal()">বাতিল</button>
+                    <button type="button" class="btn btn-cancel-btn" onclick="openAddMoneyModal()">বাতিল করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- FUND TRANSFER (উইথড্র ও ব্যাংক ট্রান্সফার) মডাল -->
     <div id="fundTransferModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
@@ -274,47 +439,332 @@
             <form onsubmit="submitTransactionRequest(event, 'Withdraw')">
                 <label class="input-label">প্রাপক ব্যাংক / ওয়ালেট:</label>
                 <select class="methodSelect" id="fundTransferMethodSelect" required></select>
+
                 <label class="input-label">প্রাপকের ফোন / একাউন্ট নম্বর:</label>
                 <input type="text" class="phoneInput" placeholder="প্রাপকের নম্বর" required>
+
                 <label class="input-label">ট্রান্সফারের পরিমাণ:</label>
                 <input type="number" step="0.01" class="amountInput" placeholder="পরিমাণ" required>
+
                 <label class="input-label">রেফারেন্স / TrxID:</label>
                 <input type="text" class="trxInput" placeholder="TrxID দিন" required>
-                <label class="input-label">পাসওয়ার্ড দিন:</label>
+
+                <label class="input-label sec-pass-label">পাসওয়ার্ড দিন:</label>
                 <input type="password" class="secPassInput" placeholder="পাসওয়ার্ড" required>
+
                 <div class="btn-row-flex">
                     <button type="submit" class="btn btn-gold">কনফার্ম ট্রান্সফার</button>
-                    <button type="button" class="btn btn-cancel-btn" onclick="openFundTransferModal()">বাতিল</button>
+                    <button type="button" class="btn btn-cancel-btn" onclick="openFundTransferModal()">বাতিল করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- অন্যান্য ছোট মোডাল ও স্ক্রিপ্ট কানেকশন -->
-    <div id="notificationsModal" class="modal-overlay hidden">
-        <div class="modal-content light-modal" style="max-width:400px;">
-            <div class="modal-header-clean"><h3>🔔 নোটিফিকেশন</h3><button type="button" class="close-btn-dark" onclick="toggleNotificationsModal()">✕</button></div>
-            <div id="notificationsList" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
+    <!-- মোবাইল রিচার্জ মডাল -->
+    <div id="topUpModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal">
+            <div class="modal-header-clean">
+                <h3>📱 Mobile Top Up</h3>
+                <button type="button" onclick="openTopUpModal()" class="close-btn-dark">✖</button>
+            </div>
+            <form onsubmit="handleTopUpSubmit(event)">
+                <label class="input-label">অপারেটর সিলেক্ট করুন:</label>
+                <select id="topUpOperatorSelect" required>
+                    <option value="">অপারেটর নির্বাচন করুন</option>
+                    <option value="Grameenphone 🟢">Grameenphone (BD)</option>
+                    <option value="Robi 🔴">Robi (BD)</option>
+                    <option value="Banglalink 🟠">Banglalink (BD)</option>
+                    <option value="Singtel 🔴">Singtel (Singapore)</option>
+                    <option value="StarHub 🟢">StarHub (Singapore)</option>
+                </select>
+
+                <label class="input-label">মোবাইল নম্বর:</label>
+                <input type="text" id="topUpPhoneInput" placeholder="মোবাইল নম্বর" required>
+
+                <label class="input-label">পরিমাণ:</label>
+                <input type="number" step="0.01" id="topUpAmountInput" placeholder="পরিমাণ" required>
+
+                <label class="input-label sec-pass-label">পাসওয়ার্ড দিন:</label>
+                <input type="password" id="topUpSecPassInput" placeholder="পাসওয়ার্ড" required>
+
+                <div class="btn-row-flex">
+                    <button type="submit" class="btn btn-gold">রিচার্জ পাঠান</button>
+                    <button type="button" class="btn btn-cancel-btn" onclick="openTopUpModal()">বাতিল করুন</button>
+                </div>
+            </form>
         </div>
     </div>
 
+    <!-- কার্ড/ব্যাংক ট্রান্সফার মডাল -->
+    <div id="cardBankModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal">
+            <div class="modal-header-clean">
+                <h3>💳 Card & Bank Transfer</h3>
+                <button type="button" onclick="openCardBankModal()" class="close-btn-dark">✖</button>
+            </div>
+            <form onsubmit="handleCardBankSubmit(event)">
+                <label class="input-label">ট্রান্সফার টাইপ:</label>
+                <select id="cardBankTypeSelect" required>
+                    <option value="">সিলেক্ট করুন</option>
+                    <option value="Debit Card to Bank">Debit Card → Bank</option>
+                    <option value="Visa Card Transfer">Visa Card Transfer</option>
+                    <option value="Receive Remittance">Receive Remittance</option>
+                </select>
+
+                <label class="input-label">কার্ড / একাউন্ট নম্বর:</label>
+                <input type="text" id="cardBankAccInput" placeholder="একাউন্ট নম্বর" required>
+
+                <label class="input-label">প্রাপকের একাউন্ট:</label>
+                <input type="text" id="cardBankReceiverInput" placeholder="প্রাপকের নম্বর" required>
+
+                <label class="input-label">পরিমাণ:</label>
+                <input type="number" step="0.01" id="cardBankAmountInput" placeholder="পরিমাণ" required>
+
+                <label class="input-label sec-pass-label">পাসওয়ার্ড দিন:</label>
+                <input type="password" id="cardBankSecPassInput" placeholder="পাসওয়ার্ড" required>
+
+                <div class="btn-row-flex">
+                    <button type="submit" class="btn btn-gold">পাঠান</button>
+                    <button type="button" class="btn btn-cancel-btn" onclick="openCardBankModal()">বাতিল করুন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- স্টেটমেন্ট মডাল -->
     <div id="inboxModal" class="modal-overlay hidden">
         <div class="modal-content light-modal" style="max-width: 700px;">
-            <div class="modal-header-clean"><h3>📋 Statement</h3><button type="button" onclick="openInboxModal()" class="close-btn-dark">✖</button></div>
+            <div class="modal-header-clean">
+                <h3>📋 Statement & Transactions</h3>
+                <button type="button" onclick="openInboxModal()" class="close-btn-dark">✖</button>
+            </div>
+            
+            <div style="margin: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-size: 12px; font-weight: bold; color: #475569;">লেনদেন ফিল্টার করুন:</label>
+                <select id="statementFilterSelect" onchange="renderUserInboxHistory()" style="padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 12px; width: 200px; margin-bottom: 0;">
+                    <option value="ALL">সব ধরনের লেনদেন (All)</option>
+                    <option value="Deposit">ডিপোজিট (Deposit)</option>
+                    <option value="Withdraw">উইথড্র/ট্রান্সফার (Withdraw)</option>
+                    <option value="AdminCredit">ওয়ার্ল্ড ব্যাংক জমা/কর্তন (Credit/Debit)</option>
+                    <option value="TopUp">মোবাইল রিচার্জ (TopUp)</option>
+                </select>
+            </div>
+
             <div class="inbox-table-container">
                 <table class="inbox-table">
-                    <thead><tr><th>তারিখ</th><th>টাইপ</th><th>মেথড</th><th>পরিমাণ</th><th>TrxID</th><th>রসিদ</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>তারিখ</th>
+                            <th>টাইপ</th>
+                            <th>মেথড ও নম্বর</th>
+                            <th>পরিমাণ</th>
+                            <th>TrxID</th>
+                            <th>রসিদ ও স্ট্যাটাস</th>
+                        </tr>
+                    </thead>
                     <tbody id="userInboxModalBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- কাস্টম অ্যালার্ট মডাল -->
     <div id="customAlertModal" class="modal-overlay hidden">
         <div class="modal-content light-modal" style="max-width: 350px; text-align: center;">
-            <h3 id="customAlertTitle" style="margin-bottom: 8px;">বার্তা</h3>
-            <p id="customAlertText" style="margin-bottom: 18px;"></p>
+            <div style="font-size: 38px; margin-bottom: 8px;">🔔</div>
+            <h3 id="customAlertTitle" style="color: #0f172a; font-size: 17px; margin-bottom: 8px; font-weight: bold;">বার্তা</h3>
+            <p id="customAlertText" style="color: #334155; font-size: 14px; line-height: 1.5; margin-bottom: 18px;"></p>
             <button type="button" onclick="closeCustomAlert()" class="btn btn-gold">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <!-- প্রোফাইল মডাল -->
+    <div id="profileModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal">
+            <div class="modal-header-clean">
+                <h3>👤 Profile Settings</h3>
+                <button type="button" onclick="toggleProfileModal()" class="close-btn-dark">✖</button>
+            </div>
+            <form onsubmit="updateUserProfile(event)" style="margin-top:10px;">
+                <div style="text-align: center; margin-bottom: 12px;">
+                    <div id="profileImagePreview" style="width: 80px; height: 80px; border-radius: 50%; background: #e2e8f0; margin: 0 auto 8px auto; display: flex; justify-content: center; align-items: center; font-size: 34px; overflow: hidden; border: 3px solid #d97706; background-size: cover; background-position: center;">👤</div>
+                    <label for="profilePhotoInput" style="font-size: 11px; color: #b45309; font-weight: bold; cursor: pointer; display: inline-block; background: #fef3c7; padding: 4px 10px; border-radius: 12px; border: 1px solid #fde68a;">📷 ছবি চেঞ্জ করুন</label>
+                    <input type="file" id="profilePhotoInput" accept="image/*" onchange="previewProfilePhoto(event)" style="display: none;">
+                </div>
+
+                <label class="input-label">পূর্ণ নাম:</label>
+                <input type="text" id="profNameInput" required>
+                
+                <label class="input-label">ফোন নম্বর:</label>
+                <input type="text" id="profPhoneInput" required readonly style="background:#e2e8f0;">
+                
+                <label class="input-label">নতুন পাসওয়ার্ড:</label>
+                <div class="password-wrapper">
+                    <input type="password" id="profPassInput" required>
+                    <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('profPassInput', this)">👁️</button>
+                </div>
+                
+                <div class="btn-row-flex">
+                    <button type="submit" class="btn btn-gold">আপডেট করুন</button>
+                    <button type="button" class="btn btn-cancel-btn" onclick="toggleProfileModal()">বাতিল করুন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- পাসওয়ার্ড উদ্ধার মডাল -->
+    <div id="forgotModal" class="modal-overlay hidden">
+        <div class="modal-content light-modal">
+            <div class="modal-header-clean">
+                <h3>🔑 Password Recovery</h3>
+                <button type="button" onclick="toggleForgotModal()" class="close-btn-dark">✖</button>
+            </div>
+            <form onsubmit="handleForgotPassword(event)" style="margin-top:10px;">
+                <p style="font-size:12px; color:#64748b; margin-bottom:10px;">নিবন্ধিত ইমেইল ও মোবাইল নম্বর দিন:</p>
+                <input type="email" id="forgotEmailInput" placeholder="নিবন্ধিত ইমেইল" required>
+                <input type="text" id="forgotPhoneInput" placeholder="নিবন্ধিত ফোন নম্বর" required>
+                <div class="btn-row-flex">
+                    <button type="submit" class="btn btn-gold">উদ্ধার করুন</button>
+                    <button type="button" class="btn btn-cancel-btn" onclick="toggleForgotModal()">বাতিল করুন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- সিক্রেট এডমিন প্যানেল -->
+    <div id="adminModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Central Control Admin</h2>
+                <button type="button" onclick="toggleAdminModal()" class="close-btn">✖</button>
+            </div>
+
+            <div id="adminAuthBox">
+                <p style="margin-bottom: 10px; font-size: 14px; color: #cbd5e1;">পাসওয়ার্ড প্রবেশ করান:</p>
+                <div class="password-wrapper" style="margin-bottom:12px;">
+                    <input type="password" id="adminPassInput" placeholder="এডমিন পাসওয়ার্ড দিন" style="margin-bottom:0;">
+                    <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('adminPassInput', this)">👁️</button>
+                </div>
+                <div class="btn-row-flex">
+                    <button type="button" onclick="verifyAdminPassword()" class="btn btn-gold">লগইন</button>
+                    <button type="button" onclick="toggleAdminModal()" class="btn btn-cancel-btn">ক্যানসেল</button>
+                </div>
+            </div>
+
+            <div id="adminControlBox" class="hidden">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <button type="button" onclick="refreshAdminData()" class="btn-cancel-small" style="background:#059669; color:white; font-size:12px; padding:6px 12px; border-radius:6px; cursor:pointer;">🔄 রিফ্রেশ হিস্ট্রি</button>
+                    <button type="button" onclick="toggleAdminModal()" class="btn-cancel-small" style="background:#ef4444; color:white; font-size:12px; padding:6px 12px; border-radius:6px; cursor:pointer;">Exit Admin</button>
+                </div>
+
+                <div class="admin-settings" style="border:1px solid #d97706; padding:12px; border-radius:8px; margin-bottom:15px; background:#1e293b;">
+                    <h4 style="color:#fbbf24;">📲 ডিপোজিট নম্বর ম্যানেজমেন্ট</h4>
+                    <form onsubmit="adminSaveDepositNumber(event)">
+                        <select id="admDepMethodSelect" required style="margin-bottom:8px; background:#0f172a; color:white;">
+                            <option value="">মেথড সিলেক্ট করুন</option>
+                            <option value="🔴 bKash Account">🔴 bKash Account</option>
+                            <option value="🟠 Nagad Wallet">🟠 Nagad Wallet</option>
+                            <option value="🟣 Rocket DBBL">🟣 Rocket DBBL</option>
+                            <option value="🟢 Upay Mobile">🟢 Upay Mobile</option>
+                            <option value="🏛️ Dutch Bangla Bank (DBBL)">🏛️ Dutch Bangla Bank (DBBL)</option>
+                            <option value="🔴 POSB Bank (Singapore)">🔴 POSB Bank (Singapore)</option>
+                            <option value="🔵 DBS Bank (Singapore)">🔵 DBS Bank (Singapore)</option>
+                            <option value="🔴 UOB Bank (Singapore)">🔴 UOB Bank (Singapore)</option>
+                            <option value="🟢 PayNow (Singapore)">🟢 PayNow (Singapore)</option>
+                        </select>
+                        <input type="text" id="admDepNumberInput" placeholder="যেমন: 018XXXXXXXX / A/C Number" required style="margin-bottom:8px; background:#0f172a; color:white;">
+                        <button type="submit" class="btn btn-gold">নম্বর সেভ করুন</button>
+                    </form>
+                </div>
+
+                <div class="admin-settings">
+                    <h4>💰 ইউজার মেইন ব্যালেন্স ম্যানেজমেন্ট (বাড়ানো / কমানো)</h4>
+                    <form onsubmit="adminUpdateUserBalance(event)" style="margin-top: 10px;">
+                        <select id="admBalanceUserSelect" required style="margin-bottom:8px;">
+                            <option value="">ইউজার সিলেক্ট করুন</option>
+                        </select>
+                        <select id="admBalanceActionType" required style="margin-bottom:8px;">
+                            <option value="ADD">➕ ব্যালেন্স যোগ করুন (Add Balance)</option>
+                            <option value="DEDUCT">➖ ব্যালেন্স কর্তন করুন (Deduct Balance)</option>
+                            <option value="SET">🎯 নির্দিষ্ট ব্যালেন্স সেট করুন (Set Exact Balance)</option>
+                        </select>
+                        <input type="number" step="0.01" id="admBalanceAmount" placeholder="পরিমাণ লিখুন" required style="margin-bottom:8px;">
+                        <button type="submit" class="btn btn-gold">ব্যালেন্স আপডেট করুন</button>
+                    </form>
+                </div>
+
+                <div class="admin-settings">
+                    <h4>⚙️ ইউজার উইথড্র / ট্রান্সফার লিমিট সেটআপ</h4>
+                    <form onsubmit="adminUpdateUserWithdrawLimit(event)" style="margin-top: 10px;">
+                        <select id="admLimitUserSelect" required style="margin-bottom:8px;">
+                            <option value="">ইউজার সিলেক্ট করুন</option>
+                        </select>
+                        <input type="number" step="0.01" id="admUserCustomLimitInput" placeholder="সর্বোচ্চ লিমিট (যেমন: 500)" required style="margin-bottom:8px;">
+                        <button type="submit" class="btn btn-gold">সেভ লিমিট</button>
+                    </form>
+                </div>
+
+                <div class="admin-settings">
+                    <h4>👥 ইউজার লিস্ট ও ম্যানেজমেন্ট</h4>
+                    <div class="admin-table-scroll">
+                        <table class="dark-admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ছবি</th>
+                                    <th>নাম</th>
+                                    <th>ফোন</th>
+                                    <th>কারেন্সি</th>
+                                    <th>পাসওয়ার্ড</th>
+                                    <th>ব্যালেন্স</th>
+                                    <th>লিমিট</th>
+                                    <th>অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUsersListBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-settings">
+                    <h4>📋 পেন্ডিং ট্রানজেকশন রিকোয়েস্ট</h4>
+                    <div class="admin-table-scroll">
+                        <table class="dark-admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ইউজার</th>
+                                    <th>টাইপ</th>
+                                    <th>মেথড</th>
+                                    <th>নম্বর</th>
+                                    <th>পরিমাণ</th>
+                                    <th>TrxID</th>
+                                    <th>অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminPendingTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-settings">
+                    <h4>📁 অল ট্রানজেকশন হিস্ট্রি</h4>
+                    <div class="admin-table-scroll">
+                        <table class="dark-admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ইউজার</th>
+                                    <th>টাইপ</th>
+                                    <th>মেথড</th>
+                                    <th>পরিমাণ</th>
+                                    <th>TrxID</th>
+                                    <th>স্ট্যাটাস</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminAllHistoryTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
