@@ -18,7 +18,6 @@ let adminDepositNumbers = JSON.parse(localStorage.getItem('wb_deposit_numbers'))
 const exchangeRatesUSD = { "USD": 1.0, "BDT": 117.50, "MYR": 4.70, "SAR": 3.75, "AED": 3.67, "SGD": 1.35 };
 const countryCurrencyMap = { "+880": "৳", "+65": "$", "+60": "MYR", "+966": "SAR", "+971": "AED", "+1": "$", "+44": "£", "+91": "₹", "+968": "OMR", "+974": "QAR", "+965": "KWD" };
 
-// ১. বাংলাদেশের সমস্ত ব্যাংক এবং মোবাইল ব্যাংকিং ওয়ালেটসমূহ (সব সময় বাধ্যতামূলক যুক্ত থাকবে)
 const mandatoryBangladeshBanks = [
     "🔴 bKash Account (BD)", 
     "🟠 Nagad Wallet (BD)", 
@@ -37,7 +36,6 @@ const mandatoryBangladeshBanks = [
     "🏛️ Eastern Bank PLC (EBL)"
 ];
 
-// ২. বিভিন্ন আন্তর্জাতিক দেশের জনপ্রিয় ব্যাংকসমূহ
 const mandatorySingaporeBanks = ["🔴 POSB Bank (Singapore)", "🔵 DBS Bank (Singapore)", "🔴 UOB Bank (Singapore)", "🔴 OCBC Bank (Singapore)", "🟢 PayNow Transfer", "💎 Trust Bank (Singapore)"];
 const mandatoryMalaysiaBanks = ["🏛️ Maybank (Malaysia)", "🏛️ CIMB Bank", "🏛️ Public Bank", "🏛️ RHB Bank", "📲 Touch 'n Go eWallet", "🟢 DuitNow Transfer"];
 const mandatorySaudiBanks = ["🏛️ Al Rajhi Bank", "🏛️ SNB AlAhli Bank", "🏛️ Riyad Bank", "📲 STC Pay Wallet", "🟢 Urpay Wallet"];
@@ -69,7 +67,6 @@ let tempProfilePhotoBase64 = null;
 let cameraStream = null;
 let isDarkMode = false;
 
-// টেলিগ্রাম বট নোটিফিকেশন সচলীকরণ
 function sendTelegramNotification(message) {
     if (!BOT_TOKEN || !CHAT_ID) return;
     fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -266,7 +263,6 @@ Status         : ${tx.status}
     URL.revokeObjectURL(url);
 }
 
-// ইউজারের মোবাইল নম্বরের কান্ট্রি কোড অনুযায়ী নির্দিষ্ট দেশের ব্যাংক + বাধ্যতামূলক বাংলাদেশ ব্যাংক প্রদর্শন
 function populateUserDynamicBanksWithLogos() {
     const addSelect = document.getElementById('addMoneyMethodSelect');
     const transferSelect = document.getElementById('fundTransferMethodSelect');
@@ -284,7 +280,6 @@ function populateUserDynamicBanksWithLogos() {
     }
 
     const currentCountryBanks = countrySpecificBanksWithLogos[countryCode] || [];
-    // উক্ত দেশের ব্যাংক + বাধ্যতামূলক বাংলাদেশের সব ব্যাংক একত্রে মার্জ
     let combinedBanks = Array.from(new Set([
         "🏛️ World Bank Main Account", 
         ...currentCountryBanks, 
@@ -363,6 +358,32 @@ function showCustomAlert(title, message) {
 
 function closeCustomAlert() {
     document.getElementById('customAlertModal').classList.add('hidden');
+}
+
+// বিকাশ স্টাইল রিসিভ পপ-আপ ওপেন ও ক্লোজ ফাংশন
+function showSuccessReceiptPopup(tx) {
+    const modal = document.getElementById('bkashSuccessReceiptModal');
+    if (!modal) return;
+
+    const curr = tx.currency || getUserCurrency(activeUser);
+    
+    document.getElementById('receiptTitleText').innerText = tx.type === 'Deposit' ? 'Your Add Money is successful' : 'Your Send Money is successful';
+    document.getElementById('receiptReceiverPhone').innerText = tx.phone;
+    document.getElementById('receiptBankName').innerText = tx.method;
+    document.getElementById('receiptTime').innerText = `${tx.timeStr || ''} ${tx.dateStr || ''}`;
+    document.getElementById('receiptTrxId').innerText = tx.trxId;
+    document.getElementById('receiptTotalAmount').innerText = `${curr} ${formatAmountLocale(tx.amount)}`;
+    document.getElementById('receiptBreakdown').innerText = `${curr} ${formatAmountLocale(tx.amount - 10)} + ${curr} 10.00`;
+    document.getElementById('receiptNewBalance').innerText = `${curr} ${formatAmountLocale(tx.remBal !== undefined ? tx.remBal : activeUser.totalBalance)}`;
+    
+    let initial = tx.phone ? tx.phone.charAt(0) : '👤';
+    document.getElementById('receiptReceiverInitial').innerText = initial;
+
+    modal.classList.remove('hidden');
+}
+
+function closeSuccessReceiptModal() {
+    document.getElementById('bkashSuccessReceiptModal').classList.add('hidden');
 }
 
 function sanitizeEmailKey(keyStr) {
@@ -704,6 +725,11 @@ function renderUserInboxHistory() {
         if (t.type === 'AdminCredit') typeTitle = 'World Bank Add Balance';
         if (t.type === 'AdminDebit') typeTitle = 'World Bank Deduct Balance';
 
+        let actionBtn = `<button type="button" onclick="downloadTransactionReceipt(${t.id})" style="margin-top:4px; background:#0284c7; color:white; border:none; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">📥 রসিদ</button>`;
+        if (t.status === 'Approved') {
+            actionBtn += `<br><button type="button" onclick='showSuccessReceiptPopup(${JSON.stringify(t).replace(/'/g, "&apos;")})' style="margin-top:4px; background:#e2136e; color:white; border:none; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">📱 পপ-আপ রসিদ</button>`;
+        }
+
         tbody.innerHTML += `
             <tr>
                 <td>${t.dateStr}</td>
@@ -711,10 +737,7 @@ function renderUserInboxHistory() {
                 <td>${t.method}<br><small style="color:#0284c7;">অবশিষ্ট: ${curr} ${formatAmountLocale(t.remBal || 0)}</small></td>
                 <td style="color:${t.type === 'AdminDebit' ? '#ef4444' : '#059669'}; font-weight:bold;">${t.type === 'AdminDebit' ? '-' : '+'}${curr} ${formatAmountLocale(t.amount)}</td>
                 <td><code>${t.trxId}</code></td>
-                <td>
-                    ${statusBadge}<br>
-                    <button type="button" onclick="downloadTransactionReceipt(${t.id})" style="margin-top:4px; background:#0284c7; color:white; border:none; padding:2px 6px; border-radius:4px; font-size:10px; cursor:pointer;">📥 রসিদ</button>
-                </td>
+                <td>${statusBadge}<br>${actionBtn}</td>
             </tr>`;
     });
 }
@@ -990,6 +1013,7 @@ function renderAdminAllHistory() {
     tbody.innerHTML = '';
     allTransactions.forEach(t => {
         tbody.innerHTML += `
+            rows...
             <tr>
                 <td><b>${t.userName || t.userEmail}</b></td>
                 <td>${t.type}</td>
@@ -1030,11 +1054,15 @@ async function approveTransaction(txId) {
         sendTelegramNotification(`✅ <b>রিকোয়েস্ট অনুমোদিত!</b>\n👤 ইউজার: ${targetUser.name}\n💰 পরিমাণ: ${tx.currency || '৳'}${tx.amount}\n💵 বর্তমান ব্যালেন্স: ${tx.currency || '৳'}${targetUser.totalBalance}`);
 
         showCustomAlert("সফল", 'অ্যাপ্রুভ করা হয়েছে!');
+        
+        // এডমিন যখন অ্যাপ্রুভ করবে, তখন ইউজারের স্ক্রিনে এই পপ-আপ রিসিভ দেখাবে
         if (activeUser && activeUser.phone === targetUser.phone) {
             activeUser = targetUser;
             localStorage.setItem('wb_active_session', JSON.stringify(activeUser));
             renderBalances();
+            showSuccessReceiptPopup(allTransactions[txIndex]);
         }
+
         renderAdminPendingList();
         renderAdminUsersList();
         renderAdminAllHistory();
