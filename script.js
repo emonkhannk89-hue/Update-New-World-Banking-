@@ -77,7 +77,7 @@ let bannedEmails = [];
 let allTransactions = [];
 let activeUser = JSON.parse(localStorage.getItem('wb_active_session')) || null;
 let balanceHideTimer = null;
-let currentLang = 'en'; // ড্যাশবোর্ড সর্বদা ইংলিশে শুরু হবে
+let currentLang = 'en'; 
 let tempProfilePhotoBase64 = null;
 let cameraStream = null;
 
@@ -337,7 +337,6 @@ function handleCountryChange(selectEl) {
     setLanguage(nativeLang);
 }
 
-// ড্যাশবোর্ডের ভাষা পরিবর্তন (EN / BN টগল)
 function toggleDashboardLanguage() {
     currentLang = currentLang === 'en' ? 'bn' : 'en';
     const dashLangBtn = document.getElementById('dashLangBtn');
@@ -366,7 +365,6 @@ function setLanguage(lang) {
     renderBalances();
 }
 
-// পপ-আপ মডালগুলোর ভাষা আপডেট
 function updateModalTexts() {
     if (currentLang === 'bn') {
         if(document.getElementById('modalTitleAddMoney')) document.getElementById('modalTitleAddMoney').innerText = "📥 Add Money (ডিপোজিট)";
@@ -894,8 +892,8 @@ async function adminUpdateUserBalance(e) {
     const method = document.getElementById('admBalanceMethodSelect').value;
     const newAmount = parseFloat(document.getElementById('admBalanceAmount').value);
 
-    if (!userIdentifier || isNaN(newAmount) || newAmount < 0) {
-        showCustomAlert("Error", 'Please provide valid info!');
+    if (!userIdentifier || isNaN(newAmount)) {
+        showCustomAlert("Error", 'Please provide valid amount!');
         return;
     }
 
@@ -927,7 +925,6 @@ async function adminUpdateUserBalance(e) {
     }
 }
 
-// undefined বাগ ফিক্সড রেন্ডার ফাংশন
 function renderAdminUsersList() {
     const tbody = document.getElementById('adminUsersListBody');
     if (!tbody) return;
