@@ -78,7 +78,7 @@
         </form>
     </div>
 
-    <!-- ২. মূল ড্যাশবোর্ড সেকশন (ড্যাশবোর্ড সর্বদা ইংলিশে থাকবে) -->
+    <!-- ২. মূল ড্যাশবোর্ড সেকশন -->
     <div id="dashboardSection" class="dashboard hidden">
         
         <!-- হেডার -->
@@ -240,27 +240,27 @@
         </div>
     </div>
 
-    <!-- ৪. ADD MONEY মডাল (ডাইনামিক ল্যাঙ্গুয়েজ সাপোর্ট সহ) -->
+    <!-- ৪. ADD MONEY মডাল -->
     <div id="addMoneyModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
-                <h3 id="modalTitleAddMoney">📥 Add Money (ডিপোজিট)</h3>
+                <h3 id="modalTitleAddMoney">📥 Add Money (Deposit)</h3>
                 <button onclick="openAddMoneyModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="submitTransactionRequest(event, 'Deposit')">
-                <label class="input-label" id="lblAddMethod">মেথড বা ব্যাংক সিলেক্ট করুন:</label>
+                <label class="input-label" id="lblAddMethod">Select Method or Bank:</label>
                 <select class="methodSelect" id="addMoneyMethodSelect" required></select>
 
-                <label class="input-label" id="lblAddAccount">সেন্ডার / একাউন্ট নম্বর:</label>
+                <label class="input-label" id="lblAddAccount">Sender / Account Number:</label>
                 <input type="text" class="phoneInput" placeholder="Enter number" required>
 
-                <label class="input-label" id="lblAddAmount">টাকার পরিমাণ / Amount:</label>
+                <label class="input-label" id="lblAddAmount">Amount:</label>
                 <input type="number" step="0.01" class="amountInput" placeholder="Amount" required>
 
-                <label class="input-label" id="lblAddTrx">ট্রানজেকশন আইডি (TrxID):</label>
+                <label class="input-label" id="lblAddTrx">Transaction ID (TrxID):</label>
                 <input type="text" class="trxInput" placeholder="Enter TrxID" required>
 
-                <label class="input-label sec-pass-label" id="lblAddPass">কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:</label>
+                <label class="input-label sec-pass-label" id="lblAddPass">Enter Password to Confirm:</label>
                 <input type="password" class="secPassInput" placeholder="Enter Password" required>
 
                 <div class="btn-row-flex">
@@ -275,23 +275,23 @@
     <div id="fundTransferModal" class="modal-overlay hidden">
         <div class="modal-content light-modal">
             <div class="modal-header-clean">
-                <h3 id="modalTitleTransfer">💸 Fund Transfer (উইথড্র)</h3>
+                <h3 id="modalTitleTransfer">💸 Fund Transfer (Withdraw)</h3>
                 <button onclick="openFundTransferModal()" class="close-btn-dark">✖</button>
             </div>
             <form onsubmit="submitTransactionRequest(event, 'Withdraw')">
-                <label class="input-label" id="lblTransMethod">কোথায় টাকা ট্রান্সফার করতে চান:</label>
+                <label class="input-label" id="lblTransMethod">Select Destination Bank / Wallet:</label>
                 <select class="methodSelect" id="fundTransferMethodSelect" required></select>
 
-                <label class="input-label" id="lblTransAccount">প্রাপকের ফোন / একাউন্ট নম্বর:</label>
+                <label class="input-label" id="lblTransAccount">Receiver Account / Mobile:</label>
                 <input type="text" class="phoneInput" placeholder="Receiver account" required>
 
-                <label class="input-label" id="lblTransAmount">ট্রান্সফারের পরিমাণ:</label>
+                <label class="input-label" id="lblTransAmount">Transfer Amount:</label>
                 <input type="number" step="0.01" class="amountInput" placeholder="Amount" required>
 
-                <label class="input-label" id="lblTransTrx">রেফারেন্স / TrxID:</label>
+                <label class="input-label" id="lblTransTrx">Reference / TrxID:</label>
                 <input type="text" class="trxInput" placeholder="TrxID" required>
 
-                <label class="input-label sec-pass-label" id="lblTransPass">কনফার্ম করার জন্য আপনার পাসওয়ার্ড দিন:</label>
+                <label class="input-label sec-pass-label" id="lblTransPass">Enter Password to Confirm:</label>
                 <input type="password" class="secPassInput" placeholder="Password" required>
 
                 <div class="btn-row-flex">
@@ -489,7 +489,7 @@
                 </div>
 
                 <div class="admin-settings">
-                    <h4>💰 Custom User Main Balance Setup</h4>
+                    <h4>💰 Custom User Main Balance Setup (Plus / Minus)</h4>
                     <form onsubmit="adminUpdateUserBalance(event)" style="margin-top: 10px;">
                         <select id="admBalanceUserSelect" required style="margin-bottom:8px;">
                             <option value="">Select User</option>
